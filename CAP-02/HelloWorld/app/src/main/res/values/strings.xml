@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Hello World!!</string>
+    <string name="hola_Mundo">¡Hola Mundo!</string>
+    <string name="hint_nombre">Tu nombre aquí</string>
+    <string name="txt_boton">Saludar</string>
+    <string name="texto_saludo">¡¡Hola %s!!</string>
+    <string name="texto_error">El nombre no puede estar vacío</string>
+</resources>
