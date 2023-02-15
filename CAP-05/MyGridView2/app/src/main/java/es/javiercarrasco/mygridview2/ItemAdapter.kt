@@ -5,23 +5,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
-import android.widget.Toast
 import es.javiercarrasco.mygridview2.databinding.GridviewItemBinding
 
 // Clase ItemAdapter que hereda de la clase abstracta BaseAdapter.
-class ItemAdapter(
-    context: Context,
-    itemsList: ArrayList<MyItems>
-) : BaseAdapter() {
-
-    private var context: Context? = null
-    private var itemsList = ArrayList<MyItems>()
-
-    // Constructor por defecto.
-    init {
-        this.context = context
-        this.itemsList = itemsList
-    }
+class ItemAdapter(val context: Context, val itemsList: ArrayList<MyItems>) : BaseAdapter() {
 
     override fun getCount(): Int {
         return itemsList.size
@@ -37,15 +24,15 @@ class ItemAdapter(
 
     // Devuelve la vista cargada de cada elemento al adaptador.
     override fun getView(p0: Int, p1: View?, p2: ViewGroup?): View {
-        val item = this.itemsList[p0]
-        val layoutInflater = LayoutInflater.from(context)
+        return if (p1 == null) { // Se comprueba si la vista es nula.
+            val item = this.itemsList[p0]
+            val layoutInflater = LayoutInflater.from(context)
+            val binding = GridviewItemBinding.inflate(layoutInflater, p2, false)
 
-        val binding = GridviewItemBinding.inflate(layoutInflater)
+            binding.image.setImageResource(item.image)
+            binding.tvName.text = item.name
 
-        binding.image.setImageResource(item.image)
-        binding.tvName.text = item.name
-
-        // Pulsación sobre la vista.
+            // Pulsación sobre la vista.
 //        binding.root.setOnClickListener {
 //            Toast.makeText(
 //                context,
@@ -54,6 +41,9 @@ class ItemAdapter(
 //            ).show()
 //        }
 
-        return binding.root
+            binding.root
+        } else { // La vista que llena no es nula y se devuelve.
+            p1.rootView
+        }
     }
 }
