@@ -8,19 +8,18 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
+import com.google.android.material.snackbar.Snackbar
 import es.javiercarrasco.myrecyclerview.databinding.ItemAnimalListBinding
 
-class MyAnimalAdapter(val animalsList: MutableList<MyAnimal>) :
-    RecyclerView.Adapter<MyAnimalAdapter.MyAnimalViewHolder>() {
+class RecyclerAdapter(val animalsList: MutableList<MyAnimal>) :
+    RecyclerView.Adapter<RecyclerAdapter.ViewHolder>() {
 
     // Es el encargado de devolver el ViewHolder ya configurado.
-    override fun onCreateViewHolder(
-        parent: ViewGroup,
-        viewType: Int
-    ): MyAnimalViewHolder {
-        return MyAnimalViewHolder(
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        val layoutInflater = LayoutInflater.from(parent.context)
+        return ViewHolder(
             ItemAnimalListBinding.inflate(
-                LayoutInflater.from(parent.context),
+                layoutInflater,
                 parent,
                 false
             ).root
@@ -28,8 +27,8 @@ class MyAnimalAdapter(val animalsList: MutableList<MyAnimal>) :
     }
 
     // Método encargado de pasar los objetos, uno a uno, al ViewHolder personalizado.
-    override fun onBindViewHolder(holder: MyAnimalViewHolder, position: Int) {
-        holder.bind(animalsList[position])
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        holder.bind(animalsList.get(position))
     }
 
     // Devuelve el tamaño de la fuente de datos.
@@ -37,15 +36,13 @@ class MyAnimalAdapter(val animalsList: MutableList<MyAnimal>) :
 
     // Esta clase interna se encarga de rellenar cada una de las vistas que
     // se inflarán para cada uno de los elementos del RecyclerView.
-    class MyAnimalViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+    inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         // Se usa View Binding para localizar los elementos en la vista.
         private val binding = ItemAnimalListBinding.bind(view)
 
         fun bind(animal: MyAnimal) {
             binding.tvNameAnimal.text = animal.animalName
             binding.tvLatinName.text = animal.latinName
-
-//            binding.ivAnimalImage.setImageResource(animal.imageAnimal)
 
             Glide.with(binding.root)
                 .load(animal.imageAnimal)
@@ -54,9 +51,25 @@ class MyAnimalAdapter(val animalsList: MutableList<MyAnimal>) :
                 .transform(CenterCrop(), RoundedCorners(10))
                 .into(binding.ivAnimalImage)
 
-            // Listener sobre la vista.
             itemView.setOnClickListener {
-                Toast.makeText(binding.root.context, animal.animalName, Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    binding.root.context,
+                    animal.animalName,
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+
+            itemView.setOnLongClickListener {
+                Snackbar.make(
+                    binding.root,
+                    "¿Confirmas el borrado?",
+                    Snackbar.LENGTH_LONG
+                ).setAction("Sí") {
+                    animalsList.removeAt(adapterPosition)
+                    notifyItemRemoved(adapterPosition)
+                }.show()
+
+                true
             }
         }
     }
