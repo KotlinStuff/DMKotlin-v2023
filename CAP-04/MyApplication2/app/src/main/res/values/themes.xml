@@ -13,4 +13,10 @@
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
     </style>
+
+    <style name="AppleRatingBar" parent="@style/Widget.AppCompat.RatingBar">
+        <item name="minHeight">48dp</item>
+        <item name="maxHeight">48dp</item>
+        <item name="android:progressDrawable">@drawable/ratingbar_apple</item>
+    </style>
 </resources>

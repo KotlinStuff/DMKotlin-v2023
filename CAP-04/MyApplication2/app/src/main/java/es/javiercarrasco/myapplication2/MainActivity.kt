@@ -38,7 +38,7 @@ class MainActivity : AppCompatActivity() {
     private fun showSnackSimple() {
         Snackbar.make(
             binding.root,
-            "Mi Snackbar en acción!!",
+            "Mi Snackbar en acción!!\nPuntuación: ${binding.ratingBar.rating}",
             Snackbar.LENGTH_LONG
         ).show()
     }
