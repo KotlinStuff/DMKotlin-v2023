@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">My Snackbar</string>
+    <string name="txt_btn1">Snackbar simple</string>
+    <string name="txt_btn2">Snackbar con acción</string>
+</resources>

@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">My Application 2</string>
+    <string name="txt_Label">Texto</string>
+    <string name="txt_Hint">Tu texto aquí</string>
+    <string name="txt_Button">Pulsa aquí</string>
+    <string name="android_kotlin">Android-Kotlin</string>
+</resources>

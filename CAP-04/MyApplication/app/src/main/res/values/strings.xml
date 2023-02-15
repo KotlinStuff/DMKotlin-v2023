@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">My Application</string>
+    <string name="my_button">Mi botón</string>
+    <string name="my_textView">Mi primer TextView!!</string>
+    <string name="yourTextHere">Escribe tu texto aquí.</string>
+    <string name="yourEmailHere">Escribe tu email aquí.</string>
+</resources>

@@ -1,0 +1,22 @@
+<resources>
+    <string name="app_name">My ScrollView</string>
+    <string name="myText">
+        \tUn ScrollView es un tipo de layout que permite añadir a las vistas desplazamiento vertical, de manera automática. Este tipo de layout puede resultar útil cuando la vista que se quiere mostrar excede del espacio visible de la pantalla.\n\n
+        \tEl uso de ScrollView es una buena opción para añadir desplazamientos, pero no debe utilizarse con ListViews, GridViews o RecyclerViews, ya que estos se encargarán de su propio desplazamiento vertical.\n\n
+        \tEl ScrollView dispone de la propiedad android: fillViewport para definir si el componente debe estirar su contenido para llenar la ventana o no.\n\n
+        \tCuando se añade un ScrollView a la vista, éste lleva asociado un LinearLayout que contendrá el resto de elementos a mostrar.\n\n
+        \tEl siguiente ejemplo muestra un ScrollView que contiene una serie de botones y un texto para poder recrear una vista más grande que la parte visible del dispositivo.\n\n
+
+        \tUn ScrollView es un tipo de layout que permite añadir a las vistas desplazamiento vertical, de manera automática. Este tipo de layout puede resultar útil cuando la vista que se quiere mostrar excede del espacio visible de la pantalla.\n\n
+        \tEl uso de ScrollView es una buena opción para añadir desplazamientos, pero no debe utilizarse con ListViews, GridViews o RecyclerViews, ya que estos se encargarán de su propio desplazamiento vertical.\n\n
+        \tEl ScrollView dispone de la propiedad android: fillViewport para definir si el componente debe estirar su contenido para llenar la ventana o no.\n\n
+        \tCuando se añade un ScrollView a la vista, éste lleva asociado un LinearLayout que contendrá el resto de elementos a mostrar.\n\n
+        \tEl siguiente ejemplo muestra un ScrollView que contiene una serie de botones y un texto para poder recrear una vista más grande que la parte visible del dispositivo.\n\n
+
+        \tUn ScrollView es un tipo de layout que permite añadir a las vistas desplazamiento vertical, de manera automática. Este tipo de layout puede resultar útil cuando la vista que se quiere mostrar excede del espacio visible de la pantalla.\n\n
+        \tEl uso de ScrollView es una buena opción para añadir desplazamientos, pero no debe utilizarse con ListViews, GridViews o RecyclerViews, ya que estos se encargarán de su propio desplazamiento vertical.\n\n
+        \tEl ScrollView dispone de la propiedad android: fillViewport para definir si el componente debe estirar su contenido para llenar la ventana o no.\n\n
+        \tCuando se añade un ScrollView a la vista, éste lleva asociado un LinearLayout que contendrá el resto de elementos a mostrar.\n\n
+        \tEl siguiente ejemplo muestra un ScrollView que contiene una serie de botones y un texto para poder recrear una vista más grande que la parte visible del dispositivo.
+    </string>
+</resources>
