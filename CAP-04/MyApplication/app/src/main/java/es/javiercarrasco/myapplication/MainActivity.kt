@@ -1,6 +1,9 @@
 package es.javiercarrasco.myapplication
 
+import android.content.res.Configuration
+import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.Gravity
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -27,6 +30,15 @@ class MainActivity : AppCompatActivity() {
                     switch1.isChecked = false
                 }
             }
+        }
+    }
+
+    override fun onStart() {
+        super.onStart()
+
+        if (resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            // TO-DO
+            Log.i("DISPLAY", resources.configuration.orientation.toString())
         }
     }
 
@@ -65,6 +77,12 @@ class MainActivity : AppCompatActivity() {
 
         binding.imageButton.setOnClickListener {
             actionButtons(binding.imageButton.javaClass.name)
+        }
+
+        binding.btnLandscape?.let {
+            it.setOnClickListener {
+                Toast.makeText(this, "Botón de la vista horizontal", Toast.LENGTH_SHORT).show()
+            }
         }
 
     }
