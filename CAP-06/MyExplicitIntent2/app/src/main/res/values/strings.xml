@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">My Explicit Intent 2</string>
+
+    <string name="txt_editText">Escribe tu nombre aquí</string>
+    <string name="txt_button">Enviar</string>
+
+    <string name="txt_error">Es necesario indicar el nombre</string>
+
+    <string name="msgAccept">Hola %s, ¿aceptas las condiciones?</string>
+</resources>

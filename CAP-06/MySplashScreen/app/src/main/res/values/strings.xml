@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">My Splash Screen</string>
+    <string name="txt_label">Bienvenido a la App %s.</string>
+</resources>

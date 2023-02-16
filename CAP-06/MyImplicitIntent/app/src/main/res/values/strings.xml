@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">My Implicit Intent</string>
+    <string name="txt_btnpagweb">Abrir página web</string>
+    <string name="txt_btncallphone">Hacer una llamada</string>
+</resources>

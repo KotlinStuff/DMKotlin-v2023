@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">My Explicit Intent</string>
+
+    <string name="txt_editText">Tu texto aquí</string>
+    <string name="txt_button">Enviar</string>
+
+    <string name="txt_error">Es necesario un texto para enviar</string>
+</resources>

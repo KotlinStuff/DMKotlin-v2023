@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">My Litle ViewModel</string>
+    <string name="txt_subtitle">Capítulo 5</string>
+    <string name="txt_label">Escribe aquí un texto</string>
+    <string name="txt_button">Pulsa aquí</string>
+    <string name="txt_button2">Second Activity</string>
+</resources>
