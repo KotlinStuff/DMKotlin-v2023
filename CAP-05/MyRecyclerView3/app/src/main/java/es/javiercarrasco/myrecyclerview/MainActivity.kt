@@ -108,31 +108,54 @@ class MainActivity : AppCompatActivity() {
                     isCurrentlyActive
                 )
 
-                if (dX > 0) {
-                    val icono: Drawable? = AppCompatResources.getDrawable(
-                        applicationContext,
-                        android.R.drawable.ic_menu_delete
+                if (dX > 0) { // Se comprueba que el itemView se está moviendo.
+
+                    // Se crea el icono a mostrar.
+                    val iconTrash: Drawable? =
+                        AppCompatResources.getDrawable(applicationContext, R.drawable.delete_sweep)
+
+                    // Se establece el margen izquierdo en base a la altura del itemView y la altura máxima
+                    // mediante la cual puede representarse el icono. Al dividirse entre 2, se obtiene el valor
+                    // para que se encuentre justo a la misma distancia del margen izquierdo que del margen
+                    // superior e inferior.
+                    val leftMargin = (viewHolder.itemView.height - iconTrash!!.intrinsicHeight) / 2
+
+                    // Se obtiene la posición de la esquina superior izquierda que tendrá el icono.
+                    val iconTopLeftCorner: Int =
+                        viewHolder.itemView.top + (viewHolder.itemView.height - iconTrash.intrinsicHeight) / 2
+
+                    // Se obtiene la posición de la esquina inferior izquierda que tendrá el icono.
+                    val iconBottomLeftCorner: Int = iconTopLeftCorner + iconTrash.intrinsicHeight
+
+                    // Se obtien el margen izquierdo para el icono.
+                    val iconLeftMargin: Int = viewHolder.itemView.left + leftMargin
+
+                    // Se obtien el margen derecho para el icono.
+                    val iconRightMargin: Int =
+                        viewHolder.itemView.left + leftMargin + iconTrash.intrinsicWidth
+
+                    // Se asignan las medidas al icono en base a los datos obtenidos.
+                    iconTrash.setBounds(
+                        iconLeftMargin,
+                        iconTopLeftCorner,
+                        iconRightMargin,
+                        iconBottomLeftCorner
                     )
-                    val margenIzq = (viewHolder.itemView.height - icono!!.intrinsicHeight) / 2
 
-                    val leftIconTop: Int =
-                        viewHolder.itemView.top + (viewHolder.itemView.height - icono.intrinsicHeight) / 2
-                    val leftIconBottom: Int = leftIconTop + icono.intrinsicHeight
-                    val leftIconLeft: Int = viewHolder.itemView.left + margenIzq
-                    val leftIconRight: Int =
-                        viewHolder.itemView.left + margenIzq + icono.getIntrinsicWidth()
-
-                    icono.setBounds(leftIconLeft, leftIconTop, leftIconRight, leftIconBottom)
-
+                    // Se crea un color para fondo que se pintará.
                     val fondo = ColorDrawable(Color.RED)
+
+                    // Se establecen las medidas.
                     fondo.setBounds(
                         viewHolder.itemView.left,
                         viewHolder.itemView.top,
                         viewHolder.itemView.left + dX.toInt() + 20, // Para que vaya pintando según se desplaza la X.
                         viewHolder.itemView.bottom
                     )
+
+                    // Se pintan en el canvas por este orden.
                     fondo.draw(c)
-                    icono.draw(c)
+                    iconTrash.draw(c)
                 }
             }
 
