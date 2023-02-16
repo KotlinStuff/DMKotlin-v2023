@@ -59,18 +59,18 @@ class RecyclerAdapter(val animalsList: MutableList<MyAnimal>) :
                 ).show()
             }
 
-            itemView.setOnLongClickListener {
-                Snackbar.make(
-                    binding.root,
-                    "¿Confirmas el borrado?",
-                    Snackbar.LENGTH_LONG
-                ).setAction("Sí") {
-                    animalsList.removeAt(adapterPosition)
-                    notifyItemRemoved(adapterPosition)
-                }.show()
-
-                true
-            }
+//            itemView.setOnLongClickListener {
+//                Snackbar.make(
+//                    binding.root,
+//                    "¿Confirmas el borrado?",
+//                    Snackbar.LENGTH_LONG
+//                ).setAction("Sí") {
+//                    animalsList.removeAt(adapterPosition)
+//                    notifyItemRemoved(adapterPosition)
+//                }.show()
+//
+//                true
+//            }
         }
     }
 }
