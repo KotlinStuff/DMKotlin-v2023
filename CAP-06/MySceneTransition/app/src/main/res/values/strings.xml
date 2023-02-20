@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">My Scene Transition</string>
+    <string name="app_name2">My Scene Transition (Activity 2)</string>
+
+    <string name="txt_label">Pulsa aquí para ver el efecto</string>
+    <string name="txt_label2">Pulsa aquí para volver atrás</string>
+</resources>
