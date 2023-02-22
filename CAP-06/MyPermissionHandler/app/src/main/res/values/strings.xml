@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">My Permission Handler</string>
+
+    <string name="txt_boton_camera">Capturar imagen</string>
+    <string name="txt_content">Imagen capturada</string>
+    <string name="txt_permissionState">Estado del permiso: %s</string>
+    <string name="showInContextUI">El uso de la cámara es necesario para la finalidad de esta app.</string>
+</resources>

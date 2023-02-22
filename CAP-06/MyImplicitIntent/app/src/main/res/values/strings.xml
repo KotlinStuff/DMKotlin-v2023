@@ -1,5 +1,9 @@
 <resources>
     <string name="app_name">My Implicit Intent</string>
     <string name="txt_btnpagweb">Abrir página web</string>
+    <string name="txt_btncdialphone">Marcar un número de teléfono</string>
+    <string name="txt_btnsendmessage">Enviar un SMS</string>
+    <string name="txt_btnmaps">Abrir el mapa</string>
     <string name="txt_btncallphone">Hacer una llamada</string>
+    <string name="showInContextUI">Explicación sobre la necesidad del permiso.</string>
 </resources>
