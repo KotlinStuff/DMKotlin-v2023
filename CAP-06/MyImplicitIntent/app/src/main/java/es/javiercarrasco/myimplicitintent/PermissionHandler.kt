@@ -3,6 +3,7 @@ package es.javiercarrasco.myimplicitintent
 import android.app.Activity
 import android.content.pm.PackageManager
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 
 class PermissionHandler(val activity: Activity) {

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -26,9 +27,40 @@
         android:text="@string/txt_btnsendmessage" />
 
     <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnSendEmail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/txt_btnsendemail" />
+
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/btnOpenMaps"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/txt_btnmaps" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnAlarm"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/txt_btnalarm" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnCallPhone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/txt_btncallphone" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnTakePicture"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/txt_btntakepicture" />
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        tools:srcCompat="@tools:sample/backgrounds/scenic" />
 
 </LinearLayout>
