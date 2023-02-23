@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">My Complex Data</string>
+    <string name="btn_pasar">Pasar un objeto</string>
+</resources>
