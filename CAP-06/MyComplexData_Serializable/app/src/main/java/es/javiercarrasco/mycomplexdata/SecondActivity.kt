@@ -13,23 +13,17 @@ class SecondActivity : AppCompatActivity() {
         binding = ActivitySecondBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // val students: ArrayList<Student>?
-        val student: Student?
+        val students: ArrayList<Student>?
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU)
-            student = intent.getSerializableExtra("STUDENT", Student::class.java)
-        else student = intent.getSerializableExtra("STUDENT") as Student
+        students = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU)
+            intent.getSerializableExtra("STUDENT", Student::class.java) as ArrayList<Student>
+        else intent.getSerializableExtra("STUDENT") as ArrayList<Student>
 
-        binding.tvResult.append("${student!!.idStudent}\n")
-        binding.tvResult.append("${student.name}\n")
-        binding.tvResult.append("${student.surname}\n")
-        binding.tvResult.append("${student.age}\n\n")
-
-//        students!!.forEach {
-//            binding.tvResult.append("${it.idStudent}\n")
-//            binding.tvResult.append("${it.name}\n")
-//            binding.tvResult.append("${it.surname}\n")
-//            binding.tvResult.append("${it.age}\n\n")
-//        }
+        students.forEach {
+            binding.tvResult.append("${it.idStudent}\n")
+            binding.tvResult.append("${it.name}\n")
+            binding.tvResult.append("${it.surname}\n")
+            binding.tvResult.append("${it.age}\n\n")
+        }
     }
 }

@@ -13,17 +13,15 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-//        val students: ArrayList<Student> = arrayListOf(
-//            Student(1, "Javier", "Carrasco", 45),
-//            Student(2, "Patricia", "Aracil", 44),
-//            Student(3, "Nicolás", "Royo", 43)
-//        )
-
-        val student = Student(1, "Javier", "Carrasco", 45)
+        val students: ArrayList<Student> = arrayListOf(
+            Student(1, "Javier", "Carrasco", 45),
+            Student(2, "Patricia", "Aracil", 44),
+            Student(3, "Nicolás", "Royo", 43)
+        )
 
         binding.btnPasar.setOnClickListener {
             Intent(this, SecondActivity::class.java).apply {
-                putExtra("STUDENT", student)
+                putExtra("STUDENT", students)
 
                 startActivity(this)
             }

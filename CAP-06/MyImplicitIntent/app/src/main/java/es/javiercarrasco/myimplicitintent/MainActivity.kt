@@ -24,11 +24,9 @@ class MainActivity : AppCompatActivity() {
         val data: Intent? = result.data
 
         if (result.resultCode == RESULT_OK) {
-            val thumbnail: Bitmap? = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            val thumbnail: Bitmap? = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU)
                 data?.getParcelableExtra("data", Bitmap::class.java)
-            } else {
-                data?.getParcelableExtra("data")
-            }
+            else data?.getParcelableExtra("data")
 
             binding.imageView.setImageBitmap(thumbnail)
             binding.imageView.visibility = View.VISIBLE
@@ -43,7 +41,11 @@ class MainActivity : AppCompatActivity() {
                 Toast.makeText(this, "Ya puedes llamar", Toast.LENGTH_SHORT).show()
             } else {
                 // Se daría una explicación al usuario sobre las consecuencias de denegar el permiso.
-                Toast.makeText(this, "Sin conceder este permiso no puedes llamar", Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    this,
+                    "Sin conceder este permiso no puedes llamar",
+                    Toast.LENGTH_SHORT
+                ).show()
             }
         }
 
@@ -55,7 +57,11 @@ class MainActivity : AppCompatActivity() {
                 Toast.makeText(this, "Ya puedes hacer fotos", Toast.LENGTH_SHORT).show()
             } else {
                 // Se daría una explicación al usuario sobre las consecuencias de denegar el permiso.
-                Toast.makeText(this, "Sin conceder este permiso no puedes hacer fotos", Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    this,
+                    "Sin conceder este permiso no puedes hacer fotos",
+                    Toast.LENGTH_SHORT
+                ).show()
             }
         }
 
@@ -136,7 +142,7 @@ class MainActivity : AppCompatActivity() {
                 Intent(Intent.ACTION_CALL, Uri.parse("tel:965555555")).apply {
                     startActivity(this)
                 }
-            }else {
+            } else {
                 requestPermissionCallPhone.launch(Manifest.permission.CALL_PHONE)
             }
         }
