@@ -10,7 +10,8 @@ import es.javiercarrasco.mylitleviewmodel.databinding.ActivityMainBinding
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
 
-//    private lateinit var mainViewModel: MainViewModel
+    // private lateinit var  mainViewModel: MainViewModel
+    private val mainViewModel: MainViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -18,8 +19,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         // Se establece la asociación del ViewModel.
-//        mainViewModel = ViewModelProvider(this).get(MainViewModel::class.java)
-        val mainViewModel: MainViewModel by viewModels()
+        // mainViewModel = ViewModelProvider(this).get(MainViewModel::class.java)
 
         // Se actualiza la UI.
         binding.tvSalida.text = mainViewModel.textoEtiqueta
