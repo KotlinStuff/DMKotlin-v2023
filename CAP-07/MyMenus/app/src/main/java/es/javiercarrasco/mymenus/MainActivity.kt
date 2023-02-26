@@ -15,13 +15,11 @@ import es.javiercarrasco.mymenus.databinding.ActivityMainBinding
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
 
-    private val personas =
-        arrayOf(
-            "Javier", "Pedro", "Nacho", "Patricia",
-            "Miguel", "Susana", "Raquel", "Antonio", "Andrea",
-            "Nicolás", "Juan José", "José Antonio", "Daniela",
-            "María", "Verónica", "Natalia"
-        )
+    private val personas = arrayOf(
+        "Javier", "Pedro", "Nacho", "Patricia", "Miguel", "Susana", "Raquel", "Antonio",
+        "Andrea", "Nicolás", "Juan José", "José Antonio", "Daniela", "María", "Verónica",
+        "Natalia"
+    )
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,8 +28,7 @@ class MainActivity : AppCompatActivity() {
 
         // Se crea el adapter para la lista de nombres.
         val arrayAdapter: ArrayAdapter<String> = ArrayAdapter(
-            this,
-            android.R.layout.simple_expandable_list_item_1,
+            this, android.R.layout.simple_expandable_list_item_1,
             personas.sortedArray()
         )
 
@@ -44,10 +41,7 @@ class MainActivity : AppCompatActivity() {
 
             // Acción sobre el elemento de la lista pulsado.
             myListView.setOnItemClickListener { parent, view, position, id ->
-                myToast(
-                    "Pulsado $id - " +
-                            "${myListView.getItemAtPosition(position)}"
-                )
+                myToast("Pulsado $id - ${myListView.getItemAtPosition(position)}")
             }
         }
     }
@@ -58,18 +52,17 @@ class MainActivity : AppCompatActivity() {
         v: View?,
         menuInfo: ContextMenu.ContextMenuInfo?
     ) {
-        val inflater = menuInflater
-        inflater.inflate(R.menu.context_menu, menu)
+        menuInflater.inflate(R.menu.context_menu, menu)
     }
 
     // Se comprueba la opción de menú seleccionada y sobre que ítem se ha ejecutado.
     override fun onContextItemSelected(item: MenuItem): Boolean {
-        // Se obtiene el nombre de la persona, con
-        // ApaterView.AdapterContextMenuInfo se obtiene la posición
-        // sobre la que se ha hecho clic.
+        // Se obtiene el nombre de la persona, con ApaterView.AdapterContextMenuInfo se obtiene
+        // la posición sobre la que se ha hecho clic.
         val info = item.menuInfo as AdapterView.AdapterContextMenuInfo
         val posicion = info.position
         val nombre = personas.sortedArray()[posicion]
+
         return when (item.itemId) {
             R.id.option01 -> {
                 myToast("Opción 1: $nombre")
@@ -83,7 +76,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    // Se infla el menú para mostrarlo en la barra de aplicación.
+    // Se infla el menú para mostrarlo en la barra de acción.
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         val inflate = menuInflater
         inflate.inflate(R.menu.demo_menu, menu)
@@ -98,7 +91,7 @@ class MainActivity : AppCompatActivity() {
                 myToast("${getString(R.string.op1)} seleccionada")
                 true
             }
-            // La opción op02 no haría falta, ya que abre el submenú.
+            // La opción op02 no haría falta, ya que abre el sub-menú.
             R.id.op021 -> {
                 Log.d("MENU", "${getString(R.string.op21)} seleccionada")
                 myToast("${getString(R.string.op21)} seleccionada")
