@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group
+        android:id="@+id/group1"
+        android:checkableBehavior="single">
+        <item
+            android:id="@+id/item11"
+            android:checkable="true"
+            android:checked="true"
+            android:icon="@android:drawable/star_big_on"
+            android:title="@string/txtMenu11" />
+        <item
+            android:id="@+id/item12"
+            android:checkable="true"
+            android:icon="@android:drawable/ic_menu_edit"
+            android:title="@string/txtMenu12" />
+        <item
+            android:id="@+id/subgroup"
+            android:title="@string/txtSubgrupo">
+            <menu>
+                <item
+                    android:id="@+id/item21"
+                    android:checkable="true"
+                    android:icon="@android:drawable/ic_menu_mapmode"
+                    android:title="@string/txtMenu21" />
+                <item
+                    android:id="@+id/item22"
+                    android:checkable="true"
+                    android:icon="@android:drawable/ic_menu_info_details"
+                    android:title="@string/txtMenu22" />
+            </menu>
+        </item>
+    </group>
+</menu>
