@@ -14,13 +14,11 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
 
     companion object {
-        val personas: MutableList<String> =
-            mutableListOf(
-                "Javier", "Pedro", "Nacho", "Patricia", "Miguel",
-                "Susana", "Raquel", "Antonio", "Andrea", "Nicolás",
-                "Juan José", "José Antonio", "Daniela", "María",
-                "Verónica", "Juan", "Carlos", "Isabel", "Óscar", "Víctor"
-            )
+        val personas: MutableList<String> = mutableListOf(
+            "Javier", "Pedro", "Nacho", "Patricia", "Miguel", "Susana", "Raquel",
+            "Antonio", "Andrea", "Nicolás", "Juan José", "José Antonio", "Daniela",
+            "María", "Verónica", "Juan", "Carlos", "Isabel", "Óscar", "Víctor"
+        )
         var actionMode: ActionMode? = null
         var isActionMode: Boolean = false
         var seleccion: MutableList<String> = ArrayList()
@@ -58,14 +56,14 @@ class MainActivity : AppCompatActivity() {
                                 ).show()
                                 adapter.eliminarNombres(seleccion)
                                 mode!!.finish()
-                                return true
+                                true
                             }
                             R.id.optionShare -> {
                                 Toast.makeText(
                                     context, R.string.menu_op_share,
                                     Toast.LENGTH_LONG
                                 ).show()
-                                return true
+                                true
                             }
                             else -> false
                         }
@@ -84,8 +82,7 @@ class MainActivity : AppCompatActivity() {
                     // Se llama cuando se crea el modo acción, en este caso,
                     // al crear setMultiChoiceModeListener().
                     override fun onCreateActionMode(mode: ActionMode?, menu: Menu?): Boolean {
-                        val inflater = menuInflater
-                        inflater.inflate(R.menu.context_menu, menu)
+                        menuInflater.inflate(R.menu.context_menu, menu)
 
                         actionMode = mode
                         isActionMode = true

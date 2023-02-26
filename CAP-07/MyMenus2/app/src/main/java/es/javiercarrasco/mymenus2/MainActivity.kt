@@ -41,8 +41,7 @@ class MainActivity : AppCompatActivity() {
     // Modo de acción contextual.
     private val actionModeCallback = object : ActionMode.Callback {
         // Método llamado al selección una opción del menú.
-        override fun onActionItemClicked(mode: ActionMode?, item: MenuItem?)
-                : Boolean {
+        override fun onActionItemClicked(mode: ActionMode?, item: MenuItem?): Boolean {
             return when (item!!.itemId) {
                 R.id.option01 -> {
                     Toast.makeText(
@@ -55,7 +54,7 @@ class MainActivity : AppCompatActivity() {
 
                     // Se cierra el menú.
                     actionMode!!.finish()
-                    return true
+                    true
                 }
                 R.id.option02 -> {
                     Toast.makeText(
@@ -63,7 +62,7 @@ class MainActivity : AppCompatActivity() {
                         R.string.menu_op02,
                         Toast.LENGTH_SHORT
                     ).show()
-                    return true
+                    true
                 }
                 else -> false
             }
@@ -71,8 +70,7 @@ class MainActivity : AppCompatActivity() {
 
         // Llamado al crear el modo acción a través de startActionMode().
         override fun onCreateActionMode(mode: ActionMode?, menu: Menu?): Boolean {
-            val inflater = menuInflater
-            inflater.inflate(R.menu.context_menu, menu)
+            menuInflater.inflate(R.menu.context_menu, menu)
             return true
         }
 
