@@ -12,9 +12,9 @@ class MainActivity : AppCompatActivity() {
 
     private val myBackPressed = object : OnBackPressedCallback(true) {
         override fun handleOnBackPressed() {
-            if (binding.myDrawerLayout.isOpen) {
+            if (binding.myDrawerLayout.isOpen)
                 binding.myDrawerLayout.close()
-            } else finish()
+            else finish()
         }
     }
 
