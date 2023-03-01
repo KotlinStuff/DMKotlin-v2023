@@ -24,6 +24,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/hint_name"
+            android:imeOptions="actionDone"
             android:inputType="textPersonName"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
     </com.google.android.material.textfield.TextInputLayout>

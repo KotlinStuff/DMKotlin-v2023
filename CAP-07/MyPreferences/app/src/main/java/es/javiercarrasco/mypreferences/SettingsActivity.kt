@@ -2,7 +2,10 @@ package es.javiercarrasco.mypreferences
 
 import android.os.Bundle
 import android.util.Log
+import android.view.KeyEvent
 import android.view.MenuItem
+import android.view.inputmethod.EditorInfo
+import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import es.javiercarrasco.mypreferences.databinding.ActivitySettingsBinding
@@ -37,6 +40,17 @@ class SettingsActivity : AppCompatActivity() {
             SharedApp.preferences.deletePrefs()
             // onBackPressed()
             onBackPressedDispatcher.onBackPressed()
+        }
+
+        // Se controla el Enter del teclado y la pulsación.
+        binding.etName.setOnEditorActionListener { textView, actionId, keyEvent ->
+            if ((actionId == EditorInfo.IME_ACTION_DONE) ||
+                (keyEvent.keyCode == KeyEvent.KEYCODE_ENTER)
+            ) {
+                onBackPressedDispatcher.onBackPressed()
+            }
+
+            true
         }
     }
 
