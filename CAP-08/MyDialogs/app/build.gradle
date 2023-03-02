@@ -4,11 +4,12 @@ plugins {
 }
 
 android {
+    namespace 'es.javiercarrasco.mydialogs'
     compileSdk 33
 
     defaultConfig {
-        applicationId "es.javiercarrasco.myexplicitintent2"
-        minSdk 23
+        applicationId "es.javiercarrasco.mydialogs"
+        minSdk 24
         targetSdk 33
         versionCode 1
         versionName "1.0"
@@ -29,10 +30,10 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
+
     viewBinding {
         enabled true
     }
-    namespace 'es.javiercarrasco.myexplicitintent2'
 }
 
 dependencies {
