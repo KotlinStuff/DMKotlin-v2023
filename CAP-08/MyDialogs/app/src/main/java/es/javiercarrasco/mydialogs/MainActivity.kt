@@ -1,16 +1,19 @@
 package es.javiercarrasco.mydialogs
 
+import android.annotation.SuppressLint
+import android.app.TimePickerDialog
 import android.content.DialogInterface
 import android.graphics.Color
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.os.Message
 import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import es.javiercarrasco.mydialogs.databinding.ActivityMainBinding
 import es.javiercarrasco.mydialogs.databinding.DialogLayoutBinding
+import java.text.SimpleDateFormat
+import java.util.*
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
@@ -39,6 +42,25 @@ class MainActivity : AppCompatActivity() {
 
             btnCustomAlertDialog.setOnClickListener {
                 myCustomAlertDialog()
+            }
+
+            btnTimePicker.setOnClickListener {
+                val cal = Calendar.getInstance()
+                val timeSetListener = TimePickerDialog.OnTimeSetListener { tp, hour, minute ->
+                    cal.set(Calendar.HOUR_OF_DAY, hour)
+                    cal.set(Calendar.MINUTE, minute)
+                    tvTimePicker.text =
+                        SimpleDateFormat("HH:mm", Locale("es", "ES")).format(cal.time)
+                }
+
+                // Dentro del with(binding), se especifica el contexto con this@MainActivity.
+                TimePickerDialog(
+                    this@MainActivity,
+                    timeSetListener,
+                    cal.get(Calendar.HOUR_OF_DAY),
+                    cal.get(Calendar.MINUTE),
+                    true
+                ).show()
             }
         }
     }

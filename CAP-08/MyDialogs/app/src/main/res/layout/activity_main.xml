@@ -7,33 +7,61 @@
     android:padding="8dp"
     tools:context=".MainActivity" >
 
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/btnAlertDialog"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/showAlertDialog" />
 
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/btnAlertDialogList"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/showAlertDialogList" />
 
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/btnAlertDialogSinglePersistentList"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/showAlertDialogSinglePersistentList" />
 
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/btnAlertDialogMultiPersistentList"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/showAlertDialogMultiPersistentList" />
 
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/btnCustomAlertDialog"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/showCustomAlertDialog" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnTimePicker"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/showTimePicker" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/tvTimePicker"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        tools:text="12:30" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnDatePicker"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/showDatePicker" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/tvDatePicker"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        tools:text="28/2/2023" />
 </LinearLayout>
