@@ -1,6 +1,7 @@
 package es.javiercarrasco.mydialogs
 
 import android.annotation.SuppressLint
+import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.content.DialogInterface
 import android.graphics.Color
@@ -61,6 +62,38 @@ class MainActivity : AppCompatActivity() {
                     cal.get(Calendar.MINUTE),
                     true
                 ).show()
+            }
+
+            btnDatePicker.setOnClickListener {
+                val cal = Calendar.getInstance()
+                val dateSetListener = DatePickerDialog.OnDateSetListener { dp, y, m, d ->
+                    cal.set(Calendar.YEAR, y)
+                    cal.set(Calendar.MONTH, m + 1) // 0->Enero, 1->Febrero, etc.
+                    cal.set(Calendar.DAY_OF_MONTH, d)
+
+                    tvDatePicker.setText(
+                        getString(
+                            R.string.txtDate,
+                            cal.get(Calendar.DAY_OF_MONTH),
+                            cal.get(Calendar.MONTH),
+                            cal.get(Calendar.YEAR)
+                        )
+                    )
+                }
+
+                DatePickerDialog(
+                    this@MainActivity,
+                    dateSetListener,
+                    cal.get(Calendar.YEAR),
+                    cal.get(Calendar.MONTH),
+                    cal.get(Calendar.DAY_OF_MONTH)
+                ).show()
+            }
+
+            btnDialogFragment.setOnClickListener {
+                CommonDialog(
+                    getString(R.string.my_first_dialog)
+                ).show(supportFragmentManager, "dialogFragment")
             }
         }
     }

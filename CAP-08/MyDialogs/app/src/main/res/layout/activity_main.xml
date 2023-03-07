@@ -64,4 +64,10 @@
         android:gravity="center"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
         tools:text="28/2/2023" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnDialogFragment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/showWithDialogFragment" />
 </LinearLayout>

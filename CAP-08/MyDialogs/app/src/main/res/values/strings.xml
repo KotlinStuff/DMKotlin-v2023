@@ -16,7 +16,7 @@
     <string name="txtTime">Hora</string>
 
     <string name="showDatePicker">Mostrar Date Picker</string>
-    <string name="txtDate">Fecha</string>
+    <string name="txtDate">%d/%d/%d</string>
 
     <string name="startProgressBar">Iniciar Progress Bar</string>
     <string name="warning_username">El nombre de usuario no puede estar vacío</string>
