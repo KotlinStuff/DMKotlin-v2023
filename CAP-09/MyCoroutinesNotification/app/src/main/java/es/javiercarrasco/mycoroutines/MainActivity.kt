@@ -1,21 +1,42 @@
 package es.javiercarrasco.mycoroutines
 
+import android.Manifest
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.content.Context
+import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
 import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
 import es.javiercarrasco.mycoroutines.databinding.ActivityMainBinding
 import kotlinx.coroutines.*
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
 
+    private val CHANNELID = "es.javiercarrasco.mycoroutines"
+
+    // Se crea una notificación utilizando el builder de NotificationCompat.
+    private val builder = NotificationCompat.Builder(this, CHANNELID).apply {
+        setSmallIcon(R.drawable.notification)
+        setContentTitle("Tarea completada")
+        priority = NotificationCompat.PRIORITY_DEFAULT
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        // Se registra el canal de notificaciones.
+        createNotificationChannel()
 
         // Las corrutinas devuelven un objeto Job al crearse.
         var task1: Job? = null
@@ -94,9 +115,32 @@ class MainActivity : AppCompatActivity() {
         btnStart.isEnabled = true
         btnCancel.isEnabled = false
         progressBar.progress = 0
-        Toast.makeText(
-            this@MainActivity, "${btnStart.text} finalizada!!", Toast.LENGTH_SHORT
-        ).show()
+
+        with(NotificationManagerCompat.from(this@MainActivity)) {
+            if (ActivityCompat.checkSelfPermission(
+                    this@MainActivity,
+                    Manifest.permission.POST_NOTIFICATIONS
+                ) == PackageManager.PERMISSION_GRANTED
+            ) {
+                builder.setContentText("${btnStart.text} finalizada!!")
+                notify(duracion, builder.build())
+            }
+        }
     }
 
+    private fun createNotificationChannel() {
+        // Se crea el canal de notificación únicamente para API 26+.
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val mName = getString(R.string.txt_channel_name)
+            val descriptionText = getString(R.string.txt_channel_desc)
+            val mChannel =
+                NotificationChannel(CHANNELID, mName, NotificationManager.IMPORTANCE_DEFAULT)
+            mChannel.description = descriptionText
+
+            // Se registra el canal en el sistema.
+            val notificationManager: NotificationManager =
+                getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+            notificationManager.createNotificationChannel(mChannel)
+        }
+    }
 }

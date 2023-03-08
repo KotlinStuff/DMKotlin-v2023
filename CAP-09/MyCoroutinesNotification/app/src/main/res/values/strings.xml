@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">My Coroutines</string>
+
+    <string name="txt_btn_1">Corrutina 1</string>
+    <string name="txt_btn_2">Corrutina 2</string>
+
+    <string name="txt_channel_name">Canal Coroutines</string>
+    <string name="txt_channel_desc">Aviso de finalización de una coroutine.</string>
+</resources>
