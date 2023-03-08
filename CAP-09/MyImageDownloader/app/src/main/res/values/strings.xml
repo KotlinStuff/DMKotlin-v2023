@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">My Image Downloader</string>
+
+    <string name="btn_imageDownloader">Iniciar descarga de imágenes</string>
+    <string name="txt_descargando">Descargando imágenes…</string>
+    <string name="txt_descargaCancelada">Descarga cancelada!!</string>
+    <string name="txt_descargaCompleta">Descarga completada\n%d imágenes descargadas</string>
+</resources>
