@@ -3,7 +3,9 @@ package es.javiercarrasco.mynotifications
 import android.Manifest
 import android.app.NotificationChannel
 import android.app.NotificationManager
+import android.app.PendingIntent
 import android.content.Context
+import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import androidx.activity.result.contract.ActivityResultContracts.RequestPermission
@@ -16,7 +18,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
 
     private val CHANNELID1 = "es.javiercarrasco.mynotifications"
-    private val notificationId1 = 123456
+    private val notificationId1 = 1
 
     // Se crea una notificación utilizando el builder de NotificationCompat.
     private val builder = NotificationCompat.Builder(this, CHANNELID1).apply {
@@ -65,6 +67,16 @@ class MainActivity : AppCompatActivity() {
                 R.string.txt_channel1_desc,
                 NotificationManager.IMPORTANCE_DEFAULT
             )
+
+            // Se crea el intent que deberá abrirse al pulsarse la notificación.
+            val intent = Intent(this, RequestNotification::class.java).apply {
+                flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            }
+            val pendingIntent: PendingIntent =
+                PendingIntent.getActivity(this, notificationId1, intent, PendingIntent.FLAG_IMMUTABLE)
+
+            builder.setContentIntent(pendingIntent)
+            builder.setAutoCancel(true)
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
                 if (PermissionHandler(this).checkPermission(Manifest.permission.POST_NOTIFICATIONS)) {
