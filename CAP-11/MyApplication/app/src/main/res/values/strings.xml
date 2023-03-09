@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">My Fragments 2</string>
+
+    <string name="btn_text">Cambiar Fragment</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="new_fragment">Fragment\n%d</string>
+</resources>
