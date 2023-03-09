@@ -95,3 +95,27 @@ google-services.json
 .Trashes
 ehthumbs.db
 Thumbs.db
+
+# User-specific configurations
+/*/.idea/
+*.iml
+.gradle
+/*/local.properties
+/*/.idea/caches
+/*/.idea/libraries
+/*/.idea/modules.xml
+/*/.idea/workspace.xml
+/*/.idea/navEditor.xml
+/*/.idea/assetWizardSettings.xml
+/*.idea/.name
+/*.idea/compiler.xml
+/*.idea/copyright/profiles_settings.xml
+/*.idea/encodings.xml
+/*.idea/misc.xml
+/*.idea/vcs.xml
+/*.idea/tasks.xml
+/*/build
+/*/captures
+/*.externalNativeBuild
+/*.cxx
+/*/app/google-services.json
