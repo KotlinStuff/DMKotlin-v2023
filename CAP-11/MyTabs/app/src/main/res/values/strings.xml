@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">My Tabs</string>
+
+    <string name="txt_persons">Personas</string>
+    <string name="txt_food">Comida</string>
+    <string name="txt_animals">Animales</string>
+</resources>
