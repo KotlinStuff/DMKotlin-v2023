@@ -3,10 +3,10 @@ package es.javiercarrasco.myfragments3
 import android.content.Context
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import es.javiercarrasco.myfragments3.databinding.FragmentNewBinding
 
 // TODO: Rename parameter arguments, choose names that match
@@ -27,9 +27,27 @@ class NewFragment : Fragment() {
 
     private val TAG = "FragmentNew"
 
+    interface RequestData {
+        fun resultData(dato: String)
+    }
+
+    private var fragmentData: RequestData? = null
+
+    // Método encargado de pasar la información a la activity contenedora.
+    fun updateData() {
+        if (!binding.editTextFrag.text!!.isEmpty())
+            fragmentData?.resultData(binding.editTextFrag.text.toString())
+        else fragmentData?.resultData("Sin información")
+    }
+
     override fun onAttach(context: Context) {
         Log.d(TAG, "onAttach")
         super.onAttach(context)
+
+        if (context is RequestData)
+            fragmentData = context
+        else throw RuntimeException("${requireContext()} debes implementar la interface " +
+                "RequestData")
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -79,6 +97,11 @@ class NewFragment : Fragment() {
         Log.d(TAG, "onViewCreated")
         binding.frame.setBackgroundColor(colorBack!!)
         binding.textView.text = getString(R.string.new_fragment, numFrag)
+
+        binding.button.setOnClickListener {
+            updateData()
+        }
+
         super.onViewCreated(view, savedInstanceState)
     }
 
@@ -111,5 +134,6 @@ class NewFragment : Fragment() {
     override fun onDetach() {
         Log.d(TAG, "onDetach")
         super.onDetach()
+        fragmentData = null
     }
 }

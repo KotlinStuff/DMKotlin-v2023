@@ -7,9 +7,13 @@ import es.javiercarrasco.myfragments3.databinding.ActivityMainBinding
 internal const val ARG_NUMFRAG = "numFrag"
 internal const val ARG_COLORBACK = "colorBack"
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), NewFragment.RequestData {
     private lateinit var binding: ActivityMainBinding
     private var numfrag = 0
+
+    override fun resultData(dato: String) {
+        binding.tvInfoRecibida.text = dato
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
