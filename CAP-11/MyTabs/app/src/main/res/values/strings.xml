@@ -4,4 +4,6 @@
     <string name="txt_persons">Personas</string>
     <string name="txt_food">Comida</string>
     <string name="txt_animals">Animales</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

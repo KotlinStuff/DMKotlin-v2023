@@ -7,4 +7,11 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+    <color name="colorAnimals">#FFCDD2</color>
+    <color name="colorFood">#F0F4C3</color>
+    <color name="colorPersons">#B3E5FC</color>
+
+    <color name="tabSelected">#E3F2FD</color>
+    <color name="tabUnselected">#C8C8C8</color>
 </resources>
