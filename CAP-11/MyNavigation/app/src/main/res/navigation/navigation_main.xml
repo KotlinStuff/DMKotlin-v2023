@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navigation_main"
+    app:startDestination="@id/unoFragment">
+
+    <fragment
+        android:id="@+id/unoFragment"
+        android:name="es.javiercarrasco.mynavigation.UnoFragment"
+        android:label="UnoFragment"
+        tools:layout="@layout/fragment_uno">
+        <action
+            android:id="@+id/action_unoFragment_to_dosFragment"
+            app:destination="@id/dosFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim" />
+        <argument
+            android:name="numFragment"
+            app:argType="string"
+            app:nullable="true"
+            android:defaultValue="nulo" />
+    </fragment>
+    <fragment
+        android:id="@+id/dosFragment"
+        android:name="es.javiercarrasco.mynavigation.DosFragment"
+        android:label="DosFragment"
+        tools:layout="@layout/fragment_dos">
+        <action
+            android:id="@+id/action_dosFragment_to_tresFragment"
+            app:destination="@id/tresFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim" />
+        <argument
+            android:name="numFragment"
+            app:argType="string"
+            app:nullable="true"
+            android:defaultValue="nulo" />
+    </fragment>
+    <fragment
+        android:id="@+id/tresFragment"
+        android:name="es.javiercarrasco.mynavigation.TresFragment"
+        android:label="TresFragment"
+        tools:layout="@layout/fragment_tres">
+        <action
+            android:id="@+id/action_tresFragment_to_unoFragment"
+            app:destination="@id/unoFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim" />
+        <argument
+            android:name="numFragment"
+            app:argType="string"
+            app:nullable="true"
+            android:defaultValue="nulo" />
+    </fragment>
+</navigation>
