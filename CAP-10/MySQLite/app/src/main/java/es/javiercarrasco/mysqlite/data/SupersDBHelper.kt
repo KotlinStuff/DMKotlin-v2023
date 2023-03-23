@@ -202,6 +202,16 @@ class SupersDBHelper(context: Context, factory: SQLiteDatabase.CursorFactory?) :
         return result
     }
 
+    // Muestra todos los Supers.
+    fun getAllSuperHerosCursor(): Cursor {
+        val db = this.readableDatabase
+        return db.rawQuery(
+            "SELECT * FROM $TABLE_SUPER INNER JOIN $TABLE_EDITORIAL ON " +
+                    "$TABLE_SUPER.$COLUMN_ID_ED = $TABLE_EDITORIAL.$COLUMN_ID " +
+                    "ORDER BY $COLUMN_SUPERNAME;", null
+        )
+    }
+
     // Actualiza el estado favorito.
     fun updateFab(identifier: Int, stateFav: Boolean) {
         val args = arrayOf(identifier.toString())
