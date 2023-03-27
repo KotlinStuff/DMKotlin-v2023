@@ -21,12 +21,15 @@ class SuperheroActivity : AppCompatActivity() {
     private lateinit var binding: ActivitySuperheroBinding
 
     companion object {
-        fun navigate(activity: AppCompatActivity) {
+        const val EXTRA_SUPER_ID = "superId"
+        fun navigate(activity: AppCompatActivity, superId: Int = -1) {
             activity.startActivity(
                 Intent(
                     activity,
                     SuperheroActivity::class.java
-                ).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP),
+                ).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP).apply {
+                    putExtra(EXTRA_SUPER_ID, superId)
+                },
                 ActivityOptions.makeSceneTransitionAnimation(activity).toBundle()
             )
         }
@@ -54,6 +57,28 @@ class SuperheroActivity : AppCompatActivity() {
         // Se carga el adaptador en el Spinner.
         binding.spinner.adapter = adapter
 
+        // Se abre detalle del ítem.
+        val idSuper = intent.getIntExtra(EXTRA_SUPER_ID, -1)
+        if (idSuper != -1) {
+            val superHero =
+                (application as MySQLiteApplication).supersDBHelper.getSuperById(idSuper)
+
+            binding.etSuperName.setText(superHero.superName)
+            binding.etRealName.setText(superHero.realName)
+
+            var pos = 0
+            cursor.moveToFirst()
+            do {
+                // Se busca la posición de la Editorial en el cursor.
+                if (cursor.getInt(0) == superHero.editorial.id)
+                    pos = cursor.position
+            } while (cursor.moveToNext())
+
+            binding.spinner.setSelection(pos)
+
+            binding.switchFab.isChecked = superHero.favorite == 1
+        }
+
         var cursorPos: Cursor? = null
         binding.spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(
@@ -65,7 +90,7 @@ class SuperheroActivity : AppCompatActivity() {
                 cursorPos = binding.spinner.getItemAtPosition(pos) as Cursor
                 Log.d(
                     "Spinner",
-                    "${cursorPos!!.getString(0)} - ${cursorPos!!.getString(1)}"
+                    "${cursorPos!!.position} - ${cursorPos!!.getString(1)}"
                 )
             }
 
@@ -83,9 +108,17 @@ class SuperheroActivity : AppCompatActivity() {
                 val realname = binding.etRealName.text!!.trim().toString()
                 val fab = if (binding.switchFab.isChecked) 1 else 0
 
-                (application as MySQLiteApplication).supersDBHelper.addSuperHero(
-                    SuperHero(0, supername, realname, fab, Editorial(cursorPos!!.getInt(0)))
-                )
+                if (idSuper == -1) {
+                    (application as MySQLiteApplication).supersDBHelper.addSuperHero(
+                        SuperHero(0, supername, realname, fab, Editorial(cursorPos!!.getInt(0)))
+                    )
+                } else {
+                    (application as MySQLiteApplication).supersDBHelper.updateSuperHero(
+                        SuperHero(
+                            idSuper, supername, realname, fab, Editorial(cursorPos!!.getInt(0))
+                        )
+                    )
+                }
 
                 finish()
             }

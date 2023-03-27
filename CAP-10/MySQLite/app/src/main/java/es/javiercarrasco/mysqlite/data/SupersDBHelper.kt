@@ -1,5 +1,6 @@
 package es.javiercarrasco.mysqlite.data
 
+import android.annotation.SuppressLint
 import android.content.ContentValues
 import android.content.Context
 import android.database.Cursor
@@ -107,8 +108,8 @@ class SupersDBHelper(context: Context, factory: SQLiteDatabase.CursorFactory?) :
     }
 
     // Método para actualizar el nombre de una editorial de la tabla por el id.
-    fun updateEditorial(identifier: Int, newName: String) {
-        val args = arrayOf(identifier.toString())
+    fun updateEditorial(idEditorial: Int, newName: String) {
+        val args = arrayOf(idEditorial.toString())
 
         // Se crea un ArrayMap<>() con los datos nuevos.
         val data = ContentValues()
@@ -160,6 +161,24 @@ class SupersDBHelper(context: Context, factory: SQLiteDatabase.CursorFactory?) :
         return result
     }
 
+    // Actualiza un súper.
+    fun updateSuperHero(superHero: SuperHero): Int {
+        val data = ContentValues().apply {
+            put(COLUMN_SUPERNAME, superHero.superName)
+            put(COLUMN_REALNAME, superHero.realName)
+            put(COLUMN_FAV, superHero.favorite)
+            put(COLUMN_ID_ED, superHero.editorial.id)
+        }
+
+        val args = arrayOf(superHero.id.toString())
+
+        val db = this.writableDatabase
+        val result = db.update(TABLE_SUPER, data, "$COLUMN_ID = ?", args)
+        db.close()
+
+        return result
+    }
+
     fun delSuperHero(idSuperHero: Int): Int {
         val args = arrayOf(idSuperHero.toString())
 
@@ -167,6 +186,31 @@ class SupersDBHelper(context: Context, factory: SQLiteDatabase.CursorFactory?) :
         val result = db.delete(TABLE_SUPER, "$COLUMN_ID = ?", args)
 
         db.close()
+        return result
+    }
+
+    @SuppressLint("Recycle")
+    fun getSuperById(idSuper: Int): SuperHero {
+        val args = arrayOf(idSuper.toString())
+
+        val db = this.readableDatabase
+        val cursor: Cursor =
+            db.rawQuery(
+                "SELECT * FROM $TABLE_SUPER INNER JOIN $TABLE_EDITORIAL ON " +
+                        "$TABLE_SUPER.$COLUMN_ID_ED = $TABLE_EDITORIAL.$COLUMN_ID " +
+                        "WHERE $TABLE_SUPER.$COLUMN_ID = ?;", args
+            )
+
+        var result = SuperHero()
+        if (cursor.moveToFirst()) {
+            result = SuperHero(
+                cursor.getInt(0),
+                cursor.getString(1),
+                cursor.getString(2),
+                cursor.getInt(3),
+                Editorial(cursor.getInt(5), cursor.getString(6))
+            )
+        }
         return result
     }
 
@@ -213,11 +257,11 @@ class SupersDBHelper(context: Context, factory: SQLiteDatabase.CursorFactory?) :
     }
 
     // Actualiza el estado favorito.
-    fun updateFab(identifier: Int, stateFav: Boolean) {
-        val args = arrayOf(identifier.toString())
+    fun updateFab(idSuper: Int, stateFav: Int) {
+        val args = arrayOf(idSuper.toString())
 
         val data = ContentValues()
-        data.put(COLUMN_FAV, (if (stateFav) 0 else 1))
+        data.put(COLUMN_FAV, (if (stateFav == 1) 0 else 1))
 
         val db = this.writableDatabase
         db.update(TABLE_SUPER, data, "$COLUMN_ID = ?", args)
