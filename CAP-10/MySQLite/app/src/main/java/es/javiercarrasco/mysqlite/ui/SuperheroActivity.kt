@@ -13,6 +13,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.snackbar.Snackbar
 import es.javiercarrasco.mysqlite.MySQLiteApplication
 import es.javiercarrasco.mysqlite.R
+import es.javiercarrasco.mysqlite.data.model.Editorial
 import es.javiercarrasco.mysqlite.data.model.SuperHero
 import es.javiercarrasco.mysqlite.databinding.ActivitySuperheroBinding
 
@@ -83,7 +84,7 @@ class SuperheroActivity : AppCompatActivity() {
                 val fab = if (binding.switchFab.isChecked) 1 else 0
 
                 (application as MySQLiteApplication).supersDBHelper.addSuperHero(
-                    SuperHero(0, supername, realname, fab, cursorPos!!.getInt(0))
+                    SuperHero(0, supername, realname, fab, Editorial(cursorPos!!.getInt(0)))
                 )
 
                 finish()

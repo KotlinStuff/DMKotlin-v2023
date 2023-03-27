@@ -150,7 +150,7 @@ class SupersDBHelper(context: Context, factory: SQLiteDatabase.CursorFactory?) :
             put(COLUMN_SUPERNAME, superHero.superName)
             put(COLUMN_REALNAME, superHero.realName)
             put(COLUMN_FAV, superHero.favorite)
-            put(COLUMN_ID_ED, superHero.editorial)
+            put(COLUMN_ID_ED, superHero.editorial.id)
         }
 
         val db = this.writableDatabase
@@ -190,7 +190,7 @@ class SupersDBHelper(context: Context, factory: SQLiteDatabase.CursorFactory?) :
                         cursor.getString(1),
                         cursor.getString(2),
                         cursor.getInt(3),
-                        cursor.getInt(4)
+                        Editorial(cursor.getInt(5), cursor.getString(6))
                         //(cursor.getInt(3) == 1), // BOOLEAN
                         //Editorial(cursor.getInt(5), cursor.getString(6))
                     )

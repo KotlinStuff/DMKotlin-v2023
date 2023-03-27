@@ -41,7 +41,7 @@ class MainActivity : AppCompatActivity() {
                         showFragment(ListviewFragment((application as MySQLiteApplication).supersDBHelper))
                     }
                     getString(R.string.txt_recyclerview) -> {
-                        showFragment(RecyclerviewFragment())
+                        showFragment(RecyclerviewFragment((application as MySQLiteApplication).supersDBHelper))
                     }
                 }
             }
@@ -54,7 +54,7 @@ class MainActivity : AppCompatActivity() {
                         showFragment(ListviewFragment((application as MySQLiteApplication).supersDBHelper))
                     }
                     getString(R.string.txt_recyclerview) -> {
-                        showFragment(RecyclerviewFragment())
+                        showFragment(RecyclerviewFragment((application as MySQLiteApplication).supersDBHelper))
                     }
                 }
             }
