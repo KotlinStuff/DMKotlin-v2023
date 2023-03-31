@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">My Room</string>
+    <string name="op_menu_add_editorial">Añadir editorial</string>
+    <string name="op_menu_add_super">Añadir super</string>
+    <string name="txt_editorial">Editorial</string>
+    <string name="hint_editorial">Nombre de la editorial</string>
+    <string name="txt_save">Guardar</string>
+    <string name="warning_empty_field">No puedes dejar este campo vacío.</string>
+    <string name="txt_superhero">Superhéroe</string>
+    <string name="hint_supername">Nombre del superhéroe</string>
+    <string name="hint_realname">Nombre real</string>
+    <string name="txt_fab">Favorito</string>
+    <string name="txt_listview">ListView</string>
+    <string name="txt_recyclerview">RecyclerView</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+</resources>
