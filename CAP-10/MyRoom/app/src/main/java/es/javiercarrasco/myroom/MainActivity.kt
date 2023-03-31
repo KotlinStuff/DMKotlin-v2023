@@ -6,6 +6,7 @@ import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.google.android.material.tabs.TabLayout
+import es.javiercarrasco.myroom.data.SupersDatabase
 import es.javiercarrasco.myroom.databinding.ActivityMainBinding
 import es.javiercarrasco.myroom.ui.EditorialActivity
 import es.javiercarrasco.myroom.ui.ListviewFragment
@@ -14,20 +15,23 @@ import es.javiercarrasco.myroom.ui.SuperheroActivity
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
+    private lateinit var db: SupersDatabase
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        (application as MySQLiteApplication).supersDBHelper.getEditorials()
+        db = (application as MyRoomApplication).supersDatabase
+
+        //.getEditorials()
 
         with(binding.tabLayout) {
             addTab(newTab().setText(getString(R.string.txt_listview)))
             addTab(newTab().setText(getString(R.string.txt_recyclerview)))
         }
 
-        showFragment(ListviewFragment((application as MySQLiteApplication).supersDBHelper))
+        //showFragment(ListviewFragment(db))
     }
 
     override fun onStart() {
@@ -37,10 +41,10 @@ class MainActivity : AppCompatActivity() {
             override fun onTabSelected(tab: TabLayout.Tab?) {
                 when (tab!!.text.toString()) {
                     getString(R.string.txt_listview) -> {
-                        showFragment(ListviewFragment((application as MySQLiteApplication).supersDBHelper))
+                        showFragment(ListviewFragment(db))
                     }
                     getString(R.string.txt_recyclerview) -> {
-                        showFragment(RecyclerviewFragment((application as MySQLiteApplication).supersDBHelper))
+                        showFragment(RecyclerviewFragment(db))
                     }
                 }
             }
@@ -50,10 +54,10 @@ class MainActivity : AppCompatActivity() {
             override fun onTabReselected(tab: TabLayout.Tab?) {
                 when (tab!!.text.toString()) {
                     getString(R.string.txt_listview) -> {
-                        showFragment(ListviewFragment((application as MySQLiteApplication).supersDBHelper))
+                        showFragment(ListviewFragment(db))
                     }
                     getString(R.string.txt_recyclerview) -> {
-                        showFragment(RecyclerviewFragment((application as MySQLiteApplication).supersDBHelper))
+                        showFragment(RecyclerviewFragment(db))
                     }
                 }
             }

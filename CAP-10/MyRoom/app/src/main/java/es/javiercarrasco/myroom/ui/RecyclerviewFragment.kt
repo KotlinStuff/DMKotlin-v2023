@@ -7,10 +7,11 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import es.javiercarrasco.myroom.adapters.SupersRecyclerAdapter
+import es.javiercarrasco.myroom.data.SupersDatabase
 import es.javiercarrasco.myroom.databinding.FragmentRecyclerviewBinding
 
-class RecyclerviewFragment(private val db: SupersDBHelper) : Fragment() {
-    private lateinit var binding: FragmentRecyclerviewBinding
+class RecyclerviewFragment(private val db: SupersDatabase) : Fragment() {
+    /*private lateinit var binding: FragmentRecyclerviewBinding
     private lateinit var adapter: SupersRecyclerAdapter
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -27,7 +28,7 @@ class RecyclerviewFragment(private val db: SupersDBHelper) : Fragment() {
             onSuperHeroClick = {
                 SuperheroActivity.navigate(
                     (requireActivity() as AppCompatActivity),
-                    it.id
+                    it.idSuper
                 )
             },
             onSuperHeroLongClick = {
@@ -52,5 +53,5 @@ class RecyclerviewFragment(private val db: SupersDBHelper) : Fragment() {
     override fun onResume() {
         super.onResume()
         adapter.submitList(db.getAllSuperHeros())
-    }
+    }*/
 }

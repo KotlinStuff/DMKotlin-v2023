@@ -30,7 +30,7 @@ class SupersRecyclerAdapter(
 // DiffUtil.ItemCallback permite calcular las diferencias entre dos objetos no nulos de la lista.
 class SupersDiffCallback : DiffUtil.ItemCallback<SuperHero>() {
     override fun areItemsTheSame(oldItem: SuperHero, newItem: SuperHero): Boolean {
-        return oldItem.id == newItem.id
+        return oldItem.idSuper == newItem.idSuper
     }
 
     override fun areContentsTheSame(oldItem: SuperHero, newItem: SuperHero): Boolean {
@@ -49,7 +49,7 @@ class SupersViewHolder(view: View) : RecyclerView.ViewHolder(view) {
     ) {
         binding.tvSuperName.text = superHero.superName
         binding.tvRealName.text = superHero.realName
-        binding.tvEditorial.text = superHero.editorial.name
+        //binding.tvEditorial.text = superHero.editorial.name
         binding.ivFab.setImageState(
             intArrayOf(R.attr.state_fab_on), superHero.favorite == 1
         )

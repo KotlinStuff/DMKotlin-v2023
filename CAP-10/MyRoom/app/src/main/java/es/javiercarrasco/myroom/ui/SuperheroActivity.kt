@@ -7,16 +7,22 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import android.widget.SimpleCursorAdapter
 import androidx.appcompat.app.AppCompatActivity
-import es.javiercarrasco.myroom.MySQLiteApplication
+import es.javiercarrasco.myroom.MyRoomApplication
 import es.javiercarrasco.myroom.R
+import es.javiercarrasco.myroom.data.SupersDatabase
 import es.javiercarrasco.myroom.data.model.Editorial
 import es.javiercarrasco.myroom.data.model.SuperHero
 import es.javiercarrasco.myroom.databinding.ActivitySuperheroBinding
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class SuperheroActivity : AppCompatActivity() {
     private lateinit var binding: ActivitySuperheroBinding
+    private lateinit var db: SupersDatabase
 
     companion object {
         const val EXTRA_SUPER_ID = "superId"
@@ -38,28 +44,31 @@ class SuperheroActivity : AppCompatActivity() {
         binding = ActivitySuperheroBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        db = (application as MyRoomApplication).supersDatabase
+
         supportActionBar!!.title = getString(R.string.txt_superhero)
 
-        val cursor = (application as MySQLiteApplication).supersDBHelper.getEditorialsCursor()
-
-        // Se crea el adaptador mediante SimpleCursorAdapter.
-        val adapter = SimpleCursorAdapter(
-            this,
+        var editorialsList = emptyList<Editorial>()
+        val adapter = ArrayAdapter(
+            this@SuperheroActivity,
             android.R.layout.simple_list_item_2,
-            cursor,
-            arrayOf(cursor.columnNames[0], cursor.columnNames[1]),
-            intArrayOf(android.R.id.text1, android.R.id.text2),
-            SimpleCursorAdapter.FLAG_REGISTER_CONTENT_OBSERVER
+            editorialsList
         )
+
+        CoroutineScope(Dispatchers.IO).launch {
+            editorialsList = db.supersDAO().getAllEditorials()
+            // Se crea el adaptador mediante SimpleCursorAdapter.
+        }
 
         // Se carga el adaptador en el Spinner.
         binding.spinner.adapter = adapter
 
+
         // Se abre detalle del ítem.
-        val idSuper = intent.getIntExtra(EXTRA_SUPER_ID, -1)
+        /*val idSuper = intent.getIntExtra(EXTRA_SUPER_ID, -1)
         if (idSuper != -1) {
             val superHero =
-                (application as MySQLiteApplication).supersDBHelper.getSuperById(idSuper)
+                (application as MyRoomApplication).supersDatabase.getSuperById(idSuper)
 
             binding.etSuperName.setText(superHero.superName)
             binding.etRealName.setText(superHero.realName)
@@ -107,11 +116,11 @@ class SuperheroActivity : AppCompatActivity() {
                 val fab = if (binding.switchFab.isChecked) 1 else 0
 
                 if (idSuper == -1) {
-                    (application as MySQLiteApplication).supersDBHelper.addSuperHero(
+                    (application as MyRoomApplication).supersDatabase.addSuperHero(
                         SuperHero(0, supername, realname, fab, Editorial(cursorPos!!.getInt(0)))
                     )
                 } else {
-                    (application as MySQLiteApplication).supersDBHelper.updateSuperHero(
+                    (application as MyRoomApplication).supersDatabase.updateSuperHero(
                         SuperHero(
                             idSuper, supername, realname, fab, Editorial(cursorPos!!.getInt(0))
                         )
@@ -120,6 +129,6 @@ class SuperheroActivity : AppCompatActivity() {
 
                 finish()
             }
-        }
+        }*/
     }
 }

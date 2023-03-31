@@ -9,10 +9,11 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.cursoradapter.widget.CursorAdapter
 import androidx.fragment.app.Fragment
+import es.javiercarrasco.myroom.data.SupersDatabase
 import es.javiercarrasco.myroom.databinding.FragmentListviewBinding
 import es.javiercarrasco.myroom.databinding.ItemListviewBinding
 
-class ListviewFragment(private val db: SupersDBHelper) : Fragment() {
+class ListviewFragment(private val db: SupersDatabase) : Fragment() {
     private lateinit var binding: FragmentListviewBinding
 
     override fun onCreateView(
@@ -26,7 +27,7 @@ class ListviewFragment(private val db: SupersDBHelper) : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val cursor = db.getAllSuperHerosCursor()
+        //val cursor = db.getAllSuperHerosCursor()
 
         // Versión para ListView simple.
 /*      val adapter = SimpleCursorAdapter(
@@ -38,9 +39,9 @@ class ListviewFragment(private val db: SupersDBHelper) : Fragment() {
             SimpleCursorAdapter.FLAG_REGISTER_CONTENT_OBSERVER
         ) */
 
-        val adapter = SupersCursorAdapter(requireContext(), cursor)
+        //val adapter = SupersCursorAdapter(requireContext(), cursor)
 
-        binding.listView.adapter = adapter
+        //binding.listView.adapter = adapter
     }
 }
 
