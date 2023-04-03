@@ -14,15 +14,18 @@ import es.javiercarrasco.myroom.MyRoomApplication
 import es.javiercarrasco.myroom.R
 import es.javiercarrasco.myroom.data.SupersDatabase
 import es.javiercarrasco.myroom.data.model.Editorial
-import es.javiercarrasco.myroom.data.model.SuperHero
 import es.javiercarrasco.myroom.databinding.ActivitySuperheroBinding
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class SuperheroActivity : AppCompatActivity() {
     private lateinit var binding: ActivitySuperheroBinding
     private lateinit var db: SupersDatabase
+    private lateinit var editorialsList: List<Editorial>
+    private lateinit var cursor: Cursor
+    private var cursorPos: Cursor? = null
 
     companion object {
         const val EXTRA_SUPER_ID = "superId"
@@ -48,20 +51,49 @@ class SuperheroActivity : AppCompatActivity() {
 
         supportActionBar!!.title = getString(R.string.txt_superhero)
 
-        var editorialsList = emptyList<Editorial>()
-        val adapter = ArrayAdapter(
-            this@SuperheroActivity,
-            android.R.layout.simple_list_item_2,
-            editorialsList
-        )
+        CoroutineScope(Dispatchers.Main).launch {
+            withContext(Dispatchers.IO) {
+                cursor = db.supersDAO().getAllEditorials2()
+            }
 
-        CoroutineScope(Dispatchers.IO).launch {
-            editorialsList = db.supersDAO().getAllEditorials()
             // Se crea el adaptador mediante SimpleCursorAdapter.
+            val adapter = SimpleCursorAdapter(
+                this@SuperheroActivity,
+                android.R.layout.simple_list_item_2,
+                cursor,
+                arrayOf(cursor.columnNames[0], cursor.columnNames[1]),
+                intArrayOf(android.R.id.text1, android.R.id.text2),
+                SimpleCursorAdapter.FLAG_REGISTER_CONTENT_OBSERVER
+            )
+
+            // Se carga el adaptador en el Spinner.
+            binding.spinner.adapter = adapter
         }
 
-        // Se carga el adaptador en el Spinner.
-        binding.spinner.adapter = adapter
+        /*CoroutineScope(Dispatchers.Main).launch {
+            val adapter: ArrayAdapter<Any>
+
+            withContext(Dispatchers.IO) {
+                editorialsList = db.supersDAO().getAllEditorials()
+            }
+            Log.d("EDITORIALES", editorialsList.size.toString())
+
+            val editorialsArray = ArrayList<String>().apply {
+                editorialsList.forEach {
+                    this.add(it.name!!)
+                }
+            }
+
+            // Se crea el adaptador mediante ArrayAdapter.
+            adapter = ArrayAdapter(
+                this@SuperheroActivity,
+                android.R.layout.simple_list_item_activated_1,
+                editorialsArray as List<Any>
+            )
+
+            // Se carga el adaptador en el Spinner.
+            binding.spinner.adapter = adapter
+        }*/
 
 
         // Se abre detalle del ítem.
@@ -84,24 +116,6 @@ class SuperheroActivity : AppCompatActivity() {
             binding.spinner.setSelection(pos)
 
             binding.switchFab.isChecked = superHero.favorite == 1
-        }
-
-        var cursorPos: Cursor? = null
-        binding.spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(
-                adapterView: AdapterView<*>?,
-                view: View?,
-                pos: Int,
-                id: Long
-            ) {
-                cursorPos = binding.spinner.getItemAtPosition(pos) as Cursor
-                Log.d(
-                    "Spinner",
-                    "${cursorPos!!.position} - ${cursorPos!!.getString(1)}"
-                )
-            }
-
-            override fun onNothingSelected(p0: AdapterView<*>?) {}
         }
 
         binding.button.setOnClickListener {
@@ -130,5 +144,31 @@ class SuperheroActivity : AppCompatActivity() {
                 finish()
             }
         }*/
+    }
+
+    override fun onStart() {
+        super.onStart()
+
+        binding.spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(
+                adapterView: AdapterView<*>?,
+                view: View?,
+                pos: Int,
+                id: Long
+            ) {
+                /*
+                Log.d(
+                    "Spinner",
+                    "${editorialsList[pos].idEd} - ${editorialsList[pos].name}"
+                )*/
+                cursorPos = binding.spinner.getItemAtPosition(pos) as Cursor
+                Log.d(
+                    "Spinner",
+                    "${cursorPos!!.position} - ${cursorPos!!.getString(1)}"
+                )
+            }
+
+            override fun onNothingSelected(p0: AdapterView<*>?) {}
+        }
     }
 }
