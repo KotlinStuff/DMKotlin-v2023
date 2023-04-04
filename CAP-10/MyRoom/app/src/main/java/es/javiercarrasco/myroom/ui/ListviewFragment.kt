@@ -1,17 +1,19 @@
 package es.javiercarrasco.myroom.ui
 
-import android.content.Context
-import android.database.Cursor
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
-import androidx.cursoradapter.widget.CursorAdapter
+import android.widget.SimpleAdapter
+import androidx.collection.ArrayMap
 import androidx.fragment.app.Fragment
 import es.javiercarrasco.myroom.data.SupersDatabase
+import es.javiercarrasco.myroom.data.model.SuperHero
 import es.javiercarrasco.myroom.databinding.FragmentListviewBinding
-import es.javiercarrasco.myroom.databinding.ItemListviewBinding
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class ListviewFragment(private val db: SupersDatabase) : Fragment() {
     private lateinit var binding: FragmentListviewBinding
@@ -27,49 +29,31 @@ class ListviewFragment(private val db: SupersDatabase) : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        //val cursor = db.getAllSuperHerosCursor()
+        CoroutineScope(Dispatchers.Main).launch {
+            val supersList: MutableList<SuperHero>
 
-        // Versión para ListView simple.
-/*      val adapter = SimpleCursorAdapter(
-            requireContext(),
-            android.R.layout.simple_list_item_2,
-            cursor,
-            arrayOf(cursor.columnNames[1], cursor.columnNames[2]),
-            intArrayOf(android.R.id.text1, android.R.id.text2),
-            SimpleCursorAdapter.FLAG_REGISTER_CONTENT_OBSERVER
-        ) */
-
-        //val adapter = SupersCursorAdapter(requireContext(), cursor)
-
-        //binding.listView.adapter = adapter
-    }
-}
-
-class SupersCursorAdapter(context: Context, cursor: Cursor) :
-    CursorAdapter(context, cursor, FLAG_REGISTER_CONTENT_OBSERVER) {
-
-    // "Infla" cada uno de los elementos de la lista.
-    override fun newView(
-        context: Context?,
-        cursor: Cursor?,
-        parent: ViewGroup?
-    ): View = ItemListviewBinding.inflate(LayoutInflater.from(context), parent, false).root
-
-    // Rellena el ListView.
-    override fun bindView(view: View?, context: Context?, cursor: Cursor?) {
-        val bindingItems = ItemListviewBinding.bind(view!!)
-        with(bindingItems) {
-            tvSuperName.text = cursor!!.getString(1)
-            tvRealName.text = cursor.getString(2)
-            tvEditorial.text = cursor.getString(6)
-
-            view.setOnClickListener {
-                Toast.makeText(
-                    context,
-                    "${tvSuperName.text}",
-                    Toast.LENGTH_SHORT
-                ).show()
+            withContext(Dispatchers.IO) {
+                supersList = db.supersDAO().getAllSuperHeros()
             }
+
+            // Se crea el ArrayList con el HashMap de los superhéroes.
+            val supersHashMap: ArrayList<HashMap<String, String>> = ArrayList()
+            supersList.forEach {
+                val map: HashMap<String, String> = HashMap()
+                map.put("superName", it.superName!!)
+                map.put("realName", it.realName!!)
+                supersHashMap.add(map)
+            }
+
+            val adapter = SimpleAdapter(
+                context,
+                supersHashMap,
+                android.R.layout.simple_list_item_2,
+                arrayOf("superName", "realName"),
+                intArrayOf(android.R.id.text1, android.R.id.text2)
+            )
+
+            binding.listView.adapter = adapter
         }
     }
 }

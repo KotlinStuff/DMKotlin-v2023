@@ -24,14 +24,12 @@ class MainActivity : AppCompatActivity() {
 
         db = (application as MyRoomApplication).supersDatabase
 
-        //.getEditorials()
-
         with(binding.tabLayout) {
             addTab(newTab().setText(getString(R.string.txt_listview)))
             addTab(newTab().setText(getString(R.string.txt_recyclerview)))
         }
 
-        //showFragment(ListviewFragment(db))
+        showFragment(ListviewFragment(db))
     }
 
     override fun onStart() {
@@ -92,9 +90,7 @@ class MainActivity : AppCompatActivity() {
                 SuperheroActivity.navigate(this@MainActivity)
                 true
             }
-            else -> {
-                false
-            }
+            else -> false
         }
     }
 }

@@ -14,6 +14,7 @@ import es.javiercarrasco.myroom.MyRoomApplication
 import es.javiercarrasco.myroom.R
 import es.javiercarrasco.myroom.data.SupersDatabase
 import es.javiercarrasco.myroom.data.model.Editorial
+import es.javiercarrasco.myroom.data.model.SuperHero
 import es.javiercarrasco.myroom.databinding.ActivitySuperheroBinding
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -24,8 +25,11 @@ class SuperheroActivity : AppCompatActivity() {
     private lateinit var binding: ActivitySuperheroBinding
     private lateinit var db: SupersDatabase
     private lateinit var editorialsList: List<Editorial>
-    private lateinit var cursor: Cursor
-    private var cursorPos: Cursor? = null
+
+    private var editorialId = -1 // Versión ArrayAdapter
+
+    // private lateinit var cursor: Cursor // Versión SimpleCursorAdapter
+    // private var cursorPos: Cursor? = null // Versión SimpleCursorAdapter
 
     companion object {
         const val EXTRA_SUPER_ID = "superId"
@@ -51,33 +55,37 @@ class SuperheroActivity : AppCompatActivity() {
 
         supportActionBar!!.title = getString(R.string.txt_superhero)
 
+// ********* Aplicando SimpleCursorAdapter ************************************
+        /*    CoroutineScope(Dispatchers.Main).launch {
+                withContext(Dispatchers.IO) {
+                    cursor = db.supersDAO().getAllEditorials2()
+                }
+
+                // Se crea el adaptador mediante SimpleCursorAdapter.
+                val adapter = SimpleCursorAdapter(
+                    this@SuperheroActivity,
+                    android.R.layout.simple_list_item_2,
+                    cursor,
+                    arrayOf(cursor.columnNames[0], cursor.columnNames[1]),
+                    intArrayOf(android.R.id.text1, android.R.id.text2),
+                    SimpleCursorAdapter.FLAG_REGISTER_CONTENT_OBSERVER
+                )
+
+                // Se carga el adaptador en el Spinner.
+                binding.spinner.adapter = adapter
+            } */
+// ******** FIN SimpleCursorAdapter ******************************************
+
+// ********* Aplicando ArrayAdapter ************************************
         CoroutineScope(Dispatchers.Main).launch {
-            withContext(Dispatchers.IO) {
-                cursor = db.supersDAO().getAllEditorials2()
-            }
-
-            // Se crea el adaptador mediante SimpleCursorAdapter.
-            val adapter = SimpleCursorAdapter(
-                this@SuperheroActivity,
-                android.R.layout.simple_list_item_2,
-                cursor,
-                arrayOf(cursor.columnNames[0], cursor.columnNames[1]),
-                intArrayOf(android.R.id.text1, android.R.id.text2),
-                SimpleCursorAdapter.FLAG_REGISTER_CONTENT_OBSERVER
-            )
-
-            // Se carga el adaptador en el Spinner.
-            binding.spinner.adapter = adapter
-        }
-
-        /*CoroutineScope(Dispatchers.Main).launch {
-            val adapter: ArrayAdapter<Any>
+            val adapter: ArrayAdapter<String>
 
             withContext(Dispatchers.IO) {
                 editorialsList = db.supersDAO().getAllEditorials()
             }
             Log.d("EDITORIALES", editorialsList.size.toString())
 
+            // Se crea un ArrayList<String> con los nombres de las editoriales.
             val editorialsArray = ArrayList<String>().apply {
                 editorialsList.forEach {
                     this.add(it.name!!)
@@ -88,34 +96,33 @@ class SuperheroActivity : AppCompatActivity() {
             adapter = ArrayAdapter(
                 this@SuperheroActivity,
                 android.R.layout.simple_list_item_activated_1,
-                editorialsArray as List<Any>
+                editorialsArray
             )
 
             // Se carga el adaptador en el Spinner.
             binding.spinner.adapter = adapter
-        }*/
+        }
+// ******** FIN ArrayAdapter ******************************************
 
 
         // Se abre detalle del ítem.
-        /*val idSuper = intent.getIntExtra(EXTRA_SUPER_ID, -1)
+        val idSuper = intent.getIntExtra(EXTRA_SUPER_ID, -1)
         if (idSuper != -1) {
-            val superHero =
-                (application as MyRoomApplication).supersDatabase.getSuperById(idSuper)
+            CoroutineScope(Dispatchers.Main).launch {
+                var superHero: SuperHero? = null
+                withContext(Dispatchers.IO) {
+                    superHero = db.supersDAO().getSuperById(idSuper)
+                }
 
-            binding.etSuperName.setText(superHero.superName)
-            binding.etRealName.setText(superHero.realName)
+                if (superHero != null) {
+                    binding.etSuperName.setText(superHero!!.superName)
+                    binding.etRealName.setText(superHero!!.realName)
 
-            var pos = 0
-            cursor.moveToFirst()
-            do {
-                // Se busca la posición de la Editorial en el cursor.
-                if (cursor.getInt(0) == superHero.editorial.id)
-                    pos = cursor.position
-            } while (cursor.moveToNext())
+                    binding.spinner.setSelection(editorialId)
 
-            binding.spinner.setSelection(pos)
-
-            binding.switchFab.isChecked = superHero.favorite == 1
+                    binding.switchFab.isChecked = superHero!!.favorite == 1
+                }
+            }
         }
 
         binding.button.setOnClickListener {
@@ -130,20 +137,24 @@ class SuperheroActivity : AppCompatActivity() {
                 val fab = if (binding.switchFab.isChecked) 1 else 0
 
                 if (idSuper == -1) {
-                    (application as MyRoomApplication).supersDatabase.addSuperHero(
-                        SuperHero(0, supername, realname, fab, Editorial(cursorPos!!.getInt(0)))
-                    )
-                } else {
-                    (application as MyRoomApplication).supersDatabase.updateSuperHero(
-                        SuperHero(
-                            idSuper, supername, realname, fab, Editorial(cursorPos!!.getInt(0))
+                    CoroutineScope(Dispatchers.IO).launch {
+                        db.supersDAO().insertSuperHero(
+                            SuperHero(0, supername, realname, fab, editorialsList[editorialId].idEd)
                         )
-                    )
+                    }
+                } else {
+                    CoroutineScope(Dispatchers.IO).launch {
+                        db.supersDAO().updateSuperHero(
+                            SuperHero(
+                                idSuper, supername, realname, fab, editorialsList[editorialId].idEd
+                            )
+                        )
+                    }
                 }
 
                 finish()
             }
-        }*/
+        }
     }
 
     override fun onStart() {
@@ -156,16 +167,19 @@ class SuperheroActivity : AppCompatActivity() {
                 pos: Int,
                 id: Long
             ) {
-                /*
+                // Versión ArrayAdapter
+                editorialId = pos
                 Log.d(
                     "Spinner",
                     "${editorialsList[pos].idEd} - ${editorialsList[pos].name}"
-                )*/
-                cursorPos = binding.spinner.getItemAtPosition(pos) as Cursor
+                )
+
+                // Versión SimpleCursorAdapter
+                /* cursorPos = binding.spinner.getItemAtPosition(pos) as Cursor
                 Log.d(
                     "Spinner",
                     "${cursorPos!!.position} - ${cursorPos!!.getString(1)}"
-                )
+                )*/
             }
 
             override fun onNothingSelected(p0: AdapterView<*>?) {}
