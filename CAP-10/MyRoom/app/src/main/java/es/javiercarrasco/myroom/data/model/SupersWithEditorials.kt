@@ -3,11 +3,11 @@ package es.javiercarrasco.myroom.data.model
 import androidx.room.Embedded
 import androidx.room.Relation
 
-// Relación de N a 1.
+// Relación de 1 a 1.
 data class SupersWithEditorials(
-    @Embedded val editorials: Editorial,
+    @Embedded val supers: SuperHero,
     @Relation(
-        parentColumn = "idEd",
-        entityColumn = "idEditorial"
-    ) val supers: List<SuperHero> = emptyList()
+        parentColumn = "idEditorial",
+        entityColumn = "idEd"
+    ) val editorials: Editorial
 )

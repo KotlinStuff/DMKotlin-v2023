@@ -26,6 +26,8 @@ class SuperheroActivity : AppCompatActivity() {
     private lateinit var db: SupersDatabase
     private lateinit var editorialsList: List<Editorial>
 
+    private var idSuper = -1
+    private var superHero: SuperHero? = null
     private var editorialId = -1 // Versión ArrayAdapter
 
     // private lateinit var cursor: Cursor // Versión SimpleCursorAdapter
@@ -50,10 +52,11 @@ class SuperheroActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivitySuperheroBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        supportActionBar!!.title = getString(R.string.txt_superhero)
+
+        idSuper = intent.getIntExtra(EXTRA_SUPER_ID, -1)
 
         db = (application as MyRoomApplication).supersDatabase
-
-        supportActionBar!!.title = getString(R.string.txt_superhero)
 
 // ********* Aplicando SimpleCursorAdapter ************************************
         /*    CoroutineScope(Dispatchers.Main).launch {
@@ -82,7 +85,9 @@ class SuperheroActivity : AppCompatActivity() {
 
             withContext(Dispatchers.IO) {
                 editorialsList = db.supersDAO().getAllEditorials()
+                superHero = db.supersDAO().getSuperById(idSuper)
             }
+
             Log.d("EDITORIALES", editorialsList.size.toString())
 
             // Se crea un ArrayList<String> con los nombres de las editoriales.
@@ -101,29 +106,14 @@ class SuperheroActivity : AppCompatActivity() {
 
             // Se carga el adaptador en el Spinner.
             binding.spinner.adapter = adapter
+
+            showSuperhero()
         }
 // ******** FIN ArrayAdapter ******************************************
+    }
 
-
-        // Se abre detalle del ítem.
-        val idSuper = intent.getIntExtra(EXTRA_SUPER_ID, -1)
-        if (idSuper != -1) {
-            CoroutineScope(Dispatchers.Main).launch {
-                var superHero: SuperHero? = null
-                withContext(Dispatchers.IO) {
-                    superHero = db.supersDAO().getSuperById(idSuper)
-                }
-
-                if (superHero != null) {
-                    binding.etSuperName.setText(superHero!!.superName)
-                    binding.etRealName.setText(superHero!!.realName)
-
-                    binding.spinner.setSelection(editorialId)
-
-                    binding.switchFab.isChecked = superHero!!.favorite == 1
-                }
-            }
-        }
+    override fun onStart() {
+        super.onStart()
 
         binding.button.setOnClickListener {
             if (binding.etSuperName.text.isNullOrBlank())
@@ -155,10 +145,6 @@ class SuperheroActivity : AppCompatActivity() {
                 finish()
             }
         }
-    }
-
-    override fun onStart() {
-        super.onStart()
 
         binding.spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(
@@ -183,6 +169,24 @@ class SuperheroActivity : AppCompatActivity() {
             }
 
             override fun onNothingSelected(p0: AdapterView<*>?) {}
+        }
+    }
+
+    private fun showSuperhero() {
+        // Se abre detalle del ítem.
+        if (idSuper != -1) {
+            if (superHero != null) {
+                binding.etSuperName.setText(superHero!!.superName)
+                binding.etRealName.setText(superHero!!.realName)
+
+                binding.spinner.setSelection(
+                    editorialsList.withIndex().first {
+                        it.value.idEd == superHero!!.idEditorial
+                    }.index
+                )
+
+                binding.switchFab.isChecked = superHero!!.favorite == 1
+            }
         }
     }
 }

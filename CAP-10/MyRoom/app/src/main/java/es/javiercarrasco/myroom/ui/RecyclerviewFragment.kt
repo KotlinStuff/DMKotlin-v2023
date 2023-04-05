@@ -1,5 +1,6 @@
 package es.javiercarrasco.myroom.ui
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,10 +10,21 @@ import androidx.fragment.app.Fragment
 import es.javiercarrasco.myroom.adapters.SupersRecyclerAdapter
 import es.javiercarrasco.myroom.data.SupersDatabase
 import es.javiercarrasco.myroom.databinding.FragmentRecyclerviewBinding
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class RecyclerviewFragment(private val db: SupersDatabase) : Fragment() {
-    /*private lateinit var binding: FragmentRecyclerviewBinding
+    private lateinit var binding: FragmentRecyclerviewBinding
     private lateinit var adapter: SupersRecyclerAdapter
+    private lateinit var mContext: Context
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        mContext = context
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -32,26 +44,42 @@ class RecyclerviewFragment(private val db: SupersDatabase) : Fragment() {
                 )
             },
             onSuperHeroLongClick = {
-                if (db.delSuperHero(it.id) != 0)
-                    adapter.submitList(db.getAllSuperHeros())
+                CoroutineScope(Dispatchers.IO).launch {
+                    db.supersDAO().deleteSuperHero(it)
+                    adapter.submitList(db.supersDAO().getAllSuperHerosWithEditorials())
+                }
             },
             onFabClick = {
-                db.updateFab(it.id, it.favorite)
-                adapter.submitList(db.getAllSuperHeros())
+                CoroutineScope(Dispatchers.IO).launch {
+                    val updated = it.copy(
+                        favorite = if (it.favorite == 0) 1 else 0
+                    )
+                    db.supersDAO().insertSuperHero(updated)
+                    adapter.submitList(db.supersDAO().getAllSuperHerosWithEditorials())
+                }
             }
         )
 
         binding.recycler.adapter = adapter
 
-        adapter.submitList(db.getAllSuperHeros())
+        updateRecycler()
 
 //        for ((i, superHero) in supersList.withIndex()) {
 //            Log.d("$i", "${superHero.superName}")
 //        }
     }
 
+    private fun updateRecycler() {
+        CoroutineScope(Dispatchers.Main).launch {
+            withContext(Dispatchers.IO) {
+                db.supersDAO().getAllSuperHerosWithEditorials()
+            }.apply {
+                adapter.submitList(this)
+            }
+        }
+    }
     override fun onResume() {
         super.onResume()
-        adapter.submitList(db.getAllSuperHeros())
-    }*/
+        updateRecycler()
+    }
 }

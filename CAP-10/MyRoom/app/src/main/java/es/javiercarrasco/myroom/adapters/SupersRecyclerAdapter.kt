@@ -8,13 +8,18 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import es.javiercarrasco.myroom.R
 import es.javiercarrasco.myroom.data.model.SuperHero
+import es.javiercarrasco.myroom.data.model.SupersWithEditorials
 import es.javiercarrasco.myroom.databinding.ItemRecyclerviewBinding
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class SupersRecyclerAdapter(
     private val onSuperHeroClick: (SuperHero) -> Unit,
     private val onSuperHeroLongClick: (SuperHero) -> Unit,
     private val onFabClick: (SuperHero) -> Unit
-) : ListAdapter<SuperHero, SupersViewHolder>(SupersDiffCallback()) {
+) : ListAdapter<SupersWithEditorials, SupersViewHolder>(SupersDiffCallback()) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SupersViewHolder {
         val binding = ItemRecyclerviewBinding.inflate(
             LayoutInflater.from(parent.context), parent, false
@@ -28,12 +33,12 @@ class SupersRecyclerAdapter(
 }
 
 // DiffUtil.ItemCallback permite calcular las diferencias entre dos objetos no nulos de la lista.
-class SupersDiffCallback : DiffUtil.ItemCallback<SuperHero>() {
-    override fun areItemsTheSame(oldItem: SuperHero, newItem: SuperHero): Boolean {
-        return oldItem.idSuper == newItem.idSuper
+class SupersDiffCallback : DiffUtil.ItemCallback<SupersWithEditorials>() {
+    override fun areItemsTheSame(oldItem: SupersWithEditorials, newItem: SupersWithEditorials): Boolean {
+        return oldItem.supers.idSuper == newItem.supers.idSuper
     }
 
-    override fun areContentsTheSame(oldItem: SuperHero, newItem: SuperHero): Boolean {
+    override fun areContentsTheSame(oldItem: SupersWithEditorials, newItem: SupersWithEditorials): Boolean {
         return oldItem == newItem
     }
 }
@@ -42,23 +47,24 @@ class SupersViewHolder(view: View) : RecyclerView.ViewHolder(view) {
     val binding = ItemRecyclerviewBinding.bind(view)
 
     fun bind(
-        superHero: SuperHero,
+        superHero: SupersWithEditorials,
         onSuperHeroClick: (SuperHero) -> Unit,
         onSuperHeroLongClick: (SuperHero) -> Unit,
         onFabClick: (SuperHero) -> Unit
     ) {
-        binding.tvSuperName.text = superHero.superName
-        binding.tvRealName.text = superHero.realName
-        //binding.tvEditorial.text = superHero.editorial.name
+        binding.tvSuperName.text = superHero.supers.superName
+        binding.tvRealName.text = superHero.supers.realName
+        binding.tvEditorial.text = superHero.editorials.name
+
         binding.ivFab.setImageState(
-            intArrayOf(R.attr.state_fab_on), superHero.favorite == 1
+            intArrayOf(R.attr.state_fab_on), superHero.supers.favorite == 1
         )
 
-        itemView.setOnClickListener { onSuperHeroClick(superHero) }
+        itemView.setOnClickListener { onSuperHeroClick(superHero.supers) }
         itemView.setOnLongClickListener {
-            onSuperHeroLongClick(superHero)
+            onSuperHeroLongClick(superHero.supers)
             true
         }
-        binding.ivFab.setOnClickListener { onFabClick(superHero) }
+        binding.ivFab.setOnClickListener { onFabClick(superHero.supers) }
     }
 }

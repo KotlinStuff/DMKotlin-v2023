@@ -1,11 +1,11 @@
 package es.javiercarrasco.myroom.ui
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.SimpleAdapter
-import androidx.collection.ArrayMap
 import androidx.fragment.app.Fragment
 import es.javiercarrasco.myroom.data.SupersDatabase
 import es.javiercarrasco.myroom.data.model.SuperHero
@@ -17,6 +17,13 @@ import kotlinx.coroutines.withContext
 
 class ListviewFragment(private val db: SupersDatabase) : Fragment() {
     private lateinit var binding: FragmentListviewBinding
+    private lateinit var mContext: Context
+
+    // Se evitan problemas de contexto no adjuntado.
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        mContext = context
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -43,17 +50,18 @@ class ListviewFragment(private val db: SupersDatabase) : Fragment() {
                 map.put("superName", it.superName!!)
                 map.put("realName", it.realName!!)
                 supersHashMap.add(map)
+            }.run {
+
+                val adapter = SimpleAdapter(
+                    mContext,
+                    supersHashMap,
+                    android.R.layout.simple_list_item_2,
+                    arrayOf("superName", "realName"),
+                    intArrayOf(android.R.id.text1, android.R.id.text2)
+                )
+
+                binding.listView.adapter = adapter
             }
-
-            val adapter = SimpleAdapter(
-                context,
-                supersHashMap,
-                android.R.layout.simple_list_item_2,
-                arrayOf("superName", "realName"),
-                intArrayOf(android.R.id.text1, android.R.id.text2)
-            )
-
-            binding.listView.adapter = adapter
         }
     }
 }

@@ -5,6 +5,7 @@ import android.widget.ArrayAdapter
 import androidx.room.*
 import es.javiercarrasco.myroom.data.model.Editorial
 import es.javiercarrasco.myroom.data.model.SuperHero
+import es.javiercarrasco.myroom.data.model.SupersWithEditorials
 
 @Database(entities = [SuperHero::class, Editorial::class], version = 1, exportSchema = false)
 abstract class SupersDatabase : RoomDatabase() {
@@ -16,6 +17,10 @@ interface SupersDAO {
 
     @Query("SELECT * FROM SuperHero ORDER BY superName")
     suspend fun getAllSuperHeros(): MutableList<SuperHero>
+
+    @Transaction
+    @Query("SELECT * FROM SuperHero ORDER BY superName")
+    suspend fun getAllSuperHerosWithEditorials(): MutableList<SupersWithEditorials>
 
     @Query("SELECT * FROM SuperHero WHERE idSuper = :idSuper")
     suspend fun getSuperById(idSuper: Int): SuperHero?
