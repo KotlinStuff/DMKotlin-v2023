@@ -1,11 +1,10 @@
 package es.javiercarrasco.myroom.data
 
 import android.database.Cursor
-import android.widget.ArrayAdapter
 import androidx.room.*
 import es.javiercarrasco.myroom.data.model.Editorial
 import es.javiercarrasco.myroom.data.model.SuperHero
-import es.javiercarrasco.myroom.data.model.SupersWithEditorials
+import es.javiercarrasco.myroom.data.model.SupersWithEditorial
 
 @Database(entities = [SuperHero::class, Editorial::class], version = 1, exportSchema = false)
 abstract class SupersDatabase : RoomDatabase() {
@@ -15,12 +14,18 @@ abstract class SupersDatabase : RoomDatabase() {
 @Dao
 interface SupersDAO {
 
+    @Query(
+        "SELECT * FROM SuperHero " +
+                "INNER JOIN Editorial ON idEditorial = idEd ORDER BY superName"
+    )
+    suspend fun getSuperHerosWithEditorials(): Map<SuperHero, Editorial>
+
     @Query("SELECT * FROM SuperHero ORDER BY superName")
     suspend fun getAllSuperHeros(): MutableList<SuperHero>
 
     @Transaction
     @Query("SELECT * FROM SuperHero ORDER BY superName")
-    suspend fun getAllSuperHerosWithEditorials(): MutableList<SupersWithEditorials>
+    suspend fun getAllSuperHerosWithEditorials(): MutableList<SupersWithEditorial>
 
     @Query("SELECT * FROM SuperHero WHERE idSuper = :idSuper")
     suspend fun getSuperById(idSuper: Int): SuperHero?

@@ -8,10 +8,7 @@ import androidx.fragment.app.Fragment
 import com.google.android.material.tabs.TabLayout
 import es.javiercarrasco.myroom.data.SupersDatabase
 import es.javiercarrasco.myroom.databinding.ActivityMainBinding
-import es.javiercarrasco.myroom.ui.EditorialActivity
-import es.javiercarrasco.myroom.ui.ListviewFragment
-import es.javiercarrasco.myroom.ui.RecyclerviewFragment
-import es.javiercarrasco.myroom.ui.SuperheroActivity
+import es.javiercarrasco.myroom.ui.*
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
@@ -27,6 +24,7 @@ class MainActivity : AppCompatActivity() {
         with(binding.tabLayout) {
             addTab(newTab().setText(getString(R.string.txt_listview)))
             addTab(newTab().setText(getString(R.string.txt_recyclerview)))
+            addTab(newTab().setText(getString(R.string.txt_relationship)))
         }
 
         showFragment(ListviewFragment(db))
@@ -44,6 +42,9 @@ class MainActivity : AppCompatActivity() {
                     getString(R.string.txt_recyclerview) -> {
                         showFragment(RecyclerviewFragment(db))
                     }
+                    getString(R.string.txt_relationship) -> {
+                        showFragment(RelFragment(db))
+                    }
                 }
             }
 
@@ -56,6 +57,9 @@ class MainActivity : AppCompatActivity() {
                     }
                     getString(R.string.txt_recyclerview) -> {
                         showFragment(RecyclerviewFragment(db))
+                    }
+                    getString(R.string.txt_relationship) -> {
+                        showFragment(RelFragment(db))
                     }
                 }
             }

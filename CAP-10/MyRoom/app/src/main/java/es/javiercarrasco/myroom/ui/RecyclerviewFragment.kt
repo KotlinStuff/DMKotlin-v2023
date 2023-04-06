@@ -73,7 +73,7 @@ class RecyclerviewFragment(private val db: SupersDatabase) : Fragment() {
         CoroutineScope(Dispatchers.Main).launch {
             withContext(Dispatchers.IO) {
                 db.supersDAO().getAllSuperHerosWithEditorials()
-            }.apply {
+            }.run {
                 adapter.submitList(this)
             }
         }
