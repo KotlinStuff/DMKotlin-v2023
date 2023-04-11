@@ -3,6 +3,7 @@ package es.javiercarrasco.myroom.data
 import android.database.Cursor
 import androidx.room.*
 import es.javiercarrasco.myroom.data.model.Editorial
+import es.javiercarrasco.myroom.data.model.EditorialWithSupers
 import es.javiercarrasco.myroom.data.model.SuperHero
 import es.javiercarrasco.myroom.data.model.SupersWithEditorial
 
@@ -26,6 +27,10 @@ interface SupersDAO {
     @Transaction
     @Query("SELECT * FROM SuperHero ORDER BY superName")
     suspend fun getAllSuperHerosWithEditorials(): MutableList<SupersWithEditorial>
+
+    @Transaction
+    @Query("SELECT * FROM Editorial ORDER BY name")
+    suspend fun getAllEditorialWithSupers(): MutableList<EditorialWithSupers>
 
     @Query("SELECT * FROM SuperHero WHERE idSuper = :idSuper")
     suspend fun getSuperById(idSuper: Int): SuperHero?

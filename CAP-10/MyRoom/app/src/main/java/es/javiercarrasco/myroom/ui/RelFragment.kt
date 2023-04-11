@@ -39,13 +39,13 @@ class RelFragment(private val db: SupersDatabase) : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         CoroutineScope(Dispatchers.Main).launch {
-            binding.textView.setText("")
-
             withContext(Dispatchers.IO) {
-                db.supersDAO().getSuperHerosWithEditorials()
+                db.supersDAO().getAllEditorialWithSupers()
             }.run {
-                this.forEach {
-                    binding.textView.append("${it}\n\n")
+                if (this.isNotEmpty()) {
+                    this.forEach {
+                        binding.textView.append("${it}\n")
+                    }
                 }
             }
         }
