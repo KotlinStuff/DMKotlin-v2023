@@ -2,18 +2,28 @@ package es.javiercarrasco.myroom.data
 
 import android.database.Cursor
 import androidx.room.*
-import es.javiercarrasco.myroom.data.model.Editorial
-import es.javiercarrasco.myroom.data.model.EditorialWithSupers
-import es.javiercarrasco.myroom.data.model.SuperHero
-import es.javiercarrasco.myroom.data.model.SupersWithEditorial
+import es.javiercarrasco.myroom.data.model.*
 
-@Database(entities = [SuperHero::class, Editorial::class], version = 1, exportSchema = false)
+@Database(
+    entities = [SuperHero::class, Editorial::class, Illustrator::class, EditorialsIllustrators::class],
+    version = 2,
+    autoMigrations = [AutoMigration(from = 1, to = 2)]
+    //exportSchema = false
+)
 abstract class SupersDatabase : RoomDatabase() {
     abstract fun supersDAO(): SupersDAO
 }
 
 @Dao
 interface SupersDAO {
+
+    @Transaction
+    @Query("SELECT * FROM Editorial")
+    suspend fun getAllEditorialsWithIllustrators(): MutableList<EditorialsWithIllustrators>
+
+    @Transaction
+    @Query("SELECT * FROM Illustrator")
+    suspend fun getAllIllustratorsWithEditorials(): MutableList<IllustratrosWithEditorials>
 
     @Query(
         "SELECT * FROM SuperHero " +
@@ -46,6 +56,12 @@ interface SupersDAO {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertSuperHero(superHero: SuperHero)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertIllustrator(illustrator: Illustrator)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertEditorialsIllustrators(editorialsIllustrators: EditorialsIllustrators)
 
     @Delete
     suspend fun deleteEditorial(editorial: Editorial)

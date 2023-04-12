@@ -7,8 +7,14 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.google.android.material.tabs.TabLayout
 import es.javiercarrasco.myroom.data.SupersDatabase
+import es.javiercarrasco.myroom.data.model.EditorialsIllustrators
+import es.javiercarrasco.myroom.data.model.Illustrator
 import es.javiercarrasco.myroom.databinding.ActivityMainBinding
 import es.javiercarrasco.myroom.ui.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
@@ -20,6 +26,12 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         db = (application as MyRoomApplication).supersDatabase
+
+        //CoroutineScope(Dispatchers.IO).launch {
+            //db.supersDAO().insertIllustrator(Illustrator(nameIllustrator = "Daniel Acuña"))
+            //db.supersDAO().insertEditorialsIllustrators(EditorialsIllustrators(2, 2))
+            //db.supersDAO().insertEditorialsIllustrators(EditorialsIllustrators(3, 3))
+        //}
 
         with(binding.tabLayout) {
             addTab(newTab().setText(getString(R.string.txt_listview)))
