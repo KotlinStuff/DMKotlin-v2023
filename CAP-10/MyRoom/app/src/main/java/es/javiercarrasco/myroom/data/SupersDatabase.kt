@@ -5,7 +5,12 @@ import androidx.room.*
 import es.javiercarrasco.myroom.data.model.*
 
 @Database(
-    entities = [SuperHero::class, Editorial::class, Illustrator::class, EditorialsIllustrators::class],
+    entities = [
+        SuperHero::class,
+        Editorial::class,
+        Illustrator::class,
+        EditorialsIllustrators::class
+    ],
     version = 2,
     autoMigrations = [AutoMigration(from = 1, to = 2)]
     //exportSchema = false

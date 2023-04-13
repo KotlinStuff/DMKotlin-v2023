@@ -40,7 +40,7 @@ class RelFragment(private val db: SupersDatabase) : Fragment() {
 
         CoroutineScope(Dispatchers.Main).launch {
             withContext(Dispatchers.IO) {
-                db.supersDAO().getAllEditorialWithSupers()
+                db.supersDAO().getAllIllustratorsWithEditorials()
             }.run {
                 if (this.isNotEmpty()) {
                     this.forEach {

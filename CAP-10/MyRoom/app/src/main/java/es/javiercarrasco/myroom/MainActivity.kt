@@ -27,11 +27,21 @@ class MainActivity : AppCompatActivity() {
 
         db = (application as MyRoomApplication).supersDatabase
 
-        //CoroutineScope(Dispatchers.IO).launch {
-            //db.supersDAO().insertIllustrator(Illustrator(nameIllustrator = "Daniel Acuña"))
-            //db.supersDAO().insertEditorialsIllustrators(EditorialsIllustrators(2, 2))
-            //db.supersDAO().insertEditorialsIllustrators(EditorialsIllustrators(3, 3))
-        //}
+        /*CoroutineScope(Dispatchers.IO).launch {
+            db.supersDAO().insertIllustrator(Illustrator(nameIllustrator = "David López"))
+            db.supersDAO().insertIllustrator(Illustrator(nameIllustrator = "Pascual Ferry"))
+            db.supersDAO().insertIllustrator(Illustrator(nameIllustrator = "Daniel Acuña"))
+        }.run {
+            CoroutineScope(Dispatchers.IO).launch {
+                db.supersDAO().insertEditorialsIllustrators(EditorialsIllustrators(1, 2))
+                db.supersDAO().insertEditorialsIllustrators(EditorialsIllustrators(1, 3))
+
+                db.supersDAO().insertEditorialsIllustrators(EditorialsIllustrators(2, 2))
+                db.supersDAO().insertEditorialsIllustrators(EditorialsIllustrators(2, 3))
+
+                db.supersDAO().insertEditorialsIllustrators(EditorialsIllustrators(3, 3))
+            }
+        }*/
 
         with(binding.tabLayout) {
             addTab(newTab().setText(getString(R.string.txt_listview)))
