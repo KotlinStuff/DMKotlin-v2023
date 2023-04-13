@@ -1,0 +1,84 @@
+{
+  "formatVersion": 1,
+  "database": {
+    "version": 1,
+    "identityHash": "29355f22193593973a531e4f60426124",
+    "entities": [
+      {
+        "tableName": "SuperHero",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`idSuper` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `superName` TEXT, `realName` TEXT, `favorite` INTEGER NOT NULL, `idEditorial` INTEGER NOT NULL)",
+        "fields": [
+          {
+            "fieldPath": "idSuper",
+            "columnName": "idSuper",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "superName",
+            "columnName": "superName",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "realName",
+            "columnName": "realName",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "favorite",
+            "columnName": "favorite",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "idEditorial",
+            "columnName": "idEditorial",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": true,
+          "columnNames": [
+            "idSuper"
+          ]
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "Editorial",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`idEd` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `name` TEXT)",
+        "fields": [
+          {
+            "fieldPath": "idEd",
+            "columnName": "idEd",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "name",
+            "columnName": "name",
+            "affinity": "TEXT",
+            "notNull": false
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": true,
+          "columnNames": [
+            "idEd"
+          ]
+        },
+        "indices": [],
+        "foreignKeys": []
+      }
+    ],
+    "views": [],
+    "setupQueries": [
+      "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '29355f22193593973a531e4f60426124')"
+    ]
+  }
+}
