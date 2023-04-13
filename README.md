@@ -17,3 +17,6 @@ Estos ejemplos también forman parte del libro de [Desarrollo de aplicaciones m�
 ## Capítulo 7. Menús y preferencias de usuario
 ## Capítulo 8. Cuadros de diálogo
 ## Capítulo 9. Tareas asíncronas y notificaciones
+## Capítulo 10. Bases de datos
+## Capítulo 11. Patrón MVVM
+## Capítulo 12. Fragments
