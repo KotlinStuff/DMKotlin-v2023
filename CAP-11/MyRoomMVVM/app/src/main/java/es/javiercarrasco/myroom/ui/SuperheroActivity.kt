@@ -2,19 +2,17 @@ package es.javiercarrasco.myroom.ui
 
 import android.app.ActivityOptions
 import android.content.Intent
-import android.database.Cursor
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
-import android.widget.SimpleCursorAdapter
 import androidx.appcompat.app.AppCompatActivity
 import es.javiercarrasco.myroom.MyRoomApplication
 import es.javiercarrasco.myroom.R
 import es.javiercarrasco.myroom.data.SupersDatabase
-import es.javiercarrasco.myroom.data.model.Editorial
-import es.javiercarrasco.myroom.data.model.SuperHero
+import es.javiercarrasco.myroom.model.Editorial
+import es.javiercarrasco.myroom.model.SuperHero
 import es.javiercarrasco.myroom.databinding.ActivitySuperheroBinding
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers

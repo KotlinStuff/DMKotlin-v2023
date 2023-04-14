@@ -7,8 +7,8 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import es.javiercarrasco.myroom.R
-import es.javiercarrasco.myroom.data.model.SuperHero
-import es.javiercarrasco.myroom.data.model.SupersWithEditorial
+import es.javiercarrasco.myroom.model.SuperHero
+import es.javiercarrasco.myroom.model.SupersWithEditorial
 import es.javiercarrasco.myroom.databinding.ItemRecyclerviewBinding
 
 class SupersRecyclerAdapter(

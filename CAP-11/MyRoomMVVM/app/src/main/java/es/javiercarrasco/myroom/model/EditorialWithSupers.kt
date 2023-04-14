@@ -1,4 +1,4 @@
-package es.javiercarrasco.myroom.data.model
+package es.javiercarrasco.myroom.model
 
 import androidx.room.Embedded
 import androidx.room.Relation

@@ -4,15 +4,13 @@ import android.app.ActivityOptions
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.room.CoroutinesRoom
 import es.javiercarrasco.myroom.MyRoomApplication
 import es.javiercarrasco.myroom.R
 import es.javiercarrasco.myroom.data.SupersDatabase
-import es.javiercarrasco.myroom.data.model.Editorial
+import es.javiercarrasco.myroom.model.Editorial
 import es.javiercarrasco.myroom.databinding.ActivityEditorialBinding
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
 class EditorialActivity : AppCompatActivity() {

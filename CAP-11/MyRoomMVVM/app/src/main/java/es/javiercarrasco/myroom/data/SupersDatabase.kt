@@ -1,18 +1,13 @@
 package es.javiercarrasco.myroom.data
 
-import android.database.Cursor
 import androidx.room.*
-import es.javiercarrasco.myroom.data.model.*
+import es.javiercarrasco.myroom.model.Editorial
+import es.javiercarrasco.myroom.model.EditorialWithSupers
+import es.javiercarrasco.myroom.model.SuperHero
+import es.javiercarrasco.myroom.model.SupersWithEditorial
+import kotlinx.coroutines.flow.Flow
 
-@Database(
-    entities = [
-        SuperHero::class,
-        Editorial::class
-    ],
-    version = 1
-    //autoMigrations = [AutoMigration(from = 1, to = 2)]
-    //exportSchema = false
-)
+@Database(entities = [SuperHero::class, Editorial::class], version = 1)
 abstract class SupersDatabase : RoomDatabase() {
     abstract fun supersDAO(): SupersDAO
 }
@@ -20,18 +15,12 @@ abstract class SupersDatabase : RoomDatabase() {
 @Dao
 interface SupersDAO {
 
-    @Query(
-        "SELECT * FROM SuperHero " +
-                "INNER JOIN Editorial ON idEditorial = idEd ORDER BY superName"
-    )
-    suspend fun getSuperHerosWithEditorials(): Map<SuperHero, Editorial>
-
     @Query("SELECT * FROM SuperHero ORDER BY superName")
     suspend fun getAllSuperHeros(): MutableList<SuperHero>
 
     @Transaction
     @Query("SELECT * FROM SuperHero ORDER BY superName")
-    suspend fun getAllSuperHerosWithEditorials(): MutableList<SupersWithEditorial>
+    fun getAllSuperHerosWithEditorials(): Flow<List<SupersWithEditorial>>
 
     @Transaction
     @Query("SELECT * FROM Editorial ORDER BY name")
@@ -41,10 +30,10 @@ interface SupersDAO {
     suspend fun getSuperById(idSuper: Int): SuperHero?
 
     @Query("SELECT * FROM Editorial")
-    suspend fun getAllEditorials(): List<Editorial>
+    fun getAllEditorials(): Flow<List<Editorial>>
 
-    @Query("SELECT idEd as _id, name FROM Editorial")
-    fun getAllEditorials2(): Cursor
+    @Query("SELECT * FROM Editorial WHERE idEd = :editorialId")
+    suspend fun getEditorialById(editorialId: Int): Editorial?
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertEditorial(editorial: Editorial)

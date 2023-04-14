@@ -4,18 +4,20 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.Fragment
-import com.google.android.material.tabs.TabLayout
+import es.javiercarrasco.myroom.adapters.SupersRecyclerAdapter
 import es.javiercarrasco.myroom.data.SupersDatabase
 import es.javiercarrasco.myroom.databinding.ActivityMainBinding
 import es.javiercarrasco.myroom.ui.EditorialActivity
-import es.javiercarrasco.myroom.ui.ListviewFragment
-import es.javiercarrasco.myroom.ui.RecyclerviewFragment
 import es.javiercarrasco.myroom.ui.SuperheroActivity
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var db: SupersDatabase
+    private lateinit var adapter: SupersRecyclerAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -24,54 +26,47 @@ class MainActivity : AppCompatActivity() {
 
         db = (application as MyRoomApplication).supersDatabase
 
-        with(binding.tabLayout) {
-            addTab(newTab().setText(getString(R.string.txt_listview)))
-            addTab(newTab().setText(getString(R.string.txt_recyclerview)))
-        }
-
-        showFragment(ListviewFragment(db))
-    }
-
-    override fun onStart() {
-        super.onStart()
-
-        binding.tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
-            override fun onTabSelected(tab: TabLayout.Tab?) {
-                when (tab!!.text.toString()) {
-                    getString(R.string.txt_listview) -> {
-                        showFragment(ListviewFragment(db))
-                    }
-                    getString(R.string.txt_recyclerview) -> {
-                        showFragment(RecyclerviewFragment(db))
-                    }
+        adapter = SupersRecyclerAdapter(
+            onSuperHeroClick = {
+                SuperheroActivity.navigate(
+                    this@MainActivity,
+                    it.idSuper
+                )
+            },
+            onSuperHeroLongClick = {
+                CoroutineScope(Dispatchers.IO).launch {
+                    db.supersDAO().deleteSuperHero(it)
+                    adapter.submitList(db.supersDAO().getAllSuperHerosWithEditorials())
+                }
+            },
+            onFabClick = {
+                CoroutineScope(Dispatchers.IO).launch {
+                    val updated = it.copy(
+                        favorite = if (it.favorite == 0) 1 else 0
+                    )
+                    db.supersDAO().insertSuperHero(updated)
+                    adapter.submitList(db.supersDAO().getAllSuperHerosWithEditorials())
                 }
             }
-
-            override fun onTabUnselected(tab: TabLayout.Tab?) {}
-
-            override fun onTabReselected(tab: TabLayout.Tab?) {
-                when (tab!!.text.toString()) {
-                    getString(R.string.txt_listview) -> {
-                        showFragment(ListviewFragment(db))
-                    }
-                    getString(R.string.txt_recyclerview) -> {
-                        showFragment(RecyclerviewFragment(db))
-                    }
-                }
-            }
-        })
-    }
-
-    private fun showFragment(fragment: Fragment) {
-        val transaction = supportFragmentManager.beginTransaction()
-
-        transaction.replace(
-            binding.fragmentHolder.id,
-            fragment
         )
 
-        transaction.disallowAddToBackStack()
-        transaction.commit()
+        binding.recycler.adapter = adapter
+
+        updateRecycler()
+    }
+
+    private fun updateRecycler() {
+        CoroutineScope(Dispatchers.Main).launch {
+            withContext(Dispatchers.IO) {
+                db.supersDAO().getAllSuperHerosWithEditorials()
+            }.run {
+                adapter.submitList(this)
+            }
+        }
+    }
+    override fun onResume() {
+        super.onResume()
+        updateRecycler()
     }
 
     // Gestión del menú principal
