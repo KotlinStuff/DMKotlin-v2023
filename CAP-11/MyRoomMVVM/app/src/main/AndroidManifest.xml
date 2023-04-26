@@ -13,10 +13,10 @@
         android:theme="@style/Theme.MyRoom"
         tools:targetApi="31">
         <activity
-            android:name=".ui.SuperheroActivity"
+            android:name=".ui.superhero.SuperheroActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.EditorialActivity"
+            android:name=".ui.editorial.EditorialActivity"
             android:exported="false" />
         <activity
             android:name=".MainActivity"

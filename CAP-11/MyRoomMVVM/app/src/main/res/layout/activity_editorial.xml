@@ -6,7 +6,7 @@
     android:orientation="vertical"
     android:layout_gravity="top"
     android:padding="8dp"
-    tools:context=".ui.EditorialActivity">
+    tools:context=".ui.editorial.EditorialActivity">
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/label_etEditorial"

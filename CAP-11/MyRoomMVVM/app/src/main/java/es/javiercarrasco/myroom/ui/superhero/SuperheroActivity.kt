@@ -1,4 +1,4 @@
-package es.javiercarrasco.myroom.ui
+package es.javiercarrasco.myroom.ui.superhero
 
 import android.app.ActivityOptions
 import android.content.Intent
@@ -7,29 +7,36 @@ import android.util.Log
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import es.javiercarrasco.myroom.MyRoomApplication
 import es.javiercarrasco.myroom.R
-import es.javiercarrasco.myroom.data.SupersDatabase
-import es.javiercarrasco.myroom.model.Editorial
-import es.javiercarrasco.myroom.model.SuperHero
+import es.javiercarrasco.myroom.data.SupersDataSource
+import es.javiercarrasco.myroom.data.SupersRepository
 import es.javiercarrasco.myroom.databinding.ActivitySuperheroBinding
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
+import es.javiercarrasco.myroom.domain.Editorial
+import es.javiercarrasco.myroom.domain.SuperHero
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 class SuperheroActivity : AppCompatActivity() {
     private lateinit var binding: ActivitySuperheroBinding
-    private lateinit var db: SupersDatabase
+    private lateinit var adapter: ArrayAdapter<String>
     private lateinit var editorialsList: List<Editorial>
+    private var editorialsArray = ArrayList<String>()
+
+    private val vm: SuperheroViewModel by viewModels {
+        val db = (application as MyRoomApplication).supersDatabase
+        val supersDataSource = SupersDataSource(db.supersDAO())
+        val supersRepository = SupersRepository(supersDataSource)
+        SuperheroViewModelFactory(supersRepository)
+    }
 
     private var idSuper = -1
     private var superHero: SuperHero? = null
     private var editorialId = -1 // Versión ArrayAdapter
-
-    // private lateinit var cursor: Cursor // Versión SimpleCursorAdapter
-    // private var cursorPos: Cursor? = null // Versión SimpleCursorAdapter
 
     companion object {
         const val EXTRA_SUPER_ID = "superId"
@@ -54,59 +61,38 @@ class SuperheroActivity : AppCompatActivity() {
 
         idSuper = intent.getIntExtra(EXTRA_SUPER_ID, -1)
 
-        db = (application as MyRoomApplication).supersDatabase
+        // Se crea el adaptador mediante ArrayAdapter.
+        adapter = ArrayAdapter(
+            this@SuperheroActivity,
+            android.R.layout.simple_list_item_activated_1,
+            editorialsArray
+        )
 
-// ********* Aplicando SimpleCursorAdapter ************************************
-        /*    CoroutineScope(Dispatchers.Main).launch {
-                withContext(Dispatchers.IO) {
-                    cursor = db.supersDAO().getAllEditorials2()
-                }
-
-                // Se crea el adaptador mediante SimpleCursorAdapter.
-                val adapter = SimpleCursorAdapter(
-                    this@SuperheroActivity,
-                    android.R.layout.simple_list_item_2,
-                    cursor,
-                    arrayOf(cursor.columnNames[0], cursor.columnNames[1]),
-                    intArrayOf(android.R.id.text1, android.R.id.text2),
-                    SimpleCursorAdapter.FLAG_REGISTER_CONTENT_OBSERVER
-                )
-
-                // Se carga el adaptador en el Spinner.
-                binding.spinner.adapter = adapter
-            } */
-// ******** FIN SimpleCursorAdapter ******************************************
+        // Se carga el adaptador en el Spinner.
+        binding.spinner.adapter = adapter
 
 // ********* Aplicando ArrayAdapter ************************************
-        CoroutineScope(Dispatchers.Main).launch {
-            val adapter: ArrayAdapter<String>
 
-            withContext(Dispatchers.IO) {
-                editorialsList = db.supersDAO().getAllEditorials()
-                superHero = db.supersDAO().getSuperById(idSuper)
-            }
+        // Alternativa para evitar el problema de la des-subscripción.
+        lifecycleScope.launch {
+            // En este método se indica en que estado comenzará a recolectar (STARTED),
+            // y en su opuesto (ON_STOP) se detendrá.
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                vm.state.collect {
+                    editorialsList = it
+                    editorialsArray.clear()
 
-            Log.d("EDITORIALES", editorialsList.size.toString())
-
-            // Se crea un ArrayList<String> con los nombres de las editoriales.
-            val editorialsArray = ArrayList<String>().apply {
-                editorialsList.forEach {
-                    this.add(it.name!!)
+                    // Se crea un ArrayList<String> con los nombres de las editoriales.
+                    it.forEach {
+                        editorialsArray.add(it.name!!)
+                    }
+                    adapter.notifyDataSetChanged()
                 }
             }
-
-            // Se crea el adaptador mediante ArrayAdapter.
-            adapter = ArrayAdapter(
-                this@SuperheroActivity,
-                android.R.layout.simple_list_item_activated_1,
-                editorialsArray
-            )
-
-            // Se carga el adaptador en el Spinner.
-            binding.spinner.adapter = adapter
-
-            showSuperhero()
         }
+
+        showSuperhero()
+
 // ******** FIN ArrayAdapter ******************************************
     }
 
@@ -125,19 +111,19 @@ class SuperheroActivity : AppCompatActivity() {
                 val fab = if (binding.switchFab.isChecked) 1 else 0
 
                 if (idSuper == -1) {
-                    CoroutineScope(Dispatchers.IO).launch {
+                    /*CoroutineScope(Dispatchers.IO).launch {
                         db.supersDAO().insertSuperHero(
                             SuperHero(0, supername, realname, fab, editorialsList[editorialId].idEd)
                         )
-                    }
+                    }*/
                 } else {
-                    CoroutineScope(Dispatchers.IO).launch {
+                    /*CoroutineScope(Dispatchers.IO).launch {
                         db.supersDAO().updateSuperHero(
                             SuperHero(
                                 idSuper, supername, realname, fab, editorialsList[editorialId].idEd
                             )
                         )
-                    }
+                    }*/
                 }
 
                 finish()

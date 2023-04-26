@@ -1,0 +1,31 @@
+package es.javiercarrasco.myroom.data
+
+import es.javiercarrasco.myroom.domain.Editorial
+import es.javiercarrasco.myroom.domain.SuperHero
+import es.javiercarrasco.myroom.domain.SupersWithEditorial
+import kotlinx.coroutines.flow.Flow
+
+class SupersDataSource(private val db: SupersDAO) {
+    val currentSupers: Flow<List<SupersWithEditorial>> = db.getAllSuperHerosWithEditorials()
+    val currentEditorials: Flow<List<Editorial>> = db.getAllEditorials()
+
+    suspend fun deleteSuper(superHero: SuperHero) {
+        db.deleteSuperHero(superHero)
+    }
+
+    suspend fun saveSuper(superHero: SuperHero) {
+        db.insertSuperHero(superHero)
+    }
+
+    suspend fun getSuperById(superId: Int): SuperHero? = db.getSuperById(superId)
+
+    suspend fun deleteEditorial(editorial: Editorial) {
+        db.deleteEditorial(editorial)
+    }
+
+    suspend fun saveEditorial(editorial: Editorial) {
+        db.insertEditorial(editorial)
+    }
+
+    suspend fun getEditorialById(editorialId: Int): Editorial? = db.getEditorialById(editorialId)
+}
