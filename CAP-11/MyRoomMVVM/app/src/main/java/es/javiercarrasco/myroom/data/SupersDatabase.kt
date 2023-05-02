@@ -14,17 +14,9 @@ abstract class SupersDatabase : RoomDatabase() {
 
 @Dao
 interface SupersDAO {
-
-    @Query("SELECT * FROM SuperHero ORDER BY superName")
-    suspend fun getAllSuperHeros(): MutableList<SuperHero>
-
     @Transaction
     @Query("SELECT * FROM SuperHero ORDER BY superName")
     fun getAllSuperHerosWithEditorials(): Flow<List<SupersWithEditorial>>
-
-    @Transaction
-    @Query("SELECT * FROM Editorial ORDER BY name")
-    suspend fun getAllEditorialWithSupers(): MutableList<EditorialWithSupers>
 
     @Query("SELECT * FROM SuperHero WHERE idSuper = :idSuper")
     suspend fun getSuperById(idSuper: Int): SuperHero?
@@ -46,10 +38,4 @@ interface SupersDAO {
 
     @Delete
     suspend fun deleteSuperHero(superHero: SuperHero)
-
-    @Update
-    suspend fun updateEditorial(editorial: Editorial)
-
-    @Update
-    suspend fun updateSuperHero(superHero: SuperHero)
 }

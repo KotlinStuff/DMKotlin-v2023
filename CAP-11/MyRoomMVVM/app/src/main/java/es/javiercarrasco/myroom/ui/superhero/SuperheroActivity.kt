@@ -76,7 +76,6 @@ class SuperheroActivity : AppCompatActivity() {
             // IMPORTANTE: El repeatOnLifecycle + collect, suspende al finalizar,
             // por lo que quede por debajo no se ejecutará.
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-
                 vm.stateEd.collect {
                     editorialsList = it
                     editorialsArray.clear()
@@ -91,13 +90,15 @@ class SuperheroActivity : AppCompatActivity() {
                     vm.stateSuper.collect { superCollect ->
                         binding.etSuperName.setText(superCollect.superName)
                         binding.etRealName.setText(superCollect.realName)
-                        println("SUPER -> ${superCollect.superName}")
+                        println("SUPER -> ${superCollect.idSuper}")
 
-                        /*binding.spinner.setSelection(
-                            editorialsList.withIndex().first {
-                                it.value.idEd == superCollect.idEditorial
-                            }.index
-                        )*/
+                        if (superCollect.idSuper != 0) {
+                            binding.spinner.setSelection(
+                                editorialsList.withIndex().first {
+                                    it.value.idEd == superCollect.idEditorial
+                                }.index
+                            )
+                        }
 
                         binding.switchFab.isChecked = superCollect.favorite == 1
                     }
@@ -145,18 +146,9 @@ class SuperheroActivity : AppCompatActivity() {
                     "Spinner",
                     "${editorialsList[pos].idEd} - ${editorialsList[pos].name}"
                 )
-
-                if (editorialId != -1) {
-                    binding.spinner.setSelection(
-                        editorialsList.withIndex().first {
-                            it.value.idEd == vm.stateSuper.value.idEditorial
-                        }.index
-                    )
-                }
             }
 
             override fun onNothingSelected(p0: AdapterView<*>?) {}
         }
-
     }
 }
