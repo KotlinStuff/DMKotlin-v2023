@@ -24,18 +24,17 @@ import kotlinx.coroutines.launch
 class SuperheroActivity : AppCompatActivity() {
     private lateinit var binding: ActivitySuperheroBinding
     private lateinit var adapter: ArrayAdapter<String>
-    private lateinit var editorialsList: List<Editorial>
+    private var editorialsList: List<Editorial> = emptyList()
     private var editorialsArray = ArrayList<String>()
 
     private val vm: SuperheroViewModel by viewModels {
         val db = (application as MyRoomApplication).supersDatabase
         val supersDataSource = SupersDataSource(db.supersDAO())
         val supersRepository = SupersRepository(supersDataSource)
-        SuperheroViewModelFactory(supersRepository)
+        val superId = intent.getIntExtra(EXTRA_SUPER_ID, 0)
+        SuperheroViewModelFactory(supersRepository, superId)
     }
 
-    private var idSuper = -1
-    private var superHero: SuperHero? = null
     private var editorialId = -1 // Versión ArrayAdapter
 
     companion object {
@@ -59,8 +58,6 @@ class SuperheroActivity : AppCompatActivity() {
         setContentView(binding.root)
         supportActionBar!!.title = getString(R.string.txt_superhero)
 
-        idSuper = intent.getIntExtra(EXTRA_SUPER_ID, -1)
-
         // Se crea el adaptador mediante ArrayAdapter.
         adapter = ArrayAdapter(
             this@SuperheroActivity,
@@ -71,14 +68,16 @@ class SuperheroActivity : AppCompatActivity() {
         // Se carga el adaptador en el Spinner.
         binding.spinner.adapter = adapter
 
-// ********* Aplicando ArrayAdapter ************************************
-
         // Alternativa para evitar el problema de la des-subscripción.
         lifecycleScope.launch {
             // En este método se indica en que estado comenzará a recolectar (STARTED),
             // y en su opuesto (ON_STOP) se detendrá.
+            //
+            // IMPORTANTE: El repeatOnLifecycle + collect, suspende al finalizar,
+            // por lo que quede por debajo no se ejecutará.
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                vm.state.collect {
+
+                vm.stateEd.collect {
                     editorialsList = it
                     editorialsArray.clear()
 
@@ -87,13 +86,24 @@ class SuperheroActivity : AppCompatActivity() {
                         editorialsArray.add(it.name!!)
                     }
                     adapter.notifyDataSetChanged()
+
+                    // Se recoge el Superhéroe si existe.
+                    vm.stateSuper.collect { superCollect ->
+                        binding.etSuperName.setText(superCollect.superName)
+                        binding.etRealName.setText(superCollect.realName)
+                        println("SUPER -> ${superCollect.superName}")
+
+                        /*binding.spinner.setSelection(
+                            editorialsList.withIndex().first {
+                                it.value.idEd == superCollect.idEditorial
+                            }.index
+                        )*/
+
+                        binding.switchFab.isChecked = superCollect.favorite == 1
+                    }
                 }
             }
         }
-
-        showSuperhero()
-
-// ******** FIN ArrayAdapter ******************************************
     }
 
     override fun onStart() {
@@ -110,21 +120,14 @@ class SuperheroActivity : AppCompatActivity() {
                 val realname = binding.etRealName.text!!.trim().toString()
                 val fab = if (binding.switchFab.isChecked) 1 else 0
 
-                if (idSuper == -1) {
-                    /*CoroutineScope(Dispatchers.IO).launch {
-                        db.supersDAO().insertSuperHero(
-                            SuperHero(0, supername, realname, fab, editorialsList[editorialId].idEd)
-                        )
-                    }*/
-                } else {
-                    /*CoroutineScope(Dispatchers.IO).launch {
-                        db.supersDAO().updateSuperHero(
-                            SuperHero(
-                                idSuper, supername, realname, fab, editorialsList[editorialId].idEd
-                            )
-                        )
-                    }*/
-                }
+                vm.save(
+                    SuperHero(
+                        superName = supername,
+                        realName = realname,
+                        favorite = fab,
+                        idEditorial = editorialId
+                    )
+                )
 
                 finish()
             }
@@ -137,40 +140,23 @@ class SuperheroActivity : AppCompatActivity() {
                 pos: Int,
                 id: Long
             ) {
-                // Versión ArrayAdapter
-                editorialId = pos
+                editorialId = editorialsList[pos].idEd
                 Log.d(
                     "Spinner",
                     "${editorialsList[pos].idEd} - ${editorialsList[pos].name}"
                 )
 
-                // Versión SimpleCursorAdapter
-                /* cursorPos = binding.spinner.getItemAtPosition(pos) as Cursor
-                Log.d(
-                    "Spinner",
-                    "${cursorPos!!.position} - ${cursorPos!!.getString(1)}"
-                )*/
+                if (editorialId != -1) {
+                    binding.spinner.setSelection(
+                        editorialsList.withIndex().first {
+                            it.value.idEd == vm.stateSuper.value.idEditorial
+                        }.index
+                    )
+                }
             }
 
             override fun onNothingSelected(p0: AdapterView<*>?) {}
         }
-    }
 
-    private fun showSuperhero() {
-        // Se abre detalle del ítem.
-        if (idSuper != -1) {
-            if (superHero != null) {
-                binding.etSuperName.setText(superHero!!.superName)
-                binding.etRealName.setText(superHero!!.realName)
-
-                binding.spinner.setSelection(
-                    editorialsList.withIndex().first {
-                        it.value.idEd == superHero!!.idEditorial
-                    }.index
-                )
-
-                binding.switchFab.isChecked = superHero!!.favorite == 1
-            }
-        }
     }
 }
