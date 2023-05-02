@@ -1,6 +1,9 @@
 # DMKotlin-v2023
 Projectos base del libro "Desarrollo de aplicaciones móviles en Kotlin (Revisión 2023)"
 
+[![Kotlin](https://img.shields.io/badge/Code-Kotlin-blueviolet)](https://kotlinlang.org/)
+[![LISENCE](https://img.shields.io/badge/Lisence-MIT-green)]()
+
 # Projects
 
 Código fuente de todos los ejemplos mostrados en los apuntes del módulo de <b>Programación Multimedia y Dispositivos Móviles</b> (PMDM) que se imparte en el Ciclo Formativo de Grado Superior de <b>Desarrollo de Aplicaciones Multiplataforma</b>.
