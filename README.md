@@ -2,7 +2,7 @@
 Projectos base del libro "Desarrollo de aplicaciones móviles en Kotlin (Revisión 2023)"
 
 [![Kotlin](https://img.shields.io/badge/Code-Kotlin-blueviolet)](https://kotlinlang.org/)
-[![LISENCE](https://img.shields.io/badge/Lisence-MIT-green)]()
+[![LISENCE](https://img.shields.io/badge/Lisence-MIT-green)](https://github.com/KotlinStuff/DMKotlin-v2023/blob/main/LICENSE)
 
 # Projects
 
