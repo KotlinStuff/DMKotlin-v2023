@@ -10,9 +10,6 @@
     <string name="hint_supername">Nombre del superhéroe</string>
     <string name="hint_realname">Nombre real</string>
     <string name="txt_fab">Favorito</string>
-    <string name="txt_listview">ListView</string>
-    <string name="txt_recyclerview">RecyclerView</string>
-    <string name="txt_relationship">Relaciones</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="warning_delete">Borrado %s</string>
+    <string name="warning_undo">Deshacer</string>
 </resources>

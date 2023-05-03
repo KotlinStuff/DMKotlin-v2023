@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import es.javiercarrasco.myroom.data.SupersRepository
-import es.javiercarrasco.myroom.domain.SuperHero
+import es.javiercarrasco.myroom.domain.model.SuperHero
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch

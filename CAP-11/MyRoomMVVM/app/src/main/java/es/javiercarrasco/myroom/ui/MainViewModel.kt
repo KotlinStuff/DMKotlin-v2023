@@ -1,10 +1,10 @@
-package es.javiercarrasco.myroom
+package es.javiercarrasco.myroom.ui
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import es.javiercarrasco.myroom.data.SupersRepository
-import es.javiercarrasco.myroom.domain.SuperHero
+import es.javiercarrasco.myroom.domain.model.SuperHero
 import kotlinx.coroutines.launch
 
 class MainViewModel(private val supersRepository: SupersRepository) : ViewModel() {
@@ -13,6 +13,12 @@ class MainViewModel(private val supersRepository: SupersRepository) : ViewModel(
     fun onSuperDelete(superHero: SuperHero) {
         viewModelScope.launch {
             supersRepository.deleteSuper(superHero)
+        }
+    }
+
+    fun onSuperInsert(superHero: SuperHero) {
+        viewModelScope.launch {
+            supersRepository.saveSuper(superHero)
         }
     }
 

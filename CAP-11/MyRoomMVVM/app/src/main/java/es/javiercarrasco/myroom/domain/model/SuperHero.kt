@@ -1,4 +1,4 @@
-package es.javiercarrasco.myroom.domain
+package es.javiercarrasco.myroom.domain.model
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey

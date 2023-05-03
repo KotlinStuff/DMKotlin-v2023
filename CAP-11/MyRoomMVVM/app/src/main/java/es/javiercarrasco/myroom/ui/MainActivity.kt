@@ -1,4 +1,4 @@
-package es.javiercarrasco.myroom
+package es.javiercarrasco.myroom.ui
 
 import android.os.Bundle
 import android.view.Menu
@@ -8,6 +8,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import com.google.android.material.snackbar.Snackbar
+import es.javiercarrasco.myroom.MyRoomApplication
+import es.javiercarrasco.myroom.R
 import es.javiercarrasco.myroom.adapters.SupersRecyclerAdapter
 import es.javiercarrasco.myroom.data.SupersDataSource
 import es.javiercarrasco.myroom.data.SupersRepository
@@ -39,13 +42,22 @@ class MainActivity : AppCompatActivity() {
                     it.idSuper
                 )
             },
-            onSuperHeroLongClick = { vm.onSuperDelete(it) },
+            onSuperHeroLongClick = {
+                vm.onSuperDelete(it)
+                Snackbar.make(
+                    binding.root,
+                    getString(R.string.warning_delete, it.superName),
+                    Snackbar.LENGTH_LONG
+                ).setAction(R.string.warning_undo) { v ->
+                    vm.onSuperInsert(it)
+                }.show()
+            },
             onFabClick = { vm.onFabSuper(it) }
         )
 
         binding.recycler.adapter = adapter
 
-        // Alternativa para evitar el problema de la des-subscripción.
+        // Se evitan problemas de la des-subscripción.
         lifecycleScope.launch {
             // En este método se indica en que estado comenzará a recolectar (STARTED),
             // y en su opuesto (ON_STOP) se detendrá.
@@ -56,16 +68,6 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
-
-//    private fun updateRecycler() {
-//        CoroutineScope(Dispatchers.Main).launch {
-//            withContext(Dispatchers.IO) {
-//                db.supersDAO().getAllSuperHerosWithEditorials()
-//            }.run {
-//                adapter.submitList(this)
-//            }
-//        }
-//    }
 
     // Gestión del menú principal
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

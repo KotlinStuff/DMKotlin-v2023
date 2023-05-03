@@ -17,8 +17,8 @@ import es.javiercarrasco.myroom.R
 import es.javiercarrasco.myroom.data.SupersDataSource
 import es.javiercarrasco.myroom.data.SupersRepository
 import es.javiercarrasco.myroom.databinding.ActivitySuperheroBinding
-import es.javiercarrasco.myroom.domain.Editorial
-import es.javiercarrasco.myroom.domain.SuperHero
+import es.javiercarrasco.myroom.domain.model.Editorial
+import es.javiercarrasco.myroom.domain.model.SuperHero
 import kotlinx.coroutines.launch
 
 class SuperheroActivity : AppCompatActivity() {

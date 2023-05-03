@@ -10,6 +10,7 @@ import es.javiercarrasco.myroom.R
 import es.javiercarrasco.myroom.data.SupersDataSource
 import es.javiercarrasco.myroom.data.SupersRepository
 import es.javiercarrasco.myroom.databinding.ActivityEditorialBinding
+import es.javiercarrasco.myroom.domain.SaveEditorialUseCase
 
 class EditorialActivity : AppCompatActivity() {
     private lateinit var binding: ActivityEditorialBinding
@@ -18,7 +19,9 @@ class EditorialActivity : AppCompatActivity() {
         val db = (application as MyRoomApplication).supersDatabase
         val supersDataSource = SupersDataSource(db.supersDAO())
         val supersRepository = SupersRepository(supersDataSource)
-        EditorialViewModelFactory(supersRepository)
+        val saveEditorialUseCase = SaveEditorialUseCase(supersRepository)
+
+        EditorialViewModelFactory(saveEditorialUseCase)
     }
 
     companion object {

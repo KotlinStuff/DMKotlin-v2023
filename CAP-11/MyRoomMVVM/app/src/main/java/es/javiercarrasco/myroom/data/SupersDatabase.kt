@@ -1,10 +1,9 @@
 package es.javiercarrasco.myroom.data
 
 import androidx.room.*
-import es.javiercarrasco.myroom.domain.Editorial
-import es.javiercarrasco.myroom.domain.EditorialWithSupers
-import es.javiercarrasco.myroom.domain.SuperHero
-import es.javiercarrasco.myroom.domain.SupersWithEditorial
+import es.javiercarrasco.myroom.domain.model.Editorial
+import es.javiercarrasco.myroom.domain.model.SuperHero
+import es.javiercarrasco.myroom.domain.model.SupersWithEditorial
 import kotlinx.coroutines.flow.Flow
 
 @Database(entities = [SuperHero::class, Editorial::class], version = 1)
