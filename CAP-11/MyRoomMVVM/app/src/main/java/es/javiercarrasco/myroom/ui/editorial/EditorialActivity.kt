@@ -53,7 +53,7 @@ class EditorialActivity : AppCompatActivity() {
 
                 vm.save(name)
 
-                finish()
+                finishAfterTransition()
             }
         }
     }

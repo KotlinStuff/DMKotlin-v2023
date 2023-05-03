@@ -130,7 +130,7 @@ class SuperheroActivity : AppCompatActivity() {
                     )
                 )
 
-                finish()
+                finishAfterTransition()
             }
         }
 
