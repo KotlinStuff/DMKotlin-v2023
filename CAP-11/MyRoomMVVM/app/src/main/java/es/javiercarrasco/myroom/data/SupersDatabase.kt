@@ -23,6 +23,9 @@ interface SupersDAO {
     @Query("SELECT * FROM Editorial")
     fun getAllEditorials(): Flow<List<Editorial>>
 
+    @Query("SELECT count(idEd) FROM Editorial")
+    suspend fun getNumEditorials(): Int
+
     @Query("SELECT * FROM Editorial WHERE idEd = :editorialId")
     suspend fun getEditorialById(editorialId: Int): Editorial?
 

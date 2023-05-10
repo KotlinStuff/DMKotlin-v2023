@@ -28,4 +28,6 @@ class SupersDataSource(private val db: SupersDAO) {
     }
 
     suspend fun getEditorialById(editorialId: Int): Editorial? = db.getEditorialById(editorialId)
+
+    suspend fun getNumEditorials(): Int = db.getNumEditorials()
 }

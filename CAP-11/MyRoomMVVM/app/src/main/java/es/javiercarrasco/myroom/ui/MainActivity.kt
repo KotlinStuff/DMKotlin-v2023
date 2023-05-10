@@ -17,6 +17,7 @@ import es.javiercarrasco.myroom.data.SupersRepository
 import es.javiercarrasco.myroom.databinding.ActivityMainBinding
 import es.javiercarrasco.myroom.ui.editorial.EditorialActivity
 import es.javiercarrasco.myroom.ui.superhero.SuperheroActivity
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
@@ -69,6 +70,13 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    override fun onStart() {
+        super.onStart()
+
+        vm.getNumEditorials()
+        println("NUM EDs: ${vm.getNumEditorials()}")
+    }
+
     // Gestión del menú principal
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.main_menu, menu)
@@ -83,7 +91,9 @@ class MainActivity : AppCompatActivity() {
             }
 
             R.id.opAddSuper -> {
-                SuperheroActivity.navigate(this@MainActivity)
+                println("NUM EDs: ${vm.getNumEditorials()}")
+                if (vm.getNumEditorials() > 0)
+                    SuperheroActivity.navigate(this@MainActivity)
                 true
             }
 
