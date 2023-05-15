@@ -17,12 +17,13 @@ import es.javiercarrasco.myroom.data.SupersRepository
 import es.javiercarrasco.myroom.databinding.ActivityMainBinding
 import es.javiercarrasco.myroom.ui.editorial.EditorialActivity
 import es.javiercarrasco.myroom.ui.superhero.SuperheroActivity
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var adapter: SupersRecyclerAdapter
+
+    private var numEditorials = 0
 
     private val vm: MainViewModel by viewModels {
         val db = (application as MyRoomApplication).supersDatabase
@@ -73,8 +74,12 @@ class MainActivity : AppCompatActivity() {
     override fun onStart() {
         super.onStart()
 
-        vm.getNumEditorials()
-        println("NUM EDs: ${vm.getNumEditorials()}")
+        lifecycleScope.launch {
+            vm.stateNumEd.collect {
+                println("NUM EDs: ${it}")
+                numEditorials = it
+            }
+        }
     }
 
     // Gestión del menú principal
@@ -91,8 +96,8 @@ class MainActivity : AppCompatActivity() {
             }
 
             R.id.opAddSuper -> {
-                println("NUM EDs: ${vm.getNumEditorials()}")
-                if (vm.getNumEditorials() > 0)
+                println("NUM EDs 2: ${numEditorials}")
+                if (numEditorials > 0)
                     SuperheroActivity.navigate(this@MainActivity)
                 true
             }

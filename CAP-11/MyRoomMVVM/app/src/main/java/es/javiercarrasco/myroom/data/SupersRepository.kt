@@ -8,6 +8,7 @@ import kotlinx.coroutines.flow.Flow
 class SupersRepository(private val supersRoomDataSource: SupersDataSource) {
     val currentSupers: Flow<List<SupersWithEditorial>> = supersRoomDataSource.currentSupers
     val currentEditorials: Flow<List<Editorial>> = supersRoomDataSource.currentEditorials
+    val currentNumEditorials: Flow<Int> = supersRoomDataSource.currentNumEditorials
 
     suspend fun deleteSuper(superHero: SuperHero) {
         supersRoomDataSource.deleteSuper(superHero)
@@ -30,6 +31,4 @@ class SupersRepository(private val supersRoomDataSource: SupersDataSource) {
 
     suspend fun getEditorialById(editorialId: Int): Editorial? =
         supersRoomDataSource.getEditorialById(editorialId)
-
-    suspend fun getNumEditorials() : Int = supersRoomDataSource.getNumEditorials()
 }

@@ -5,28 +5,11 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import es.javiercarrasco.myroom.data.SupersRepository
 import es.javiercarrasco.myroom.domain.model.SuperHero
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 class MainViewModel(private val supersRepository: SupersRepository) : ViewModel() {
     val state = supersRepository.currentSupers
-
-    var stateEd: Int = 0
-
-    init {
-        stateEd = getNumEditorials()
-    }
-
-    fun getNumEditorials(): Int {
-        viewModelScope.launch {
-            stateEd = supersRepository.getNumEditorials()
-        }.apply {
-            return stateEd
-        }
-    }
+    var stateNumEd = supersRepository.currentNumEditorials
 
     fun onSuperDelete(superHero: SuperHero) {
         viewModelScope.launch {

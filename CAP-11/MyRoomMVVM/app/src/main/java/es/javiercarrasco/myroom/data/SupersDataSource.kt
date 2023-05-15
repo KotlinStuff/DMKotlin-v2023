@@ -8,6 +8,7 @@ import kotlinx.coroutines.flow.Flow
 class SupersDataSource(private val db: SupersDAO) {
     val currentSupers: Flow<List<SupersWithEditorial>> = db.getAllSuperHerosWithEditorials()
     val currentEditorials: Flow<List<Editorial>> = db.getAllEditorials()
+    val currentNumEditorials : Flow<Int> = db.getNumEditorials()
 
     suspend fun deleteSuper(superHero: SuperHero) {
         db.deleteSuperHero(superHero)
@@ -28,6 +29,4 @@ class SupersDataSource(private val db: SupersDAO) {
     }
 
     suspend fun getEditorialById(editorialId: Int): Editorial? = db.getEditorialById(editorialId)
-
-    suspend fun getNumEditorials(): Int = db.getNumEditorials()
 }
