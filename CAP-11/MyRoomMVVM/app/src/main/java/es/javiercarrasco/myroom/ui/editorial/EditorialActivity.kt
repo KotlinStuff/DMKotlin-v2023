@@ -48,10 +48,7 @@ class EditorialActivity : AppCompatActivity() {
                 binding.labelEtEditorial.error = getString(R.string.warning_empty_field)
             else {
                 binding.labelEtEditorial.error = null
-
-                val name = binding.etEditorial.text!!.trim().toString()
-
-                vm.save(name)
+                vm.save(binding.etEditorial.text!!.trim().toString())
 
                 finishAfterTransition()
             }

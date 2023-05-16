@@ -15,7 +15,7 @@ abstract class SupersDatabase : RoomDatabase() {
 interface SupersDAO {
     @Transaction
     @Query("SELECT * FROM SuperHero ORDER BY superName")
-    fun getAllSuperHerosWithEditorials(): Flow<List<SupersWithEditorial>>
+    fun getSuperHerosWithEditorials(): Flow<List<SupersWithEditorial>>
 
     @Query("SELECT * FROM SuperHero WHERE idSuper = :idSuper")
     suspend fun getSuperById(idSuper: Int): SuperHero?

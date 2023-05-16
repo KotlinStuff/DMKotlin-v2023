@@ -6,9 +6,9 @@ import es.javiercarrasco.myroom.domain.model.SupersWithEditorial
 import kotlinx.coroutines.flow.Flow
 
 class SupersDataSource(private val db: SupersDAO) {
-    val currentSupers: Flow<List<SupersWithEditorial>> = db.getAllSuperHerosWithEditorials()
+    val currentSupers: Flow<List<SupersWithEditorial>> = db.getSuperHerosWithEditorials()
     val currentEditorials: Flow<List<Editorial>> = db.getAllEditorials()
-    val currentNumEditorials : Flow<Int> = db.getNumEditorials()
+    val currentNumEditorials: Flow<Int> = db.getNumEditorials()
 
     suspend fun deleteSuper(superHero: SuperHero) {
         db.deleteSuperHero(superHero)
@@ -28,5 +28,5 @@ class SupersDataSource(private val db: SupersDAO) {
         db.insertEditorial(editorial)
     }
 
-    suspend fun getEditorialById(editorialId: Int): Editorial? = db.getEditorialById(editorialId)
+    suspend fun getEdById(editorialId: Int): Editorial? = db.getEditorialById(editorialId)
 }

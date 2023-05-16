@@ -30,5 +30,5 @@ class SupersRepository(private val supersRoomDataSource: SupersDataSource) {
     }
 
     suspend fun getEditorialById(editorialId: Int): Editorial? =
-        supersRoomDataSource.getEditorialById(editorialId)
+        supersRoomDataSource.getEdById(editorialId)
 }

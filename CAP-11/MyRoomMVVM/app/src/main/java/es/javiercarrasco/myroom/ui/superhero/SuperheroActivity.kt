@@ -142,10 +142,7 @@ class SuperheroActivity : AppCompatActivity() {
                 id: Long
             ) {
                 editorialId = editorialsList[pos].idEd
-                Log.d(
-                    "Spinner",
-                    "${editorialsList[pos].idEd} - ${editorialsList[pos].name}"
-                )
+                Log.d("Spinner", "${editorialsList[pos].idEd} - ${editorialsList[pos].name}")
             }
 
             override fun onNothingSelected(p0: AdapterView<*>?) {}
