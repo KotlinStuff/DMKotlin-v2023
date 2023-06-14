@@ -26,6 +26,7 @@ class SuperheroActivity : AppCompatActivity() {
     private lateinit var adapter: ArrayAdapter<String>
     private var editorialsList: List<Editorial> = emptyList()
     private var editorialsArray = ArrayList<String>()
+    private var editorialId = -1 // Versión ArrayAdapter para el Spinner.
 
     private val vm: SuperheroViewModel by viewModels {
         val db = (application as MyRoomApplication).supersDatabase
@@ -35,19 +36,14 @@ class SuperheroActivity : AppCompatActivity() {
         SuperheroViewModelFactory(supersRepository, superId)
     }
 
-    private var editorialId = -1 // Versión ArrayAdapter
-
     companion object {
         const val EXTRA_SUPER_ID = "superId"
         fun navigate(activity: AppCompatActivity, superId: Int = -1) {
             activity.startActivity(
-                Intent(
-                    activity,
-                    SuperheroActivity::class.java
-                ).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP).apply {
-                    putExtra(EXTRA_SUPER_ID, superId)
-                },
-                ActivityOptions.makeSceneTransitionAnimation(activity).toBundle()
+                Intent(activity, SuperheroActivity::class.java)
+                    .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP).apply {
+                        putExtra(EXTRA_SUPER_ID, superId)
+                    }, ActivityOptions.makeSceneTransitionAnimation(activity).toBundle()
             )
         }
     }
@@ -68,7 +64,7 @@ class SuperheroActivity : AppCompatActivity() {
         // Se carga el adaptador en el Spinner.
         binding.spinner.adapter = adapter
 
-        // Alternativa para evitar el problema de la des-subscripción.
+        // Alternativa para evitar el problema de la pérdida de suscripción.
         lifecycleScope.launch {
             // En este método se indica en que estado comenzará a recolectar (STARTED),
             // y en su opuesto (ON_STOP) se detendrá.
@@ -93,7 +89,7 @@ class SuperheroActivity : AppCompatActivity() {
                         println("SUPER -> ${superCollect.idSuper}")
 
                         if (superCollect.idSuper != 0) {
-                            binding.spinner.setSelection(
+                            binding.spinner.setSelection( // Establece la selección del Spinner.
                                 editorialsList.withIndex().first {
                                     it.value.idEd == superCollect.idEditorial
                                 }.index

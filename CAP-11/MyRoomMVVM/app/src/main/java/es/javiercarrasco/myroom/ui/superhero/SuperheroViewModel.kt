@@ -10,21 +10,20 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 class SuperheroViewModel(
-    private val supersRepository: SupersRepository,
-    private val superId: Int
+    private val supersRepository: SupersRepository, private val superId: Int
 ) : ViewModel() {
 
     private val _stateSuper = MutableStateFlow(SuperHero(0))
     val stateSuper = _stateSuper.asStateFlow()
 
+    // Recoge las editoriales disponibles.
     val stateEd = supersRepository.currentEditorials
 
     // Se intenta recuperar el superhéroe que se pasa por id.
     init {
         viewModelScope.launch {
             val superhero = supersRepository.getSuperById(superId)
-            if (superhero != null)
-                _stateSuper.value = superhero
+            if (superhero != null) _stateSuper.value = superhero
         }
     }
 
@@ -44,10 +43,8 @@ class SuperheroViewModel(
 // Si no tiene parámetros no sería necesario crearlo.
 @Suppress("UNCHECKED_CAST")
 class SuperheroViewModelFactory(
-    private val supersRepository: SupersRepository,
-    private val superId: Int
-) :
-    ViewModelProvider.Factory {
+    private val supersRepository: SupersRepository, private val superId: Int
+) : ViewModelProvider.Factory {
 
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         return SuperheroViewModel(supersRepository, superId) as T
