@@ -39,10 +39,7 @@ class MainActivity : AppCompatActivity() {
 
         adapter = SupersRecyclerAdapter(
             onSuperHeroClick = {
-                SuperheroActivity.navigate(
-                    this@MainActivity,
-                    it.idSuper
-                )
+                SuperheroActivity.navigate(this@MainActivity, it.idSuper)
             },
             onSuperHeroLongClick = {
                 vm.onSuperDelete(it)
@@ -59,7 +56,7 @@ class MainActivity : AppCompatActivity() {
 
         binding.recycler.adapter = adapter
 
-        // Se evitan problemas de la des-subscripción.
+        // Se evitan problemas con la pérdida de suscripción.
         lifecycleScope.launch {
             // En este método se indica en que estado comenzará a recolectar (STARTED),
             // y en su opuesto (ON_STOP) se detendrá.
