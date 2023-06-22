@@ -35,9 +35,7 @@ class MainViewModel(private val supersRepository: SupersRepository) : ViewModel(
 
 // Si no tiene parámetros no sería necesario crearlo.
 @Suppress("UNCHECKED_CAST")
-class MainViewModelFactory(
-    private val supersRepository: SupersRepository
-) :
+class MainViewModelFactory(private val supersRepository: SupersRepository) :
     ViewModelProvider.Factory {
 
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
