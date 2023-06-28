@@ -1,7 +1,9 @@
 package es.javiercarrasco.myokhttp
 
 import android.os.Bundle
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.lifecycleScope
 import es.javiercarrasco.myokhttp.databinding.ActivityMainBinding
 import kotlinx.coroutines.Dispatchers
@@ -13,6 +15,7 @@ import java.io.IOException
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
+    private val vm: MainViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -20,27 +23,19 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         if (checkConnection(this)) {
-            var pageContent = ""
-            lifecycleScope.launch {
-                pageContent = downloadWebPage("https://www.javiercarrasco.es/")
-                println(pageContent)
-                binding.textView.text = pageContent
-            }
-        } else binding.textView.text = getString(R.string.ConnectionOk)
-    }
+            // Sin ViewModel
+//            var pageContent = ""
+//            lifecycleScope.launch {
+//                pageContent = downloadWebPage("https://www.javiercarrasco.es/")
+//                println(pageContent)
+//                binding.textView.text = pageContent
+//            }
 
-    suspend fun downloadWebPage(url: String): String {
-        return withContext(Dispatchers.IO) {
-            try {
-                val request = Request.Builder() // import okhttp3.Request
-                    .url(url)
-                    .build()
-                val response = OkHttpClient().newCall(request).execute()
-                response.body!!.string()
-            } catch (e: IOException) {
-                val response = e.message
-                "ERROR: $response"
+            // Con ViewModel
+            vm.pageContent.observe(this) {
+                binding.textView.text = it
             }
-        }
+
+        } else binding.textView.text = getString(R.string.ConnectionOk)
     }
 }
