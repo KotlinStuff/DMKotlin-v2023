@@ -3,15 +3,7 @@ package es.javiercarrasco.myokhttp
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.lifecycleScope
 import es.javiercarrasco.myokhttp.databinding.ActivityMainBinding
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
-import okhttp3.OkHttpClient
-import okhttp3.Request
-import java.io.IOException
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
@@ -36,6 +28,6 @@ class MainActivity : AppCompatActivity() {
                 binding.textView.text = it
             }
 
-        } else binding.textView.text = getString(R.string.ConnectionOk)
+        } else binding.textView.text = getString(R.string.NoConnection)
     }
 }

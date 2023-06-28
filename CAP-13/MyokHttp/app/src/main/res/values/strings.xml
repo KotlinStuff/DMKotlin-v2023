@@ -1,5 +1,4 @@
 <resources>
     <string name="app_name">My OkHttp</string>
-    <string name="noConnection">Hay conexión a Internet</string>
-    <string name="ConnectionOk">No hay conexión a Internet</string>
+    <string name="NoConnection">No hay conexión a Internet</string>
 </resources>
