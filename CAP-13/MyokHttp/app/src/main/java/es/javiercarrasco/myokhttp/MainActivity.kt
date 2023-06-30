@@ -3,6 +3,7 @@ package es.javiercarrasco.myokhttp
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
 import es.javiercarrasco.myokhttp.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
@@ -27,7 +28,6 @@ class MainActivity : AppCompatActivity() {
             vm.pageContent.observe(this) {
                 binding.textView.text = it
             }
-
         } else binding.textView.text = getString(R.string.NoConnection)
     }
 }
