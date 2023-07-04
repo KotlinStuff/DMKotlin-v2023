@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">My OkHttp 3</string>
+    <string name="NoConnection">No hay conexión a Internet</string>
+</resources>
