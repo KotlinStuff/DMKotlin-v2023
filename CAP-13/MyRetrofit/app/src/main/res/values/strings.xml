@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">My Retrofit2 Store</string>
+    <string name="txtCargando">Cargando...</string>
 </resources>

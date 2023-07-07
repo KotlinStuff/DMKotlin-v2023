@@ -8,21 +8,21 @@ import retrofit2.http.GET
 
 class Retrofit2Api {
     companion object {
-        fun getRetrofit(): Fakestoreapi {
+        fun getRetrofit(): FakestoreApi {
             return Retrofit.Builder()
                 .baseUrl("https://fakestoreapi.com/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build()
-                .create(Fakestoreapi::class.java)
+                .create(FakestoreApi::class.java)
         }
     }
 }
 
-interface Fakestoreapi {
+interface FakestoreApi {
     @GET("products")
     suspend fun getProducts(): List<Products>
 }
 
-interface FakestoreapiFlow {
+interface FakestoreApiFlow {
     fun getProducts(): Flow<List<Products>>
 }
