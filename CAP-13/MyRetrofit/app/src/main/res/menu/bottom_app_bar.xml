@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <item
+        android:id="@+id/itemBottom1"
+        android:enabled="true"
+        android:icon="@drawable/ic_android_black"
+        android:title="@string/txtTodos" />
+    <item
+        android:id="@+id/itemBottom2"
+        android:enabled="true"
+        android:icon="@drawable/ic_electronic"
+        android:title="Item2" />
+    <item
+        android:id="@+id/itemBottom3"
+        android:enabled="true"
+        android:icon="@drawable/ic_diamond"
+        android:title="Item3" />
+    <item
+        android:id="@+id/itemBottom4"
+        android:enabled="true"
+        android:icon="@drawable/ic_man"
+        android:title="Item4" />
+    <item
+        android:id="@+id/itemBottom5"
+        android:enabled="true"
+        android:icon="@drawable/ic_woman"
+        android:title="Item5" />
+</menu>
