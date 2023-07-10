@@ -1,4 +1,6 @@
 <resources>
     <string name="app_name">My Retrofit2 Store</string>
     <string name="txtCargando">Cargando...</string>
+
+    <string name="txtPrecio">%1$.2f €</string>
 </resources>
