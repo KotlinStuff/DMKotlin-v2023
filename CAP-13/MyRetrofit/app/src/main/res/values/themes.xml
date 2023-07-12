@@ -6,7 +6,14 @@
     </style>
 
     <style name="Theme.MyRetrofit" parent="Base.Theme.MyRetrofit">
-        <item name="android:statusBarColor">@color/colorPrimary</item>
+        <item name="colorPrimary">@color/myColorPrimary</item>
+        <item name="colorSecondary">@color/myColorSecondary</item>
+        <item name="colorSurfaceContainer">#E64A19</item>
+<!--        <item name="android:statusBarColor">@color/myColorPrimary</item>-->
         <item name="android:windowLightStatusBar">true</item>
+
+        <item name="android:navigationBarColor">@color/myColorPrimary</item>
     </style>
 </resources>
+
+<!--    https://m3.material.io/styles/color/the-color-system/tokens -->

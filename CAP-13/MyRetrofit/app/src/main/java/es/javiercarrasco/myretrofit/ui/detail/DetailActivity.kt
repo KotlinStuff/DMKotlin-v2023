@@ -4,23 +4,15 @@ import android.app.ActivityOptions
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.viewModels
-import com.google.android.material.snackbar.Snackbar
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.WindowCompat
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import androidx.navigation.findNavController
-import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.navigateUp
-import androidx.navigation.ui.setupActionBarWithNavController
 import com.bumptech.glide.Glide
 import es.javiercarrasco.myretrofit.R
 import es.javiercarrasco.myretrofit.data.StoreDataSource
 import es.javiercarrasco.myretrofit.data.StoreRepository
 import es.javiercarrasco.myretrofit.databinding.ActivityDetailBinding
-import es.javiercarrasco.myretrofit.ui.main.MainViewModel
-import es.javiercarrasco.myretrofit.ui.main.MainViewModelFactory
 import kotlinx.coroutines.launch
 
 class DetailActivity : AppCompatActivity() {

@@ -11,20 +11,20 @@
         android:id="@+id/itemBottom2"
         android:enabled="true"
         android:icon="@drawable/ic_electronic"
-        android:title="Item2" />
+        android:title="" />
     <item
         android:id="@+id/itemBottom3"
         android:enabled="true"
         android:icon="@drawable/ic_diamond"
-        android:title="Item3" />
+        android:title="" />
     <item
         android:id="@+id/itemBottom4"
         android:enabled="true"
         android:icon="@drawable/ic_man"
-        android:title="Item4" />
+        android:title="" />
     <item
         android:id="@+id/itemBottom5"
         android:enabled="true"
         android:icon="@drawable/ic_woman"
-        android:title="Item5" />
+        android:title="" />
 </menu>

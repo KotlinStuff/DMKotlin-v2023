@@ -3,6 +3,7 @@ package es.javiercarrasco.myretrofit.ui.main
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -12,6 +13,7 @@ import es.javiercarrasco.myretrofit.data.StoreDataSource
 import es.javiercarrasco.myretrofit.data.StoreRepository
 import es.javiercarrasco.myretrofit.databinding.ActivityMainBinding
 import es.javiercarrasco.myretrofit.ui.detail.DetailActivity
+import es.javiercarrasco.myretrofit.utils.checkConnection
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.launch
 
@@ -39,13 +41,25 @@ class MainActivity : AppCompatActivity() {
         binding.recyclerProducts.layoutManager = GridLayoutManager(this, 2)
         binding.recyclerProducts.adapter = adapter
 
-        collectCategories()
-
-        collectProducts()
+        if(checkConnection(this)) {
+            collectCategories()
+            collectProducts()
+        }
     }
 
     override fun onStart() {
         super.onStart()
+
+        binding.swipeRefresh.setOnRefreshListener {
+            adapter.submitList(emptyList())
+
+            if(checkConnection(this)) {
+                collectCategories()
+                collectProducts()
+            }
+            // Se desactiva el refresco.
+            binding.swipeRefresh.isRefreshing = false
+        }
 
         binding.bottomNavigation.setOnItemSelectedListener { item ->
             adapter.submitList(emptyList())
@@ -64,7 +78,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun collectProducts() {
         lifecycleScope.launch {
-            vm._products
+            vm.products
                 .catch {
                     println("ERROR: ${it}")
                 }
