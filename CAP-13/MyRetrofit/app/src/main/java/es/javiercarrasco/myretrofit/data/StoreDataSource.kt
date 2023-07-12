@@ -1,5 +1,6 @@
 package es.javiercarrasco.myretrofit.data
 
+import es.javiercarrasco.myretrofit.domain.model.Login
 import es.javiercarrasco.myretrofit.domain.model.Products
 import kotlinx.coroutines.flow.flow
 
@@ -19,5 +20,9 @@ class StoreDataSource : FakestoreApiFlow {
 
     override suspend fun getProductById(id: Int): Products? {
         return Retrofit2Api.getRetrofit().getProductById(id)
+    }
+
+    override suspend fun login(user: String, pass: String): Login {
+        return Retrofit2Api.getRetrofit().login(user, pass)
     }
 }

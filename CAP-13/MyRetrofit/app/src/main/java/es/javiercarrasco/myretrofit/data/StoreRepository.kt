@@ -1,5 +1,6 @@
 package es.javiercarrasco.myretrofit.data
 
+import es.javiercarrasco.myretrofit.domain.model.Login
 import es.javiercarrasco.myretrofit.domain.model.Products
 import kotlinx.coroutines.flow.Flow
 
@@ -19,5 +20,9 @@ class StoreRepository(val dataSource: StoreDataSource) {
 
     suspend fun fetchProductById(id: Int): Products? {
         return dataSource.getProductById(id)
+    }
+
+    suspend fun login(user: String, pass: String): Login {
+        return dataSource.login(user, pass)
     }
 }

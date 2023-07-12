@@ -1,17 +1,21 @@
 package es.javiercarrasco.myretrofit.ui.main
 
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.viewModels
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.dialog.MaterialDialogs
 import es.javiercarrasco.myretrofit.R
 import es.javiercarrasco.myretrofit.adapters.ProductsRecyclerAdapter
 import es.javiercarrasco.myretrofit.data.StoreDataSource
 import es.javiercarrasco.myretrofit.data.StoreRepository
 import es.javiercarrasco.myretrofit.databinding.ActivityMainBinding
+import es.javiercarrasco.myretrofit.databinding.LoginLayoutBinding
+import es.javiercarrasco.myretrofit.domain.model.Login
 import es.javiercarrasco.myretrofit.ui.detail.DetailActivity
 import es.javiercarrasco.myretrofit.utils.checkConnection
 import kotlinx.coroutines.flow.catch
@@ -37,15 +41,17 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // binding.textView.text = getString(R.string.txtCargando)
+        createMenu()
+
         binding.recyclerProducts.layoutManager = GridLayoutManager(this, 2)
         binding.recyclerProducts.adapter = adapter
 
-        if(checkConnection(this)) {
+        if (checkConnection(this)) {
             collectCategories()
             collectProducts()
         }
     }
+
 
     override fun onStart() {
         super.onStart()
@@ -53,7 +59,7 @@ class MainActivity : AppCompatActivity() {
         binding.swipeRefresh.setOnRefreshListener {
             adapter.submitList(emptyList())
 
-            if(checkConnection(this)) {
+            if (checkConnection(this)) {
                 collectCategories()
                 collectProducts()
             }
@@ -67,6 +73,7 @@ class MainActivity : AppCompatActivity() {
                 R.id.itemBottom1 -> { // All
                     vm.fetchProducts()
                 }
+
                 else -> {
                     vm.fetchProductsByCategory(item.title.toString())
                 }
@@ -74,6 +81,62 @@ class MainActivity : AppCompatActivity() {
             collectProducts()
             true
         }
+    }
+
+    private fun createMenu() {
+        // Se añade el menú a la Toolbar persosnalizada.
+        binding.mToolbar.inflateMenu(R.menu.action_bar_menu)
+
+        binding.mToolbar.setOnMenuItemClickListener {
+            when (it.itemId) {
+                R.id.item_login -> {
+                    showLoginDialog()
+                    true
+                }
+
+                else -> false
+            }
+        }
+    }
+
+    private fun showLoginDialog() {
+        val bindCustomDialog = LoginLayoutBinding.inflate(layoutInflater)
+
+        val dialogLogin = MaterialAlertDialogBuilder(this).apply {
+            setView(bindCustomDialog.root)
+            setTitle(R.string.txtLogin)
+            setPositiveButton(android.R.string.ok, null)
+            setNegativeButton(android.R.string.cancel) { dialog, _ ->
+                dialog.cancel()
+            }
+        }.create()
+
+        dialogLogin.setOnShowListener {
+            dialogLogin.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener {
+                val user = bindCustomDialog.etUsername.text.toString().trim()
+                val pass = bindCustomDialog.etPassword.text.toString().trim()
+
+                if (user.isNotEmpty() && pass.isNotEmpty()) {
+                    vm.getLogin(this, user, pass)
+                    lifecycleScope.launch {
+                        vm.token.collect { login ->
+                            if (login.token != "FAIL") {
+                                Toast.makeText(
+                                    this@MainActivity,
+                                    "Token ${login.token}", Toast.LENGTH_SHORT
+                                ).show()
+                            }
+                        }
+                    }
+                    dialogLogin.dismiss()
+                } else {
+                    bindCustomDialog.etUsername.error = getString(R.string.txtErrorDialog)
+                    bindCustomDialog.etPassword.error = getString(R.string.txtErrorDialog)
+                }
+            }
+        }
+
+        dialogLogin.show()
     }
 
     private fun collectProducts() {

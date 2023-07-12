@@ -1,10 +1,14 @@
 package es.javiercarrasco.myretrofit.data
 
+import es.javiercarrasco.myretrofit.domain.model.Login
 import es.javiercarrasco.myretrofit.domain.model.Products
 import kotlinx.coroutines.flow.Flow
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.http.Field
+import retrofit2.http.FormUrlEncoded
 import retrofit2.http.GET
+import retrofit2.http.POST
 import retrofit2.http.Path
 
 // https://fakestoreapi.com/docs
@@ -33,6 +37,10 @@ interface FakestoreApi {
 
     @GET("products/{id}")
     suspend fun getProductById(@Path("id") id: Int): Products?
+
+    @FormUrlEncoded
+    @POST("auth/login")
+    suspend fun login(@Field("username") user: String, @Field("password") pass: String): Login
 }
 
 interface FakestoreApiFlow {
@@ -40,4 +48,5 @@ interface FakestoreApiFlow {
     fun getCategories(): Flow<List<String>>
     fun getProductsByCategory(category: String): Flow<List<Products>>
     suspend fun getProductById(id: Int): Products?
+    suspend fun login(user: String, pass: String): Login
 }
