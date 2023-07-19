@@ -18,14 +18,32 @@
         android:orientation="vertical">
 
         <!-- Media -->
-        <ImageView
-            android:id="@+id/imageView"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="194dp"
-            android:contentDescription="@string/app_name"
-            android:scaleType="centerCrop"
-            app:srcCompat="@mipmap/ic_launcher" />
+            android:layout_height="match_parent">
 
+            <Button
+                android:id="@+id/btnDelete"
+                style="?attr/materialIconButtonFilledTonalStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@+id/imageView"
+                android:layout_alignParentEnd="true"
+                android:translationZ="1dp"
+                android:visibility="gone"
+                app:icon="@drawable/ic_delete"
+                tools:ignore="RelativeOverlap"
+                tools:visibility="visible" />
+
+            <ImageView
+                android:id="@+id/imageView"
+                android:layout_width="match_parent"
+                android:layout_height="194dp"
+                android:contentDescription="@string/app_name"
+                android:scaleType="centerCrop"
+                app:srcCompat="@mipmap/ic_launcher" />
+
+        </RelativeLayout>
         <!-- Title, secondary and supporting text -->
         <LinearLayout
             android:layout_width="match_parent"
@@ -61,19 +79,20 @@
         </LinearLayout>
 
         <!-- Buttons -->
-        <!--    <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:padding="8dp">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="bottom|end"
+            android:orientation="horizontal"
+            android:padding="8dp">
 
-                <com.google.android.material.button.MaterialButton
-                    style="?attr/borderlessButtonStyle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="8dp"
-                    tools:text="Action 1" />
-            </LinearLayout> -->
+            <!--            <Button-->
+            <!--                android:id="@+id/btnDelete"-->
+            <!--                style="?attr/materialIconButtonFilledTonalStyle"-->
+            <!--                android:layout_width="wrap_content"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                app:icon="@drawable/ic_delete" />-->
+        </LinearLayout>
 
     </LinearLayout>
 

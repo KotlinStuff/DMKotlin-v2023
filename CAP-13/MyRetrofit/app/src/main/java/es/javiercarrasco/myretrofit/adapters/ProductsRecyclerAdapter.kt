@@ -8,17 +8,17 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import es.javiercarrasco.myretrofit.R
+import es.javiercarrasco.myretrofit.ShareApp
 import es.javiercarrasco.myretrofit.databinding.ItemProductBinding
 import es.javiercarrasco.myretrofit.domain.model.Products
 
-class ProductsRecyclerAdapter(private val onClickProduct: (Products) -> Unit) :
-    ListAdapter<Products, ProductsViewHolder>(ProductsDiffCallback()) {
+class ProductsRecyclerAdapter(
+    private val onClickProduct: (Products) -> Unit, private val onClickDelete: (Products) -> Unit
+) : ListAdapter<Products, ProductsViewHolder>(ProductsDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProductsViewHolder {
         val binding = ItemProductBinding.inflate(
-            LayoutInflater.from(parent.context),
-            parent,
-            false
+            LayoutInflater.from(parent.context), parent, false
         )
 
         return ProductsViewHolder(binding.root)
@@ -26,7 +26,7 @@ class ProductsRecyclerAdapter(private val onClickProduct: (Products) -> Unit) :
 
     override fun onBindViewHolder(holder: ProductsViewHolder, position: Int) {
         val currentWord = getItem(position)
-        holder.bind(currentWord, onClickProduct)
+        holder.bind(currentWord, onClickProduct, onClickDelete)
     }
 }
 
@@ -43,17 +43,23 @@ class ProductsDiffCallback : DiffUtil.ItemCallback<Products>() {
 class ProductsViewHolder(view: View) : RecyclerView.ViewHolder(view) {
     private val bind = ItemProductBinding.bind(view)
 
-    fun bind(product: Products, onClickWords: (Products) -> Unit) {
+    fun bind(
+        product: Products, onClickWords: (Products) -> Unit, onClickDelete: (Products) -> Unit
+    ) {
         val context = bind.root.context
         bind.title.text = product.title
         bind.category.text = product.category
         bind.price.text = context.getString(R.string.txtPrecio, product.price)
 
         bind.imageView.contentDescription = product.title
-        Glide.with(itemView)
-            .load(product.image)
-            .into(bind.imageView)
+        Glide.with(itemView).load(product.image).into(bind.imageView)
+
+        if (!ShareApp.preferences.token.isBlank()) bind.btnDelete.visibility = View.VISIBLE
+        else bind.btnDelete.visibility = View.GONE
 
         itemView.setOnClickListener { onClickWords(product) }
+        bind.btnDelete.setOnClickListener {
+            onClickDelete(product)
+        }
     }
 }

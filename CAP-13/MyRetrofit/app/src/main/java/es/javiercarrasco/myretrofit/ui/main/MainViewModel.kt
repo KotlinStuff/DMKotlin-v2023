@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.google.gson.GsonBuilder
+import es.javiercarrasco.myretrofit.ShareApp
 import es.javiercarrasco.myretrofit.data.StoreRepository
 import es.javiercarrasco.myretrofit.domain.model.Login
 import es.javiercarrasco.myretrofit.domain.model.Products

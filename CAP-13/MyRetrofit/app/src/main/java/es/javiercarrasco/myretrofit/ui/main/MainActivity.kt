@@ -1,5 +1,6 @@
 package es.javiercarrasco.myretrofit.ui.main
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.viewModels
@@ -8,14 +9,13 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.google.android.material.dialog.MaterialDialogs
 import es.javiercarrasco.myretrofit.R
+import es.javiercarrasco.myretrofit.ShareApp
 import es.javiercarrasco.myretrofit.adapters.ProductsRecyclerAdapter
 import es.javiercarrasco.myretrofit.data.StoreDataSource
 import es.javiercarrasco.myretrofit.data.StoreRepository
 import es.javiercarrasco.myretrofit.databinding.ActivityMainBinding
 import es.javiercarrasco.myretrofit.databinding.LoginLayoutBinding
-import es.javiercarrasco.myretrofit.domain.model.Login
 import es.javiercarrasco.myretrofit.ui.detail.DetailActivity
 import es.javiercarrasco.myretrofit.utils.checkConnection
 import kotlinx.coroutines.flow.catch
@@ -31,9 +31,20 @@ class MainActivity : AppCompatActivity() {
     }
 
     private val adapter: ProductsRecyclerAdapter by lazy {
-        ProductsRecyclerAdapter(onClickProduct = { product ->
-            DetailActivity.navigateToDetail(this@MainActivity, prodId = product.id)
-        })
+        ProductsRecyclerAdapter(
+            onClickProduct = { product ->
+                DetailActivity.navigateToDetail(this@MainActivity, prodId = product.id)
+            },
+            onClickDelete = { product ->
+                //vm.deleteProduct(product)
+                Toast.makeText(
+                    this@MainActivity,
+                    "Delete ${product.title}", Toast.LENGTH_SHORT
+                ).show()
+                //adapter.notifyItemRemoved(adapter.currentList.indexOf(product))
+                //collectProducts()
+            }
+        )
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -83,14 +94,28 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     private fun createMenu() {
         // Se añade el menú a la Toolbar persosnalizada.
         binding.mToolbar.inflateMenu(R.menu.action_bar_menu)
 
+        stateLogin()
+
         binding.mToolbar.setOnMenuItemClickListener {
             when (it.itemId) {
                 R.id.item_login -> {
-                    showLoginDialog()
+                    if (it.title == getString(R.string.txtLogin)) {
+                        showLoginDialog()
+                    } else {
+                        ShareApp.preferences.token = ""
+                        stateLogin()
+                        binding.recyclerProducts.adapter?.notifyDataSetChanged()
+
+                        Toast.makeText(
+                            this@MainActivity,
+                            "You are logged out", Toast.LENGTH_SHORT
+                        ).show()
+                    }
                     true
                 }
 
@@ -99,6 +124,19 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    private fun stateLogin() {
+        if (ShareApp.preferences.token.isBlank()) {
+            binding.mToolbar.menu.findItem(R.id.item_login)
+                .setIcon(R.drawable.ic_login)
+                .title = getString(R.string.txtLogin)
+        } else {
+            binding.mToolbar.menu.findItem(R.id.item_login)
+                .setIcon(R.drawable.ic_logout)
+                .title = getString(R.string.txtLogout)
+        }
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
     private fun showLoginDialog() {
         val bindCustomDialog = LoginLayoutBinding.inflate(layoutInflater)
 
@@ -120,10 +158,13 @@ class MainActivity : AppCompatActivity() {
                     vm.getLogin(this, user, pass)
                     lifecycleScope.launch {
                         vm.token.collect { login ->
+                            ShareApp.preferences.token = login.token
+                            stateLogin()
                             if (login.token != "FAIL") {
+                                binding.recyclerProducts.adapter?.notifyDataSetChanged()
                                 Toast.makeText(
                                     this@MainActivity,
-                                    "Token ${login.token}", Toast.LENGTH_SHORT
+                                    "You are logged\n\nToken ${login.token}", Toast.LENGTH_SHORT
                                 ).show()
                             }
                         }
