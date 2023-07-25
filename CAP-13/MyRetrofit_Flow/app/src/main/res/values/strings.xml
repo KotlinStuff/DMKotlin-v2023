@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">My Retrofit2 Store + Flow</string>
+    <string name="txtCargando">Cargando…</string>
+
+    <string name="txtPrecio">%1$.2f €</string>
+    <string name="txtTodos">all</string>
+    <string name="title_activity_detail">DetailActivity</string>
+
+    <string name="txtLogin">Login</string>
+    <string name="txtLogout">Logout</string>
+    <string name="password">Contraseña</string>
+    <string name="userName">Nombre de usuario\n</string>
+    <string name="txtErrorDialog">Este campo no puede estar vacío</string>
+</resources>

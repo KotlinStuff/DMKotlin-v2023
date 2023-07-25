@@ -3,7 +3,6 @@ package es.javiercarrasco.myretrofit.data
 import es.javiercarrasco.myretrofit.domain.model.Login
 import es.javiercarrasco.myretrofit.domain.model.Products
 import kotlinx.coroutines.flow.Flow
-import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.Field
@@ -28,26 +27,26 @@ class Retrofit2Api {
 
 interface FakestoreApi {
     @GET("products")
-    suspend fun getProducts(): Response<List<Products>>
+    suspend fun getProducts(): List<Products>
 
     @GET("products/categories")
-    suspend fun getCategories(): Response<List<String>>
+    suspend fun getCategories(): List<String>
 
     @GET("products/category/{category}")
-    suspend fun getProductsByCategory(@Path("category") category: String): Response<List<Products>>
+    suspend fun getProductsByCategory(@Path("category") category: String): List<Products>
 
     @GET("products/{id}")
-    suspend fun getProductById(@Path("id") id: Int): Response<Products?>
+    suspend fun getProductById(@Path("id") id: Int): Products?
 
     @FormUrlEncoded
     @POST("auth/login")
-    suspend fun login(@Field("username") user: String, @Field("password") pass: String): Response<Login>
+    suspend fun login(@Field("username") user: String, @Field("password") pass: String): Login
 }
 
-//interface FakestoreApiFlow {
-//    fun getProducts(): Flow<List<Products>>
-//    fun getCategories(): Flow<List<String>>
-//    fun getProductsByCategory(category: String): Flow<List<Products>>
-//    suspend fun getProductById(id: Int): Products?
-//    suspend fun login(user: String, pass: String): Login
-//}
+interface FakestoreApiFlow {
+    fun getProducts(): Flow<List<Products>>
+    fun getCategories(): Flow<List<String>>
+    fun getProductsByCategory(category: String): Flow<List<Products>>
+    suspend fun getProductById(id: Int): Products?
+    suspend fun login(user: String, pass: String): Login
+}
