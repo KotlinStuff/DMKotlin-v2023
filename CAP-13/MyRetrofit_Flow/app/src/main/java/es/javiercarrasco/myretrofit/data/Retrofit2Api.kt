@@ -43,10 +43,10 @@ interface FakestoreApi {
     suspend fun login(@Field("username") user: String, @Field("password") pass: String): Login
 }
 
-interface FakestoreApiFlow {
-    fun getProducts(): Flow<List<Products>>
-    fun getCategories(): Flow<List<String>>
-    fun getProductsByCategory(category: String): Flow<List<Products>>
-    suspend fun getProductById(id: Int): Products?
-    suspend fun login(user: String, pass: String): Login
-}
+//interface FakestoreApiFlow {
+//    fun getProducts(): Flow<List<Products>>
+//    fun getCategories(): Flow<List<String>>
+//    fun getProductsByCategory(category: String): Flow<List<Products>>
+//    suspend fun getProductById(id: Int): Products?
+//    suspend fun login(user: String, pass: String): Login
+//}

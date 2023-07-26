@@ -18,7 +18,6 @@ import es.javiercarrasco.myretrofit.databinding.ActivityMainBinding
 import es.javiercarrasco.myretrofit.databinding.LoginLayoutBinding
 import es.javiercarrasco.myretrofit.ui.detail.DetailActivity
 import es.javiercarrasco.myretrofit.utils.checkConnection
-import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
@@ -181,34 +180,19 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun collectProducts() {
-        lifecycleScope.launch {
-            vm.products
-                .catch {
-                    println("ERROR: ${it}")
-                }
-                .collect {
-                    it.forEach {
-                        println("PRODUCTO: ${it.title}")
-                    }
-                    adapter.submitList(it)
-                }
+        vm.products.observe(this) {
+            adapter.submitList(it)
         }
     }
 
     private fun collectCategories() {
-        lifecycleScope.launch {
-            vm.categories
-                .catch {
-                    println("ERROR: ${it}")
-                }
-                .collect {
-                    binding.bottomNavigation.menu.apply {
-                        this.findItem(R.id.itemBottom2).title = it[0]
-                        this.findItem(R.id.itemBottom3).title = it[1]
-                        this.findItem(R.id.itemBottom4).title = it[2]
-                        this.findItem(R.id.itemBottom5).title = it[3]
-                    }
-                }
+        vm.categories.observe(this) {
+            binding.bottomNavigation.menu.apply {
+                this.findItem(R.id.itemBottom2).title = it[0]
+                this.findItem(R.id.itemBottom3).title = it[1]
+                this.findItem(R.id.itemBottom4).title = it[2]
+                this.findItem(R.id.itemBottom5).title = it[3]
+            }
         }
     }
 }

@@ -4,25 +4,26 @@ import es.javiercarrasco.myretrofit.domain.model.Login
 import es.javiercarrasco.myretrofit.domain.model.Products
 import kotlinx.coroutines.flow.flow
 
-class StoreDataSource : FakestoreApiFlow {
+class StoreDataSource { //: FakestoreApiFlow {
+    private val retrofit2Api = Retrofit2Api.getRetrofit()
 
-    override fun getProducts() = flow {
-        emit(Retrofit2Api.getRetrofit().getProducts())
+    fun getProducts() = flow {
+        emit(retrofit2Api.getProducts())
     }
 
-    override fun getCategories() = flow {
-        emit(Retrofit2Api.getRetrofit().getCategories())
+    fun getCategories() = flow {
+        emit(retrofit2Api.getCategories())
     }
 
-    override fun getProductsByCategory(category: String) = flow {
-        emit(Retrofit2Api.getRetrofit().getProductsByCategory(category))
+    fun getProductsByCategory(category: String) = flow {
+        emit(retrofit2Api.getProductsByCategory(category))
     }
 
-    override suspend fun getProductById(id: Int): Products? {
-        return Retrofit2Api.getRetrofit().getProductById(id)
+    suspend fun getProductById(id: Int): Products? {
+        return retrofit2Api.getProductById(id)
     }
 
-    override suspend fun login(user: String, pass: String): Login {
-        return Retrofit2Api.getRetrofit().login(user, pass)
+    suspend fun login(user: String, pass: String): Login {
+        return retrofit2Api.login(user, pass)
     }
 }

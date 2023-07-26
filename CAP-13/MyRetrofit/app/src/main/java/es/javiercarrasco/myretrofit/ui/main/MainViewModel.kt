@@ -1,30 +1,22 @@
 package es.javiercarrasco.myretrofit.ui.main
 
 import android.content.Context
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import com.google.gson.GsonBuilder
-import es.javiercarrasco.myretrofit.ShareApp
 import es.javiercarrasco.myretrofit.data.StoreRepository
 import es.javiercarrasco.myretrofit.domain.model.Login
 import es.javiercarrasco.myretrofit.domain.model.Products
 import es.javiercarrasco.myretrofit.utils.checkConnection
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.emptyFlow
-import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.launch
 
 class MainViewModel(private val storeRepository: StoreRepository) : ViewModel() {
-    private var _products: List<Products> = emptyList()
-    val products: List<Products>
-        get() = _products
-
-    var categories: List<String> = emptyList()
+    var products = MutableLiveData<List<Products>>()
+    var categories = MutableLiveData<List<String>>()
 
     private var _token: MutableStateFlow<Login> = MutableStateFlow(Login())
     val token: StateFlow<Login> = _token.asStateFlow()
@@ -36,19 +28,28 @@ class MainViewModel(private val storeRepository: StoreRepository) : ViewModel() 
 
     fun fetchProducts() {
         viewModelScope.launch {
-            _products = storeRepository.fetchProducts()
+            val call = storeRepository.fetchProducts()
+            if (call.isSuccessful)
+                products.postValue(call.body())
+            else products.postValue(emptyList())
         }
     }
 
     fun fetchCategories() {
         viewModelScope.launch {
-            categories = storeRepository.fetchCategories()
+            val call = storeRepository.fetchCategories()
+            if (call.isSuccessful)
+                categories.postValue(call.body())
+            else categories.postValue(emptyList())
         }
     }
 
     fun fetchProductsByCategory(category: String) {
         viewModelScope.launch {
-            _products = storeRepository.fetchProductsByCategory(category)
+            val call = storeRepository.fetchProductsByCategory(category)
+            if (call.isSuccessful)
+                products.postValue(call.body())
+            else products.postValue(emptyList())
         }
     }
 

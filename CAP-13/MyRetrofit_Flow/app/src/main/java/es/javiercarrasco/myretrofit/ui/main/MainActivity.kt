@@ -160,7 +160,7 @@ class MainActivity : AppCompatActivity() {
                         vm.token.collect { login ->
                             ShareApp.preferences.token = login.token
                             stateLogin()
-                            if (login.token != "FAIL") {
+                            if (login.token != "") {
                                 binding.recyclerProducts.adapter?.notifyDataSetChanged()
                                 Toast.makeText(
                                     this@MainActivity,

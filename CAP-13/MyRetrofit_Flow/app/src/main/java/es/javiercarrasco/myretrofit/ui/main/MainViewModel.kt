@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.google.gson.GsonBuilder
+import es.javiercarrasco.myretrofit.R
 import es.javiercarrasco.myretrofit.ShareApp
 import es.javiercarrasco.myretrofit.data.StoreRepository
 import es.javiercarrasco.myretrofit.domain.model.Login
@@ -14,25 +15,22 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.launch
 
 class MainViewModel(private val storeRepository: StoreRepository) : ViewModel() {
-    private var _products: Flow<List<Products>> = emptyFlow()
+    private var _products: Flow<List<Products>> = storeRepository.fetchProducts()
     val products: Flow<List<Products>>
         get() = _products
 
-    val categories: Flow<List<String>> = storeRepository.fetchCategories()
+    var categories: Flow<List<String>> = storeRepository.fetchCategories()
 
     private var _token: MutableStateFlow<Login> = MutableStateFlow(Login())
     val token: StateFlow<Login> = _token.asStateFlow()
 
-    init {
-        fetchProducts()
-    }
-
-    fun fetchProducts() {
+    fun fetchProducts() { // Método utilizado para recuperar todos los productos
         _products = storeRepository.fetchProducts()
     }
 

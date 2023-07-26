@@ -2,28 +2,20 @@ package es.javiercarrasco.myretrofit.data
 
 import es.javiercarrasco.myretrofit.domain.model.Login
 import es.javiercarrasco.myretrofit.domain.model.Products
+import retrofit2.Response
 
 class StoreRepository(val dataSource: StoreDataSource) {
 
-    suspend fun fetchProducts(): List<Products> {
-        val call = dataSource.getProducts()
-        return if (call.isSuccessful)
-            call.body()!!
-        else emptyList()
+    suspend fun fetchProducts(): Response<List<Products>> {
+        return dataSource.getProducts()
     }
 
-    suspend fun fetchCategories(): List<String> {
-        val call = dataSource.getCategories()
-        return if (call.isSuccessful)
-            call.body()!!
-        else emptyList()
+    suspend fun fetchCategories(): Response<List<String>> {
+        return dataSource.getCategories()
     }
 
-    suspend fun fetchProductsByCategory(category: String): List<Products> {
-        val call = dataSource.getProductsByCategory(category)
-        return if (call.isSuccessful)
-            call.body()!!
-        else emptyList()
+    suspend fun fetchProductsByCategory(category: String): Response<List<Products>> {
+        return dataSource.getProductsByCategory(category)
     }
 
     suspend fun fetchProductById(id: Int): Products? {
