@@ -17,10 +17,10 @@ Estos ejemplos también forman parte del libro de [Desarrollo de aplicaciones m�
 ## Capítulo 4. Elementos básicos en Android
 ## Capítulo 5. Elementos complejos en Android
 ## Capítulo 6. Intents, permisos y persistencia de la UI
-## Capítulo 7. Menús y preferencias de usuario
-## Capítulo 8. Cuadros de diálogo
-## Capítulo 9. Tareas asíncronas y notificaciones
-## Capítulo 10. Bases de datos
-## Capítulo 11. Patrón MVVM y Clean Architecture
-## Capítulo 12. Fragments
+## Capítulo 7. Fragments
+## Capítulo 8. Menús y preferencias de usuario
+## Capítulo 9. Cuadros de diálogo
+## Capítulo 10. Tareas asíncronas y notificaciones
+## Capítulo 11. Bases de datos
+## Capítulo 12. Patrón MVVM y Clean Architecture
 ## Capítulo 13. HTTPS y servicios web
