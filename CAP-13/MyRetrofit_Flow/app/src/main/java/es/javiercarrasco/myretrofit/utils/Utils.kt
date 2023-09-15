@@ -21,17 +21,3 @@ fun checkConnection(context: Context): Boolean {
     }
     return false
 }
-
-//suspend fun downloadWebPage(url: String): String {
-//    return withContext(Dispatchers.IO) {
-//        try {
-//            val request = Request.Builder() // import okhttp3.Request
-//                .url(url)
-//                .build()
-//            val response = OkHttpClient().newCall(request).execute()
-//            response.body!!.string()
-//        } catch (e: IOException) {
-//            "ERROR: ${e.message}"
-//        }
-//    }
-//}
