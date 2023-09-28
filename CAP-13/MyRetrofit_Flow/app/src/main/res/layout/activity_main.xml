@@ -10,7 +10,6 @@
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/md_theme_light_primaryContainer"
         app:liftOnScroll="true">
 
         <com.google.android.material.appbar.MaterialToolbar
@@ -23,11 +22,6 @@
             app:titleCentered="true" />
 
     </com.google.android.material.appbar.AppBarLayout>
-
-    <!--    <androidx.core.widget.NestedScrollView-->
-    <!--        android:layout_width="match_parent"-->
-    <!--        android:layout_height="match_parent"-->
-    <!--        app:layout_behavior="@string/appbar_scrolling_view_behavior">-->
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/swipeRefresh"
@@ -42,16 +36,13 @@
             tools:listitem="@layout/item_product" />
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
-    <!--    </androidx.core.widget.NestedScrollView>-->
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_navigation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
-        android:background="@color/md_theme_light_primaryContainer"
         app:labelVisibilityMode="selected"
         app:menu="@menu/bottom_app_bar" />
-    <!--        app:layout_behavior="@string/hide_bottom_view_on_scroll_behavior"-->
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout><!-- https://github.com/material-components/material-components-android/blob/master/docs/components/TopAppBar.md -->

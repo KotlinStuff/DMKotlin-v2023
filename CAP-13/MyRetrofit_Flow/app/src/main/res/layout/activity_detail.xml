@@ -18,8 +18,7 @@
                 android:id="@+id/cardView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_margin="8dp"
-                android:backgroundTint="@color/md_theme_dark_onPrimaryContainer">
+                android:layout_margin="8dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -32,7 +31,6 @@
                         android:id="@+id/imageView"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="@color/md_theme_dark_onPrimaryContainer"
                         android:contentDescription="@string/app_name"
                         android:padding="6dp"
                         android:scaleType="centerInside"
@@ -57,7 +55,6 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="8dp"
                             android:textAppearance="?attr/textAppearanceBodySmall"
-                            android:textColor="?android:attr/textColorSecondary"
                             tools:text="Category" />
 
                         <TextView
@@ -66,7 +63,6 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="8dp"
                             android:textAppearance="?attr/textAppearanceBodyMedium"
-                            android:textColor="?android:attr/textColorSecondary"
                             tools:text="Category" />
 
 
@@ -76,7 +72,6 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="16dp"
                             android:textAppearance="?attr/textAppearanceBodyMedium"
-                            android:textColor="?android:attr/textColorSecondary"
                             tools:text="Price" />
 
                     </LinearLayout>
