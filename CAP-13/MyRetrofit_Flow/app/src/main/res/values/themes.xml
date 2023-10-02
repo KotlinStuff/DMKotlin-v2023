@@ -27,22 +27,39 @@
         <item name="colorOnSurfaceInverse">@color/md_theme_light_inverseOnSurface</item>
         <item name="colorSurfaceInverse">@color/md_theme_light_inverseSurface</item>
         <item name="colorPrimaryInverse">@color/md_theme_light_inversePrimary</item>
+
+        <!-- Status bar color. -->
+        <item name="android:statusBarColor">@color/md_theme_light_primary</item>
     </style>
 
-    <!--    <style name="Base.Theme.MyRetrofit" parent="Theme.Material3.DayNight.NoActionBar">-->
-    <!--        &lt;!&ndash; Customize your light theme here. &ndash;&gt;-->
-    <!--        &lt;!&ndash; <item name="colorPrimary">@color/my_light_primary</item> &ndash;&gt;-->
-    <!--    </style>-->
+    <style name="Widget.App.Toolbar" parent="Widget.Material3.Toolbar">
+        <item name="materialThemeOverlay">@style/ThemeOverlay.App.Toolbar</item>
+        <item name="windowActionModeOverlay">true</item>
+        <item name="actionBarTheme">@style/ThemeOverlay.Material3.Dark.ActionBar</item>
+    </style>
 
-    <!--    <style name="Theme.MyRetrofit" parent="Base.Theme.MyRetrofit">-->
-    <!--        <item name="colorPrimary">@color/myColorPrimary</item>-->
-    <!--        <item name="colorSecondary">@color/myColorSecondary</item>-->
-    <!--        <item name="colorSurfaceContainer">#E64A19</item>-->
-    <!--&lt;!&ndash;        <item name="android:statusBarColor">@color/myColorPrimary</item>&ndash;&gt;-->
-    <!--        <item name="android:windowLightStatusBar">true</item>-->
+    <style name="ThemeOverlay.App.Toolbar" parent="">
+        <item name="titleTextColor">#FFFFFF</item>
+        <item name="colorSurface">@color/md_theme_light_primary</item>
+        <item name="colorOnSurface">@color/md_theme_dark_primary</item>
+    </style>
 
-    <!--        <item name="android:navigationBarColor">@color/myColorPrimary</item>-->
-    <!--    </style>-->
+    <style name="Widget.App.BottomAppBar" parent="Widget.Material3.BottomAppBar">
+        <item name="materialThemeOverlay">@style/ThemeOverlay.App.BottomAppBar</item>
+        <item name="windowActionModeOverlay">true</item>
+        <item name="actionBarTheme">@style/ThemeOverlay.Material3.BottomAppBar</item>
+    </style>
+
+    <style name="ThemeOverlay.App.BottomAppBar" parent="">
+        <item name="titleTextColor">#FFFFFF</item>
+        <item name="colorSurface">@color/md_theme_light_primary</item>
+        <item name="colorOnSurface">@color/md_theme_dark_primary</item>
+    </style>
+
+<!--    <style name="Widget.App.ActionMode" parent="Widget.Material3.ActionMode">-->
+<!--        <item name="background">@color/material_grey_900</item>-->
+<!--    </style>-->
+
 </resources>
 
     <!--    https://m3.material.io/styles/color/the-color-system/tokens -->

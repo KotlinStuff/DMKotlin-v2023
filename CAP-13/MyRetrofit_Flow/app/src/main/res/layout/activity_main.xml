@@ -8,6 +8,7 @@
     tools:context=".ui.main.MainActivity">
 
     <com.google.android.material.appbar.AppBarLayout
+        style="@style/Widget.App.Toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:liftOnScroll="true">
@@ -39,6 +40,7 @@
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_navigation"
+        style="@style/Widget.App.BottomAppBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
