@@ -28,8 +28,7 @@ class DetailViewModel(private val storeRepository: StoreRepository, private val 
 class DetailViewModelFactory(
     private val storeRepository: StoreRepository,
     private val prodId: Int
-) :
-    ViewModelProvider.Factory {
+) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         return DetailViewModel(storeRepository, prodId) as T
     }

@@ -31,20 +31,16 @@ class MainActivity : AppCompatActivity() {
     }
 
     private val adapter: ProductsRecyclerAdapter by lazy {
-        ProductsRecyclerAdapter(
-            onClickProduct = { product ->
-                DetailActivity.navigateToDetail(this@MainActivity, prodId = product.id)
-            },
-            onClickDelete = { product ->
-                //vm.deleteProduct(product)
-                Toast.makeText(
-                    this@MainActivity,
-                    "Delete ${product.title}", Toast.LENGTH_SHORT
-                ).show()
-                //adapter.notifyItemRemoved(adapter.currentList.indexOf(product))
-                //collectProducts()
-            }
-        )
+        ProductsRecyclerAdapter(onClickProduct = { product ->
+            DetailActivity.navigateToDetail(this@MainActivity, prodId = product.id)
+        }, onClickDelete = { product ->
+            //vm.deleteProduct(product)
+            Toast.makeText(
+                this@MainActivity, "Deleted ${product.title}", Toast.LENGTH_SHORT
+            ).show()
+            //adapter.notifyItemRemoved(adapter.currentList.indexOf(product))
+            //collectProducts()
+        })
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -84,9 +80,8 @@ class MainActivity : AppCompatActivity() {
                 R.id.itemBottom1 -> { // All
                     vm.fetchProducts()
                 }
-                else -> {
-                    vm.fetchProductsByCategory(item.title.toString())
-                }
+
+                else -> vm.fetchProductsByCategory(item.title.toString())
             }
             collectProducts()
             true
@@ -111,8 +106,7 @@ class MainActivity : AppCompatActivity() {
                         binding.recyclerProducts.adapter?.notifyDataSetChanged()
 
                         Toast.makeText(
-                            this@MainActivity,
-                            "You are logged out", Toast.LENGTH_SHORT
+                            this@MainActivity, "You are logged out", Toast.LENGTH_SHORT
                         ).show()
                     }
                     true
@@ -125,13 +119,11 @@ class MainActivity : AppCompatActivity() {
 
     private fun stateLogin() {
         if (ShareApp.preferences.token.isBlank()) {
-            binding.mToolbar.menu.findItem(R.id.item_login)
-                .setIcon(R.drawable.ic_login)
-                .title = getString(R.string.txtLogin)
+            binding.mToolbar.menu.findItem(R.id.item_login).setIcon(R.drawable.ic_login).title =
+                getString(R.string.txtLogin)
         } else {
-            binding.mToolbar.menu.findItem(R.id.item_login)
-                .setIcon(R.drawable.ic_logout)
-                .title = getString(R.string.txtLogout)
+            binding.mToolbar.menu.findItem(R.id.item_login).setIcon(R.drawable.ic_logout).title =
+                getString(R.string.txtLogout)
         }
     }
 
@@ -163,7 +155,8 @@ class MainActivity : AppCompatActivity() {
                                 binding.recyclerProducts.adapter?.notifyDataSetChanged()
                                 Toast.makeText(
                                     this@MainActivity,
-                                    "You are logged\n\nToken ${login.token}", Toast.LENGTH_SHORT
+                                    "You are logged\n\nToken ${login.token}",
+                                    Toast.LENGTH_SHORT
                                 ).show()
                             }
                         }
@@ -181,33 +174,29 @@ class MainActivity : AppCompatActivity() {
 
     private fun collectProducts() {
         lifecycleScope.launch {
-            vm.products
-                .catch {
-                    println("ERROR: $it")
+            vm.products.catch {
+                println("ERROR: $it")
+            }.collect {
+                it.forEach { p ->
+                    println("PRODUCTO: ${p.title}")
                 }
-                .collect {
-                    it.forEach { p ->
-                        println("PRODUCTO: ${p.title}")
-                    }
-                    adapter.submitList(it)
-                }
+                adapter.submitList(it)
+            }
         }
     }
 
     private fun collectCategories() {
         lifecycleScope.launch {
-            vm.categories
-                .catch {
-                    println("ERROR: $it")
+            vm.categories.catch {
+                println("ERROR: $it")
+            }.collect {
+                binding.bottomNavigation.menu.apply {
+                    this.findItem(R.id.itemBottom2).title = it[0]
+                    this.findItem(R.id.itemBottom3).title = it[1]
+                    this.findItem(R.id.itemBottom4).title = it[2]
+                    this.findItem(R.id.itemBottom5).title = it[3]
                 }
-                .collect {
-                    binding.bottomNavigation.menu.apply {
-                        this.findItem(R.id.itemBottom2).title = it[0]
-                        this.findItem(R.id.itemBottom3).title = it[1]
-                        this.findItem(R.id.itemBottom4).title = it[2]
-                        this.findItem(R.id.itemBottom5).title = it[3]
-                    }
-                }
+            }
         }
     }
 }
