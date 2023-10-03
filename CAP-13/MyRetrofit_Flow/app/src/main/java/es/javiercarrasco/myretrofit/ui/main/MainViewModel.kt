@@ -4,9 +4,6 @@ import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import com.google.gson.GsonBuilder
-import es.javiercarrasco.myretrofit.R
-import es.javiercarrasco.myretrofit.ShareApp
 import es.javiercarrasco.myretrofit.data.StoreRepository
 import es.javiercarrasco.myretrofit.domain.model.Login
 import es.javiercarrasco.myretrofit.domain.model.Products
@@ -15,9 +12,6 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.emptyFlow
-import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.launch
 
 class MainViewModel(private val storeRepository: StoreRepository) : ViewModel() {
@@ -43,13 +37,11 @@ class MainViewModel(private val storeRepository: StoreRepository) : ViewModel() 
             viewModelScope.launch {
                 try {
                     _token.value = storeRepository.login(user, pass)
-                }catch (e: retrofit2.HttpException) {
+                } catch (e: retrofit2.HttpException) {
                     _token.value = Login()
                 }
             }
-        } else {
-            _token.value = Login()
-        }
+        } else _token.value = Login()
     }
 }
 

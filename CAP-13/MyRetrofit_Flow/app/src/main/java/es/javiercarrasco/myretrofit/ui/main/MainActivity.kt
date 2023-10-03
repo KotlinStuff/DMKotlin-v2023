@@ -84,7 +84,6 @@ class MainActivity : AppCompatActivity() {
                 R.id.itemBottom1 -> { // All
                     vm.fetchProducts()
                 }
-
                 else -> {
                     vm.fetchProductsByCategory(item.title.toString())
                 }
@@ -184,11 +183,11 @@ class MainActivity : AppCompatActivity() {
         lifecycleScope.launch {
             vm.products
                 .catch {
-                    println("ERROR: ${it}")
+                    println("ERROR: $it")
                 }
                 .collect {
-                    it.forEach {
-                        println("PRODUCTO: ${it.title}")
+                    it.forEach { p ->
+                        println("PRODUCTO: ${p.title}")
                     }
                     adapter.submitList(it)
                 }
@@ -199,7 +198,7 @@ class MainActivity : AppCompatActivity() {
         lifecycleScope.launch {
             vm.categories
                 .catch {
-                    println("ERROR: ${it}")
+                    println("ERROR: $it")
                 }
                 .collect {
                     binding.bottomNavigation.menu.apply {

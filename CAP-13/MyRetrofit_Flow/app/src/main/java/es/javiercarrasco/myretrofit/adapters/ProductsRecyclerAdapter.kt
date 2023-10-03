@@ -54,7 +54,7 @@ class ProductsViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         bind.imageView.contentDescription = product.title
         Glide.with(itemView).load(product.image).into(bind.imageView)
 
-        if (!ShareApp.preferences.token.isBlank()) bind.btnDelete.visibility = View.VISIBLE
+        if (ShareApp.preferences.token.isNotBlank()) bind.btnDelete.visibility = View.VISIBLE
         else bind.btnDelete.visibility = View.GONE
 
         itemView.setOnClickListener { onClickWords(product) }
