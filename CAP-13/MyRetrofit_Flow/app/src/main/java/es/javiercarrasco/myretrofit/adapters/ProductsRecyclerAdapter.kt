@@ -44,7 +44,7 @@ class ProductsViewHolder(view: View) : RecyclerView.ViewHolder(view) {
     private val bind = ItemProductBinding.bind(view)
 
     fun bind(
-        product: Products, onClickWords: (Products) -> Unit, onClickDelete: (Products) -> Unit
+        product: Products, onClickProduct: (Products) -> Unit, onClickDelete: (Products) -> Unit
     ) {
         val context = bind.root.context
         bind.title.text = product.title
@@ -57,7 +57,7 @@ class ProductsViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         if (ShareApp.preferences.token.isNotBlank()) bind.btnDelete.visibility = View.VISIBLE
         else bind.btnDelete.visibility = View.GONE
 
-        itemView.setOnClickListener { onClickWords(product) }
+        itemView.setOnClickListener { onClickProduct(product) }
         bind.btnDelete.setOnClickListener {
             onClickDelete(product)
         }

@@ -119,11 +119,11 @@ class MainActivity : AppCompatActivity() {
 
     private fun stateLogin() {
         if (ShareApp.preferences.token.isBlank()) {
-            binding.mToolbar.menu.findItem(R.id.item_login).setIcon(R.drawable.ic_login).title =
-                getString(R.string.txtLogin)
+            binding.mToolbar.menu.findItem(R.id.item_login)
+                .setIcon(R.drawable.ic_login).title = getString(R.string.txtLogin)
         } else {
-            binding.mToolbar.menu.findItem(R.id.item_login).setIcon(R.drawable.ic_logout).title =
-                getString(R.string.txtLogout)
+            binding.mToolbar.menu.findItem(R.id.item_login)
+                .setIcon(R.drawable.ic_logout).title = getString(R.string.txtLogout)
         }
     }
 
