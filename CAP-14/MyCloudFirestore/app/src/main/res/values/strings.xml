@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">My Cloud Firestore</string>
+
+    <string name="txt_no_escucha">Sin escucha\n</string>
+    <string name="txt_con_escucha">Con escucha\n</string>
+
+    <string name="txt_button">Añadir documento</string>
 </resources>

@@ -56,7 +56,7 @@ dependencies {
 
     // TODO: Add the dependencies for Firebase products you want to use
     // When using the BoM, don't specify versions in Firebase dependencies
-    implementation("com.google.firebase:firebase-analytics-ktx")
+    implementation("com.google.firebase:firebase-analytics-ktx:21.3.0")
 
     implementation("com.google.firebase:firebase-firestore:24.8.1")
 }
