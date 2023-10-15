@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">My Auth Firebase</string>
+
+    <string name="txt_user_login">¡Usuario registrado!\n\n</string>
+    <string name="txt_user_no_login">¡Usuario NO registrado!</string>
+
+    <string name="txt_info_user">Email: %1$s\nCorreo verificado: %2$b\nUsuario Firebase: %3$s</string>
+
+    <string name="txt_btn_login">Iniciar sesión</string>
+    <string name="txt_btn_register">Registrarse</string>
+    <string name="txt_btn_logout">Cerrar sesión</string>
+    <string name="txt_btn_verify_email">Correo de verificación</string>
+    <string name="txtErrorDialog">Este campo no puede estar vacío.</string>
+
+    <string name="email">Correo electrónico</string>
+    <string name="password">Contraseña</string>
+</resources>
