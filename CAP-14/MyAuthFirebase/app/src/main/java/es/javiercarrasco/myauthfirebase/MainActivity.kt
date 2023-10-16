@@ -58,15 +58,28 @@ class MainActivity : AppCompatActivity() {
                     user.uid
                 )
             )
+
+            user.getIdToken(true)
+                .addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        val idToken = task.result?.token
+                        binding.tvInfo.append(getString(R.string.txt_token_user, idToken))
+                    } else {
+                        binding.tvInfo.append(getString(R.string.txt_token_fail))
+                    }
+                }
+
             binding.btnLogin.text = getString(R.string.txt_btn_logout)
 
             // Se habilita el botón de verificación si el email está no verificado.
             binding.btnRegister.isEnabled = !user.isEmailVerified
             binding.btnRegister.text = getString(R.string.txt_btn_verify_email)
+
         } else {
             binding.tvInfo.text = getString(R.string.txt_user_no_login)
             binding.btnLogin.text = getString(R.string.txt_btn_login)
             binding.btnRegister.text = getString(R.string.txt_btn_register)
+            binding.btnRegister.isEnabled = true
         }
     }
 
@@ -90,6 +103,7 @@ class MainActivity : AppCompatActivity() {
                 if (email.isNotEmpty() && pass.isNotEmpty()) {
                     if (title == R.string.txt_btn_register)
                         createAccount(email, pass)
+                    else signIn(email, pass)
 
                     dialogLogin.dismiss()
                 } else {
@@ -148,6 +162,28 @@ class MainActivity : AppCompatActivity() {
                         "Fallo en el envío del email de verifiación.",
                         Toast.LENGTH_SHORT
                     ).show()
+                }
+            }
+    }
+
+    // Método para iniciar sesión con una cuenta ya existente.
+    private fun signIn(email: String, password: String) {
+        Log.d(TAG, "signIn:$email")
+        auth.signInWithEmailAndPassword(email, password)
+            .addOnCompleteListener(this) { task ->
+                if (task.isSuccessful) {
+                    // Login, se actualiza la UI con la información del usuario.
+                    Log.d(TAG, "signInWithEmail:success")
+                    updateUI(auth.currentUser)
+                } else {
+                    // Login fallido, se muestra un mensaje de error.
+                    Log.w(TAG, "signInWithEmail:failure", task.exception)
+                    Toast.makeText(
+                        applicationContext,
+                        "Authentication failed ${task.exception!!.message}",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    updateUI(null)
                 }
             }
     }

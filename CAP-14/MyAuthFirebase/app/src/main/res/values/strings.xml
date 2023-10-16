@@ -4,7 +4,9 @@
     <string name="txt_user_login">¡Usuario registrado!\n\n</string>
     <string name="txt_user_no_login">¡Usuario NO registrado!</string>
 
-    <string name="txt_info_user">Email: %1$s\nCorreo verificado: %2$b\nUsuario Firebase: %3$s</string>
+    <string name="txt_info_user">Email: %1$s\nCorreo verificado: %2$b\nUID Firebase: %3$s</string>
+    <string name="txt_token_user">\n\nToken: %1$s</string>
+    <string name="txt_token_fail">\n\nError al obtener el token.</string>
 
     <string name="txt_btn_login">Iniciar sesión</string>
     <string name="txt_btn_register">Registrarse</string>
@@ -14,4 +16,5 @@
 
     <string name="email">Correo electrónico</string>
     <string name="password">Contraseña</string>
+
 </resources>
