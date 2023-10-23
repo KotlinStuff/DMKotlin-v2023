@@ -6,8 +6,12 @@ import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageReference
+import com.google.firebase.storage.UploadTask
 import es.javiercarrasco.mycloudstorage.databinding.ActivityMainBinding
 import java.io.ByteArrayOutputStream
+import java.io.File
+import java.io.FileWriter
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
@@ -21,22 +25,38 @@ class MainActivity : AppCompatActivity() {
 
         storage = FirebaseStorage.getInstance()
 
-        uploadFile()
+        val storageRef: StorageReference = storage.reference // Raíz del Storage
+        val imagesRef: StorageReference = storageRef.child("images") // Carpeta images
+        val fileImageRef: StorageReference = imagesRef.child("prueba.jpg") // Fichero prueba.jpg
+
+        Log.i("storageRef", "$storageRef")
+        Log.i("imagesRef", "$imagesRef")
+        Log.i("fileImageRef", "$fileImageRef")
+
+        Log.i("fileImageRef.parent", "${fileImageRef.parent}")
+
+        downloadFile(fileImageRef)
     }
 
-    private fun uploadFile() {
-        val storageRef = storage.reference
-        val imagesRef = storageRef.child("images")
-        val fileImageRef = storageRef.child("images/prueba.jpg")
+    private fun downloadFile(file:StorageReference) {
+        val localFile = File.createTempFile("images", "jpg")
 
-//        binding.imageView.isDrawingCacheEnabled = true
-//        binding.imageView.buildDrawingCache()
+        file.getFile(localFile).addOnSuccessListener {
+            Log.d("addOnSuccessListener", "Download file: ${it.totalByteCount}")
+            Log.d("addOnSuccessListener", "Download file: ${file.name}")
+        }.addOnFailureListener {
+            Log.d("addOnFailureListener", "Fallo en la descarga ", it)
+        }
+    }
+
+    private fun uploadFile(file:StorageReference) {
+
         val bitmap = (binding.imageView.drawable as BitmapDrawable).bitmap
         val baos = ByteArrayOutputStream()
         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos)
         val data = baos.toByteArray()
 
-        val uploadTask = fileImageRef.putBytes(data)
+        val uploadTask: UploadTask = file.putBytes(data)
         uploadTask.addOnFailureListener {
             Log.d("addOnFailureListener", "Fallo en la carga ", it)
         }.addOnSuccessListener {
