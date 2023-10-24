@@ -42,7 +42,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:importantForAccessibility="no"
-            android:src="@android:mipmap/sym_def_app_icon" />
+            android:src="@drawable/ic_launcher_foreground" />
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
