@@ -98,6 +98,7 @@ Thumbs.db
 
 # User-specific configurations
 /*/.idea/
+/*/*/.idea/
 *.iml
 .gradle
 /*/local.properties
