@@ -32,6 +32,7 @@ class MainActivity : AppCompatActivity() {
         val storageRef: StorageReference = storage.reference // Raíz del Storage
         val imagesRef: StorageReference = storageRef.child("images") // Carpeta images
         val fileImageRef: StorageReference = imagesRef.child("prueba.jpg") // Fichero prueba.jpg
+        val fileArbolRef: StorageReference = imagesRef.child("arbol.jpg") // Fichero arbol.jpg
 
         Log.i("storageRef", "$storageRef")
         Log.i("imagesRef", "$imagesRef")
@@ -39,7 +40,7 @@ class MainActivity : AppCompatActivity() {
 
         Log.i("fileImageRef.parent", "${fileImageRef.parent}")
 
-        downloadFile(fileImageRef)
+        downloadFile(fileArbolRef)
     }
 
     private fun downloadFile(file: StorageReference) {
@@ -47,7 +48,7 @@ class MainActivity : AppCompatActivity() {
 
         file.getFile(localFile).addOnSuccessListener {
             Log.d("addOnSuccessListener", "Bytes downloaded: ${it.totalByteCount}")
-            Log.d("addOnSuccessListener", "Download file: ${localFile}")
+            Log.d("Path temp file", "Download file: ${localFile}")
 
             val salida: OutputStream
             try {
@@ -56,12 +57,19 @@ class MainActivity : AppCompatActivity() {
                     Activity.MODE_PRIVATE
                 )
                 salida.write(localFile.readBytes())
+                salida.flush()
+                salida.close()
+
+                localFile.delete() // Borra el fichero temporal
             } catch (e: Exception) {
                 Log.d("Exception", "Error al escribir el fichero", e)
             }
 
+            Log.d("Path local file", "${filesDir.path}/${file.name}")
             Glide.with(this)
-                .load(localFile)
+                .load("${filesDir.path}/${file.name}") // Carga la imagen desde files
+                .override(binding.imageView.width)
+                .fitCenter()
                 .into(binding.imageView)
 
         }.addOnFailureListener {
