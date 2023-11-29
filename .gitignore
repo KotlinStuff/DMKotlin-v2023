@@ -120,3 +120,4 @@ Thumbs.db
 /*.externalNativeBuild
 /*.cxx
 /*/app/google-services.json
+CAP-15/MyFirstMapbox/app/src/main/res/values/developer-config.xml
