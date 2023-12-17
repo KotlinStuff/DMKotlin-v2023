@@ -1,21 +1,72 @@
 package es.javiercarrasco.myfirstmapbox
 
+import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.mapbox.android.core.permissions.PermissionsListener
 import com.mapbox.android.core.permissions.PermissionsManager
+import com.mapbox.android.gestures.MoveGestureDetector
 import com.mapbox.geojson.Point
+import com.mapbox.maps.CameraChangedCallback
 import com.mapbox.maps.CameraOptions
+import com.mapbox.maps.dsl.cameraOptions
+import com.mapbox.maps.plugin.animation.MapAnimationOptions
+import com.mapbox.maps.plugin.animation.flyTo
 import com.mapbox.maps.plugin.attribution.attribution
 import com.mapbox.maps.plugin.compass.compass
+import com.mapbox.maps.plugin.gestures.OnMoveListener
+import com.mapbox.maps.plugin.gestures.addOnMapClickListener
+import com.mapbox.maps.plugin.gestures.addOnMapLongClickListener
+import com.mapbox.maps.plugin.gestures.addOnMoveListener
+import com.mapbox.maps.plugin.gestures.gestures
+import com.mapbox.maps.plugin.locationcomponent.OnIndicatorBearingChangedListener
+import com.mapbox.maps.plugin.locationcomponent.OnIndicatorPositionChangedListener
+import com.mapbox.maps.plugin.locationcomponent.location
 import com.mapbox.maps.plugin.logo.logo
 import es.javiercarrasco.myfirstmapbox.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var permissionsManager: PermissionsManager
+
+    // Listener para pasar la ubicación del usuario a la cámara.
+    private val onIndicatorPositionChangedListener = OnIndicatorPositionChangedListener {
+        Log.d("Mapbox-Location", "Location: ${it.latitude()}, ${it.longitude()}")
+        // Se actualiza la cámara con la ubicación del usuario.
+        binding.mapView.mapboxMap.setCamera(CameraOptions.Builder().center(it).build())
+
+        binding.mapView.gestures.focalPoint = binding.mapView
+            .mapboxMap.pixelForCoordinate(it)
+    }
+
+    // Listener para activar la rotación de la cámara con el movimiento del usuario.
+    private val onIndicationPositionChangedListener = OnIndicatorBearingChangedListener {
+        Log.d("Mapbox-Location", "Bearing: $it")
+        // Se actualiza la cámara con la ubicación del usuario.
+        binding.mapView.mapboxMap.setCamera(CameraOptions.Builder().bearing(it).build())
+    }
+
+    private fun activateLocation() {
+        // Activación y personalización del puck.
+        binding.mapView.location.updateSettings {
+            enabled = true
+            pulsingEnabled = true
+            pulsingColor = Color.RED
+            pulsingMaxRadius = 60f
+        }
+
+        // Se pasa la ubicación del usuario a la cámara activando un tracker.
+        binding.mapView.location.addOnIndicatorPositionChangedListener(
+            onIndicatorPositionChangedListener
+        )
+
+        // Listener para activar la rotación de la cámara con el movimiento del usuario.
+        binding.mapView.location.addOnIndicatorBearingChangedListener(
+            onIndicationPositionChangedListener
+        )
+    }
 
     private var permissionsListener: PermissionsListener = object : PermissionsListener {
         override fun onExplanationNeeded(permissionsToExplain: List<String>) {
@@ -31,7 +82,7 @@ class MainActivity : AppCompatActivity() {
                 Toast.makeText(
                     this@MainActivity, "Permissions granted", Toast.LENGTH_SHORT
                 ).show()
-                // activateLocation()
+                activateLocation()
             } else Toast.makeText(
                 this@MainActivity,
                 "Permissions not granted",
@@ -59,7 +110,7 @@ class MainActivity : AppCompatActivity() {
         // Gestión del permiso de localización.
         if (PermissionsManager.areLocationPermissionsGranted(this)) {
             Log.d("Mapbox-Permission", "Location permissions granted")
-            // activateLocation()
+            activateLocation()
         } else {
             permissionsManager = PermissionsManager(permissionsListener)
             permissionsManager.requestLocationPermissions(this)
@@ -85,5 +136,92 @@ class MainActivity : AppCompatActivity() {
         binding.mapView.compass.fadeWhenFacingNorth = false // Brújula siempre activa.
 
         Log.d("Mapbox", "Map is ready")
+
+        // Captura de eventos en el mapa.
+        mapbox.addOnMapClickListener {
+            // val coordenadas = mapbox.pixelForCoordinate(it)
+            val coordenadas = binding.mapView.mapboxMap.project(it, 20.0)
+            Toast.makeText(
+                this@MainActivity,
+                "X: ${coordenadas.x}\nY: ${coordenadas.y}",
+                Toast.LENGTH_SHORT
+            ).show()
+
+            true
+        }
+
+
+        mapbox.addOnMapLongClickListener { point ->
+            Toast.makeText(
+                this@MainActivity,
+                "Lat: ${point.latitude()}\nLon: ${point.longitude()}",
+                Toast.LENGTH_SHORT
+            ).show()
+
+            // Se elimina el tracking de la cámara sobre la posición del usuario para evitar
+            // que vuelva tras pulsar otro punto.
+            binding.mapView.location.removeOnIndicatorPositionChangedListener(
+                onIndicatorPositionChangedListener
+            )
+
+            mapbox.flyTo(moveCam(point), ANIM_CAM)
+
+            true
+        }
+
+        // Detecta el movimiento de la cámara.
+        mapbox.subscribeCameraChanged(cameraChangedCallback)
+
+        // Click sobre la brújula.
+        binding.mapView.compass.addCompassClickListener {
+            activateLocation()
+            mapbox.flyTo(RESET_CAM, ANIM_CAM)
+        }
+
+        // Detección movimiento del mapa por el usuario.
+        mapbox.addOnMoveListener(object : OnMoveListener {
+            override fun onMove(detector: MoveGestureDetector): Boolean {
+                Log.d("onMove", "Desplazándose.")
+                return true
+            }
+
+            override fun onMoveBegin(detector: MoveGestureDetector) {
+                Log.d("onMoveBegin", "Inicio del desplazamiento.")
+            }
+
+            override fun onMoveEnd(detector: MoveGestureDetector) {
+                Log.d("onMoveEnd", "Fin del desplazamiento.")
+            }
+        })
+    }
+
+    private val RESET_CAM = cameraOptions {
+        zoom(9.0)
+        pitch(0.0) // Inclinación.
+        bearing(0.0) // Rotación.
+    }
+
+    private val cameraChangedCallback = CameraChangedCallback {
+        Log.d("Mapbox", "Camera changed: $it")
+    }
+
+    private fun moveCam(punto: Point) = cameraOptions {
+        zoom(12.0)
+        pitch(60.0) // Inclinación.
+        bearing(45.0) // Rotación.
+        center(punto)
+    }
+
+    private val ANIM_CAM = MapAnimationOptions.mapAnimationOptions { duration(2000) }
+
+    override fun onStop() {
+        super.onStop()
+        binding.mapView.location.removeOnIndicatorPositionChangedListener(
+            onIndicatorPositionChangedListener
+        )
+
+        binding.mapView.location.removeOnIndicatorBearingChangedListener(
+            onIndicationPositionChangedListener
+        )
     }
 }
