@@ -1,5 +1,6 @@
 package es.javiercarrasco.myfirstmapbox
 
+import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
@@ -11,9 +12,14 @@ import com.mapbox.android.gestures.MoveGestureDetector
 import com.mapbox.geojson.Point
 import com.mapbox.maps.CameraChangedCallback
 import com.mapbox.maps.CameraOptions
+import com.mapbox.maps.ViewAnnotationAnchor
 import com.mapbox.maps.dsl.cameraOptions
+import com.mapbox.maps.extension.style.layers.properties.generated.IconAnchor
 import com.mapbox.maps.plugin.animation.MapAnimationOptions
 import com.mapbox.maps.plugin.animation.flyTo
+import com.mapbox.maps.plugin.annotation.annotations
+import com.mapbox.maps.plugin.annotation.generated.PointAnnotationOptions
+import com.mapbox.maps.plugin.annotation.generated.createPointAnnotationManager
 import com.mapbox.maps.plugin.attribution.attribution
 import com.mapbox.maps.plugin.compass.compass
 import com.mapbox.maps.plugin.gestures.OnMoveListener
@@ -25,7 +31,11 @@ import com.mapbox.maps.plugin.locationcomponent.OnIndicatorBearingChangedListene
 import com.mapbox.maps.plugin.locationcomponent.OnIndicatorPositionChangedListener
 import com.mapbox.maps.plugin.locationcomponent.location
 import com.mapbox.maps.plugin.logo.logo
+import com.mapbox.maps.viewannotation.annotationAnchor
+import com.mapbox.maps.viewannotation.geometry
+import com.mapbox.maps.viewannotation.viewAnnotationOptions
 import es.javiercarrasco.myfirstmapbox.databinding.ActivityMainBinding
+import es.javiercarrasco.myfirstmapbox.databinding.AnnotationLayoutBinding
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
@@ -193,6 +203,8 @@ class MainActivity : AppCompatActivity() {
                 Log.d("onMoveEnd", "Fin del desplazamiento.")
             }
         })
+
+        addAnnotation()
     }
 
     private val RESET_CAM = cameraOptions {
@@ -223,5 +235,47 @@ class MainActivity : AppCompatActivity() {
         binding.mapView.location.removeOnIndicatorBearingChangedListener(
             onIndicationPositionChangedListener
         )
+    }
+
+    private fun addAnnotation() {
+        // Se crea una instancia de la API Annotation y se obtiene PointAnnotationManager.
+        val annotationApi = binding.mapView.annotations
+        val pointAnnotationManager = annotationApi.createPointAnnotationManager()
+        val point = Point.fromLngLat(-0.5292, 38.4044)
+
+        // Se configuran las opciones de la anotación.
+        val pointAnnotationOptions = PointAnnotationOptions()
+            // Se indica el punto de la anotación.
+            .withPoint(point)
+            // Se especifica la imagen asociada a la anotación.
+            .withIconImage(
+                BitmapFactory.decodeResource(
+                    this.resources,
+                    R.drawable.red_marker
+                )
+            )
+            .withIconAnchor(IconAnchor.BOTTOM)
+
+        // Se ajusta el tamaño de la marca.
+        pointAnnotationOptions.iconSize = 0.5
+
+        // Se añade el resultado al mapa.
+        val pointAnnotation = pointAnnotationManager.create(pointAnnotationOptions)
+
+        // Se prepara el título para la anotación.
+        val viewAnnotationManager = binding.mapView.viewAnnotationManager
+        val viewAnnotation = viewAnnotationManager.addViewAnnotation(
+            resId = R.layout.annotation_layout,
+            options = viewAnnotationOptions {
+                annotationAnchor {
+                    geometry(point)
+                    anchor(ViewAnnotationAnchor.BOTTOM)
+                    // Corrección de la posición de la anotación.
+                    offsetY(((pointAnnotation.iconImageBitmap?.height!! * pointAnnotation.iconSize!!) + 10))
+                }
+                //associatedFeatureId(pointAnnotation.featureIdentifier)
+            }
+        )
+        AnnotationLayoutBinding.bind(viewAnnotation).textViewTitulo.text = "IES San Vicente"
     }
 }
