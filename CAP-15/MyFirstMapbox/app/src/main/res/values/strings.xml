@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">My First Mapbox</string>
+
+    <string name="txt_annotation">Annotation\nLON: %s\nLAT: %s</string>
 </resources>

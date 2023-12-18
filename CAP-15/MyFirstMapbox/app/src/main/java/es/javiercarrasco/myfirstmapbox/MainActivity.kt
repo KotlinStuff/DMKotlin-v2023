@@ -160,6 +160,10 @@ class MainActivity : AppCompatActivity() {
             true
         }
 
+        binding.floatingActionButton.setOnClickListener {
+            binding.mapView.annotations.cleanup()
+            binding.mapView.viewAnnotationManager.removeAllViewAnnotations()
+        }
 
         mapbox.addOnMapLongClickListener { point ->
             Toast.makeText(
@@ -175,6 +179,10 @@ class MainActivity : AppCompatActivity() {
             )
 
             mapbox.flyTo(moveCam(point), ANIM_CAM)
+
+//            binding.mapView.annotations.cleanup()
+//            binding.mapView.viewAnnotationManager.removeAllViewAnnotations()
+            addAnnotation(point)
 
             true
         }
@@ -203,8 +211,6 @@ class MainActivity : AppCompatActivity() {
                 Log.d("onMoveEnd", "Fin del desplazamiento.")
             }
         })
-
-        addAnnotation()
     }
 
     private val RESET_CAM = cameraOptions {
@@ -237,11 +243,11 @@ class MainActivity : AppCompatActivity() {
         )
     }
 
-    private fun addAnnotation() {
+    private fun addAnnotation(pnt: Point) {
         // Se crea una instancia de la API Annotation y se obtiene PointAnnotationManager.
         val annotationApi = binding.mapView.annotations
         val pointAnnotationManager = annotationApi.createPointAnnotationManager()
-        val point = Point.fromLngLat(-0.5292, 38.4044)
+        val point = Point.fromLngLat(pnt.longitude(), pnt.latitude())
 
         // Se configuran las opciones de la anotación.
         val pointAnnotationOptions = PointAnnotationOptions()
@@ -260,7 +266,7 @@ class MainActivity : AppCompatActivity() {
         pointAnnotationOptions.iconSize = 0.5
 
         // Se añade el resultado al mapa.
-        val pointAnnotation = pointAnnotationManager.create(pointAnnotationOptions)
+        val pntAnnot = pointAnnotationManager.create(pointAnnotationOptions)
 
         // Se prepara el título para la anotación.
         val viewAnnotationManager = binding.mapView.viewAnnotationManager
@@ -271,11 +277,22 @@ class MainActivity : AppCompatActivity() {
                     geometry(point)
                     anchor(ViewAnnotationAnchor.BOTTOM)
                     // Corrección de la posición de la anotación.
-                    offsetY(((pointAnnotation.iconImageBitmap?.height!! * pointAnnotation.iconSize!!) + 10))
+                    offsetY(((pntAnnot.iconImageBitmap?.height!! * pntAnnot.iconSize!!) + 10))
                 }
-                //associatedFeatureId(pointAnnotation.featureIdentifier)
             }
         )
-        AnnotationLayoutBinding.bind(viewAnnotation).textViewTitulo.text = "IES San Vicente"
+        AnnotationLayoutBinding.bind(viewAnnotation)
+            .textViewTitulo.setText(
+                getString(
+                    R.string.txt_annotation,
+                    pnt.latitude().toString(),
+                    pnt.longitude().toString()
+                )
+            )
+
+//        viewAnnotation.setOnClickListener {
+//            pointAnnotationManager.delete(pntAnnot)
+//            viewAnnotationManager.removeViewAnnotation(it)
+//        }
     }
 }
