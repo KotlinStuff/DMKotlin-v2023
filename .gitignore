@@ -121,3 +121,4 @@ Thumbs.db
 /*.cxx
 /*/app/google-services.json
 CAP-15/MyFirstMapbox/app/src/main/res/values/developer-config.xml
+CAP-15/MyFirstGoogleMaps/app/src/main/res/values/google_maps_api.xml
