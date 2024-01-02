@@ -50,4 +50,6 @@ dependencies {
 
     // Maps SDK for Android
     implementation("com.google.android.gms:play-services-maps:18.2.0")
+    // Location SDK for Android
+    implementation("com.google.android.gms:play-services-location:21.0.1")
 }
