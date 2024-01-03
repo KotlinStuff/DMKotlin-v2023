@@ -9,7 +9,6 @@ import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.google.android.gms.location.FusedLocationProviderClient
@@ -20,9 +19,9 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import es.javiercarrasco.myfirstgooglemaps.databinding.ActivityMainBinding
-import java.io.IOException
 
 
 class MainActivity : AppCompatActivity(), OnMapReadyCallback,
@@ -30,6 +29,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback,
     private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
     private lateinit var lastLocation: Location
     private lateinit var map: GoogleMap
+    private var lastMarker: Marker? = null
     private lateinit var binding: ActivityMainBinding
 
     override fun onMyLocationButtonClick(): Boolean {
@@ -70,6 +70,10 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback,
     // Comprueba el permiso de ubicación y recoloca el mapa según la ubicación.
     @SuppressLint("MissingPermission")
     private fun configMap() {
+        // Se establece el tipo de mapa.
+        map.mapType = GoogleMap.MAP_TYPE_NORMAL // Por defecto.
+        binding.button.text = getString(R.string.txt_type_normal)
+
         when {
             (isPermissionGranted()) -> {
                 // Se añade la marca en la ubicación real.
@@ -118,6 +122,30 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback,
             true
         }
 
+        binding.button.setOnClickListener { // Se selecciona el tipo de mapa.
+            when (map.mapType) {
+                GoogleMap.MAP_TYPE_NORMAL -> {
+                    map.mapType = GoogleMap.MAP_TYPE_HYBRID
+                    binding.button.text = getString(R.string.txt_type_hybrid)
+                }
+
+                GoogleMap.MAP_TYPE_HYBRID -> {
+                    map.mapType = GoogleMap.MAP_TYPE_SATELLITE
+                    binding.button.text = getString(R.string.txt_type_satellite)
+                }
+
+                GoogleMap.MAP_TYPE_SATELLITE -> {
+                    map.mapType = GoogleMap.MAP_TYPE_TERRAIN
+                    binding.button.text = getString(R.string.txt_type_terrain)
+                }
+
+                GoogleMap.MAP_TYPE_TERRAIN -> {
+                    map.mapType = GoogleMap.MAP_TYPE_NORMAL
+                    binding.button.text = getString(R.string.txt_type_normal)
+                }
+            }
+        }
+
         configMap()
     }
 
@@ -137,14 +165,12 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback,
             )
         )
 
-        // Se añade la marca al mapa.
-        map.addMarker(markerOptions)
-    }
+        // Se elimina la última marca.
+        if (lastMarker != null)
+            lastMarker!!.remove()
 
-    private val geocodeListener = @RequiresApi(33) object : Geocoder.GeocodeListener {
-        override fun onGeocode(p0: MutableList<Address>) {
-            Log.d("GeocodeListener", p0.toString())
-        }
+        // Se añade la marca al mapa y se guarda en lastMarker.
+        lastMarker = map.addMarker(markerOptions)
     }
 
     // Método para obtener la dirección de una ubicación.
@@ -156,36 +182,28 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback,
         val address: Address?
         var addressText = ""
 
-        try {
-            // Se obtiene la información del punto concreto.
-            if (Build.VERSION.SDK_INT >= 33) {
-//                geocoder.getFromLocation(
-//                    location.latitude,
-//                    location.longitude,
-//                    1,
-//                    geocodeListener
-//                )
-            } else {
-                addresses = geocoder.getFromLocation(location.latitude, location.longitude, 1)
+        // Se obtiene la información del punto concreto.
+        if (Build.VERSION.SDK_INT < 33) {
+            addresses = geocoder.getFromLocation(location.latitude, location.longitude, 1)
 
-                // Si se obtiene la dirección, se añade a la variable addressText.
-                if (!addresses.isNullOrEmpty()) {
-                    // Se coge la primera posición.
-                    address = addresses[0]
-                    // Se comprueba que la dirección tenga o no más de una línea.
-                    if (address.maxAddressLineIndex > 0) {
-                        for (i in 0 until address.maxAddressLineIndex) {
-                            addressText += if (i == 0) address.getAddressLine(i)
-                            else "\n${address.getAddressLine(i)}"
-                        }
-                    } else { // Acción más habitual.
-                        addressText += "${address.thoroughfare}, ${address.subThoroughfare}\n"
+            // Si se obtiene la dirección, se añade a la variable addressText.
+            if (!addresses.isNullOrEmpty()) {
+                // Se coge la primera posición.
+                address = addresses[0]
+                // Se comprueba que la dirección tenga o no más de una línea.
+                if (address.maxAddressLineIndex > 0) {
+                    for (i in 0 until address.maxAddressLineIndex) {
+                        addressText += if (i == 0) address.getAddressLine(i)
+                        else "\n${address.getAddressLine(i)}"
                     }
+                } else { // Acción más habitual.
+                    if (!address.thoroughfare.isNullOrBlank())
+                        addressText += address.thoroughfare
+                    if (!address.subThoroughfare.isNullOrBlank())
+                        addressText += ", ${address.subThoroughfare}"
                 }
-            }
-        } catch (e: IOException) {
-            e.localizedMessage?.let { Log.e("MapsActivity", it) }
-        }
+            } else addressText = "no address found"
+        } else addressText = "no address found"
 
         return addressText
     }

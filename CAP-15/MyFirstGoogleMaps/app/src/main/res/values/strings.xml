@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">My First Google Maps</string>
+    <string name="txt_type_normal">Normal</string>
+    <string name="txt_type_hybrid">Híbrido</string>
+    <string name="txt_type_satellite">Satélite</string>
+    <string name="txt_type_terrain">Terreno</string>
 </resources>
